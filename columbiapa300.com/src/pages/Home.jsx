@@ -10,15 +10,12 @@ import AboutSection from '../components/AboutSection';
 const Home = () => {
   return (
     <>
-      <Header />
       <main>
         <HeroBanner targetDate="2025-06-02T23:59:59" />
         <AboutSection />
         <SubmissionForm />
         <TimelineSection />
       </main>
-      <Footer />
-      <HelpButton />
     </>
   );
 };

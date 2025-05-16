@@ -1,4 +1,3 @@
-// src/hooks/useInViewTrigger.js
 import { useEffect, useState, useRef } from 'react';
 
 const useInViewTrigger = (threshold = 0.3) => {
@@ -6,6 +5,12 @@ const useInViewTrigger = (threshold = 0.3) => {
   const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
+    // ✅ Ensure window exists (avoids SSR crash)
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      setHasEntered(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -15,13 +20,14 @@ const useInViewTrigger = (threshold = 0.3) => {
       { threshold }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [threshold]);

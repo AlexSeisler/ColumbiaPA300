@@ -1,0 +1,287 @@
+/* styles/vote/vote-page.css */
+
+.vote-page {
+  padding: 4rem 2rem;
+  background: linear-gradient(to bottom, #fdfcfb, #f3f4f7);
+  font-family: 'Open Sans', sans-serif;
+  color: #1e1b29;
+  text-align: center;
+}
+
+.vote-header {
+  max-width: 800px;
+  margin: 0 auto 3.5rem;
+  text-align: center;
+  animation: fadeInUp 1s ease forwards;
+  background: linear-gradient(to right, #fefefe, #f7f8fb);
+  padding: 2rem 2rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.vote-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.vote-banner span {
+  font-size: 2rem;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.glow-header {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  color: #2c234d;
+  text-shadow: 0 0 12px rgba(136, 117, 255, 0.25);
+}
+
+.vote-subtext {
+  font-size: 1.1rem;
+  color: #4b4b4b;
+  line-height: 1.6;
+  margin: 1rem 0 1.5rem;
+}
+
+.vote-details {
+  font-size: 0.95rem;
+  color: #6e6e6e;
+  line-height: 1.5;
+  background-color: #fef6e0;
+  border-left: 4px solid #ffd26d;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+}
+
+.vote-subtext,
+.vote-note {
+  font-size: 1rem;
+  margin-top: 0.75rem;
+  color: #555;
+}
+
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  animation: fadeInUp 1.5s ease forwards;
+}
+
+.logo-card {
+  background: #ffffff;
+  padding: 2rem 1.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.logo-title {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.student-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #2c234d;
+}
+
+.vote-btn {
+  background-color: #ececec;
+  color: #555;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.95rem;
+  cursor: not-allowed;
+  transition: background-color 0.2s ease;
+}
+
+.emoji-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  animation: pulse 2.5s infinite ease-in-out;
+}
+
+/* Custom card variants */
+.card-style-1 { background: #fefcfb; }
+.card-style-2 { background: #fcf9ff; }
+.card-style-3 { background: #f8fbff; }
+.card-style-4 { background: #fff9f6; }
+
+.card-style-1:hover { transform: rotate(-1deg) scale(1.03); }
+.card-style-2:hover { transform: rotate(1deg) scale(1.03); }
+.card-style-3:hover { transform: rotate(-1deg) scale(1.03); }
+.card-style-4:hover { transform: rotate(1deg) scale(1.03); }
+
+.vote-warning {
+  background-color: #fff9e6;
+  color: #8a6d3b;
+  border: 1px dashed #f0c36d;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 2rem auto 0;
+  font-size: 1rem;
+  animation: fadeIn 2s ease forwards;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.85; }
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .logo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .vote-page {
+    padding: 3rem 1.25rem;
+  }
+
+  .vote-header {
+    padding: 1.5rem 1rem 2rem;
+    margin-bottom: 2.5rem;
+    border-radius: 14px;
+  }
+
+  .vote-banner span {
+    font-size: 1.6rem;
+  }
+
+  .glow-header {
+    font-size: 2rem;
+    line-height: 2.2rem;
+  }
+
+  .vote-subtext {
+    font-size: 1rem;
+    margin: 1rem 0 1.25rem;
+    line-height: 1.6;
+    padding: 0 0.5rem;
+  }
+
+  .vote-details {
+    font-size: 0.9rem;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    text-align: left;
+  }
+
+  .logo-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .logo-card {
+    padding: 1.5rem 1rem;
+    border-radius: 14px;
+  }
+
+  .logo-title {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .student-label {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .vote-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .vote-warning {
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    margin-top: 2rem;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .logo-card {
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+    gap: 0.5rem;
+  }
+
+  .emoji-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .logo-title {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+
+  .student-label {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .vote-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 20px;
+    line-height: 1.2;
+  }
+
+  .vote-warning {
+    font-size: 0.9rem;
+    padding: 0.85rem 1rem;
+    margin-top: 1.5rem;
+    border-radius: 10px;
+    line-height: 1.5;
+    text-align: center;
+  }
+}

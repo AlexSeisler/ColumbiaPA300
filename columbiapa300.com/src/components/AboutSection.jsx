@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import '../styles/about-section.css';
+import '../styles/home/about-section.css';
 import useInViewTrigger from '../hooks/useInViewTrigger';
 
 const AboutSection = () => {

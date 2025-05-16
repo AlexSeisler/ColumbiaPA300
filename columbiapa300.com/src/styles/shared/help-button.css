@@ -1,0 +1,165 @@
+/* 🆘 Help Button Styles */
+
+.help-button-wrapper {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9000;
+}
+
+/* Bubble Style */
+.help-bubble-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(145deg, #1a102d, #251848);
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem;
+  box-shadow: 0 0 12px rgba(242, 201, 76, 0.3);
+  cursor: pointer;
+  color: #fff;
+  font-size: 1rem;
+  overflow: hidden;
+  width: auto;
+  min-width: 48px;
+  max-width: 48px;
+  transition: max-width 0.4s ease, padding-right 0.4s ease;
+}
+
+.help-bubble-button:hover {
+  max-width: 180px;
+  padding-right: 1.5rem;
+}
+
+/* Icon and Label */
+.help-icon {
+  font-size: 1.4rem;
+  animation: spinLight 10s linear infinite;
+  flex-shrink: 0;
+}
+
+.help-text {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  color: var(--color-accent);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.help-bubble-button:hover .help-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Modal Overlay & Centering */
+.help-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+}
+
+/* Modal Box */
+.help-modal {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.25);
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.help-modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.help-email {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: 1rem;
+}
+
+.help-close {
+  margin-top: 1.5rem;
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.help-close:hover {
+  background-color: var(--color-accent);
+  color: #1a1a1a;
+}
+
+/* Animations */
+@keyframes spinLight {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Tooltip (optional if re-added later) */
+.help-tooltip {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 8px rgba(242, 201, 76, 0.15);
+  white-space: nowrap;
+  opacity: 0.95;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .help-bubble-button {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 44px;
+    padding: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .help-icon {
+    font-size: 1.2rem;
+  }
+
+  .help-modal {
+    width: 90%;
+    font-size: 0.95rem;
+  }
+}

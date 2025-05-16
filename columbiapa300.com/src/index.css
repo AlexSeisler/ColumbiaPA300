@@ -1,13 +1,11 @@
-/* 🏛️ Columbia Borough 300th Anniversary - Global Styles */
+/* 🌐 Columbia Borough 300th Anniversary - Global CSS Reset & Layout */
 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap');
 
-
 :root {
-  --color-primary: #2c1e4a;    /* Deep navy purple */
-  --color-accent: #f2c94c;     /* Warm gold */
+  --color-primary: #2c1e4a;
+  --color-accent: #f2c94c;
   --color-bg-light: #f9f9f9;
-  --color-bg-dark: #1f1a33;
   --color-text-dark: #1a1a1a;
   --color-text-light: #ffffff;
   --color-subtle: #888888;
@@ -22,45 +20,51 @@
   --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
+/* Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  font-size: 100%;
+/* Scroll & Layout Safety */
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: auto;
 }
 
 body {
-  overflow-x: hidden;
-  font-family: 'Inter', sans-serif;
-  background: #ffffff;
+  font-family: var(--font-body);
+  background: #fff;
   color: #222;
+  display: flex;
+  flex-direction: column;
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
 }
 
-img {
-  max-width: 100%;
-  display: block;
-  border-radius: var(--radius);
+/* Prevent bottom bleed */
+html, body,
+#root {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  height: 100%;
 }
 
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: var(--transition-default);
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-a:hover,
-a:focus {
-  color: var(--color-accent);
-  text-decoration: underline;
+/* Main content container */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Typography */
 h1, h2, h3, h4, h5 {
   font-family: var(--font-heading);
   color: var(--color-primary);
@@ -71,19 +75,41 @@ h1 { font-size: 2.25rem; }
 h2 { font-size: 1.75rem; }
 h3 { font-size: 1.5rem; }
 
-section {
-  padding: 4rem 1rem;
-  position: relative;
+p, a, span, div, li,
+.form-cta,
+.security-tag,
+.upload-hint,
+.upload-instructions,
+.vote-subtext,
+.vote-details,
+.media-fallback,
+.contact-subtext,
+.contact-link,
+.form-tagline-banner {
+  font-size: 1.10rem;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
 }
 
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 1rem;
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-default);
 }
 
-button,
-.cta {
+a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  border-radius: var(--radius);
+}
+
+/* Buttons */
+button, .cta {
   background-color: var(--color-primary);
   color: var(--color-text-light);
   border: none;
@@ -96,21 +122,42 @@ button,
   box-shadow: var(--shadow-soft);
 }
 
-button:hover,
-.cta:hover {
+button:hover, .cta:hover {
   background-color: var(--color-accent);
   color: var(--color-primary);
   transform: scale(1.05);
   box-shadow: var(--shadow-hover);
 }
 
-hr {
-  margin: 2rem 0;
-  border: none;
-  height: 2px;
-  background: linear-gradient(to right, var(--color-primary), transparent);
+/* Containers */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
+/* Section base */
+section {
+  padding: 4rem 1rem;
+  position: relative;
+}
+
+section:last-of-type {
+  padding-bottom: 2rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Footer */
+footer {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+/* Blockquotes */
 blockquote {
   padding: 1rem 1.5rem;
   margin: 2rem 0;
@@ -121,55 +168,60 @@ blockquote {
   color: var(--color-text-dark);
 }
 
-footer {
-  background: var(--color-primary);
-  color: var(--color-text-light);
-  text-align: center;
-  padding: 2rem 1rem;
-  font-size: 0.875rem;
+/* Horizontal rules */
+hr {
+  margin: 2rem 0;
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-primary), transparent);
 }
 
-/* Scroll animation stubs */
-.fade-in {
-  animation: fadeIn 1s ease forwards;
-  opacity: 0;
+/* Kill iframe anchor behavior */
+iframe {
+  scroll-margin: 0;
+  overflow-anchor: none;
+  display: block;
+  margin-bottom: 0 !important;
+  max-width: 100%;
 }
 
-
-
-@media (max-width: 768px) {
-  .hero-title { font-size: 2rem; }
-  .timeline-line { padding-left: 1rem; }
-  .timeline-card { font-size: 0.95rem; }
-  .footer-logo { width: 50px; }
+/* Help Button position fix */
+.help-button,
+.support-button {
+  bottom: 1rem;
+  position: fixed;
 }
 
-.emoji-wobble {
-  animation: emojiWobble 2s infinite;
-}
-@keyframes emojiWobble {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(3deg); }
-  75% { transform: rotate(-3deg); }
-}
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
-
+/* Mobile */
 @media (max-width: 768px) {
   h1 { font-size: 1.75rem; }
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.25rem; }
 
-  button,
-  .cta {
+  button, .cta {
     font-size: 0.95rem;
     padding: 0.6rem 1.2rem;
   }
 
   .container {
     padding: 0 1rem;
+  }
+
+  .footer {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .footer-logo {
+    width: 44px;
+  }
+
+  .footer-text p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .powered-tag a {
+    font-size: 0.9rem;
+    padding-top: 0.25rem;
   }
 }

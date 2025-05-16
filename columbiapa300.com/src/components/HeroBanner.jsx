@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/hero-banner.css';
+import '../styles/home/hero-banner.css';
 import CountdownTimer from './CountdownTimer';
 import ParticlesBackground from './ParticlesBackground';
 

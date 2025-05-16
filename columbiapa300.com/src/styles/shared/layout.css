@@ -1,0 +1,41 @@
+/* 🔧 HTML & Body */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  background: #fff;
+}
+
+/* 🔌 Root React Container */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
+}
+
+/* 📦 Layout Wrapper */
+.layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #fff;
+}
+
+/* 🔳 Main Content */
+main,
+.main-content {
+  flex: 1 0 auto;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* 🧩 Footer Anchors at Bottom */
+footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}

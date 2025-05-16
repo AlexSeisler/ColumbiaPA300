@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import '../styles/timeline-section.css';
+import '../styles/home/timeline-section.css';
 import useInViewTrigger from '../hooks/useInViewTrigger';
 
 const TimelineSection = () => {
@@ -38,7 +38,7 @@ const TimelineSection = () => {
           >
             <div className="timeline-dot" />
             <div className="timeline-card">
-              <div className="timeline-date">🖌️ May 12–18</div>
+              <div className="timeline-date">🖌️ May 12</div>
               <div className="timeline-event">Logo submissions open</div>
             </div>
           </motion.div>

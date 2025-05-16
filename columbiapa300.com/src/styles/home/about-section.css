@@ -147,3 +147,45 @@
     font-size: 1rem;
   }
 }
+/* ✅ Mobile Layout Fixes for about-section.css */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 4rem 1.25rem 3rem;
+    background-size: 180px; /* reduce watermark size */
+    background-position: center 80px;
+  }
+
+  .about-wrapper {
+    padding: 0 0.5rem;
+  }
+
+  .civic-ribbon {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    line-height: 2.1rem;
+  }
+
+  .about-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .about-description.highlight {
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  .about-quote {
+    font-size: 1rem;
+    margin-top: 2rem;
+    line-height: 1.6;
+    padding: 0 1rem;
+  }
+}
