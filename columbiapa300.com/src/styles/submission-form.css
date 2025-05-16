@@ -1,0 +1,219 @@
+/* 🎨 Columbia Borough - Logo Submission Section */
+
+.submission-form {
+  padding: 6rem 1rem 8rem;
+  background: var(--color-bg-light) url('/clocktower.png') no-repeat center bottom;
+  background-size: 550px;
+  background-blend-mode: lighten;
+}
+
+.form-container {
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 3rem 2rem;
+  border-radius: var(--radius);
+  background-color: #fff;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+.form-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submission-form::before {
+  animation: badgePop 0.8s ease-out;
+}
+.form-tagline-banner {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  text-align: center;
+  border-radius: 6px;
+  margin: 0 auto 1.5rem;
+  max-width: 800px;
+  box-shadow: var(--shadow-soft);
+  font-size: 1.05rem;
+  animation: fadeSlideIn 1.2s ease-out forwards;
+}
+.civic-badge {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.4rem 1rem;
+  background: #f2c94c;
+  color: #2d1b5a;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.glow-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(242, 201, 76, 0.6);
+}
+
+.form-badge {
+  display: inline-block;
+  font-size: 2rem;
+  background-color: #ffffff;
+  border: 3px solid var(--color-accent);
+  border-radius: 50%;
+  padding: 0.6rem 0.75rem;
+  margin: 0 auto 1rem;
+  box-shadow: 0 0 20px rgba(242, 201, 76, 0.5);
+  animation: badgePulse 3s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(242, 201, 76, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(242, 201, 76, 0.8); }
+}
+.submission-form::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#fff6c2 0.5px, transparent 0.5px),
+                    radial-gradient(#fff6c2 0.5px, transparent 0.5px);
+  background-size: 30px 30px;
+  opacity: 0.03;
+  z-index: 0;
+  pointer-events: none;
+  animation: sparkleDrift 40s linear infinite;
+}
+@keyframes badgePop {
+  0% {
+    transform: translateX(-50%) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.instructions h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.instructions p {
+  font-size: 1rem;
+  color: #4f4f4f;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-frame {
+  margin-bottom: 2rem;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+iframe {
+  width: 100%;
+  height: 800px;
+  border: none;
+  border-radius: var(--radius);
+}
+
+.form-cta {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  color: var(--color-primary);
+  max-width: 700px;
+  margin: 1.5rem auto 0;
+}
+
+.form-cta span {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+
+.form-cta::before {
+  content: '✨ ';
+}
+
+.security-tag {
+  font-size: 0.875rem;
+  color: var(--color-subtle);
+  margin-top: 0.25rem;
+}
+
+.security-tag::before {
+  content: '🔒 ';
+}
+
+.support-button {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  padding: 0.75rem 1rem;
+  border-radius: 50px;
+  box-shadow: var(--shadow-soft);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 999;
+  transition: var(--transition-default);
+}
+
+.support-button:hover {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.support-button svg {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 2rem 1rem;
+  }
+
+  iframe {
+    height: 600px;
+  }
+
+  .submission-form::before {
+    font-size: 2rem;
+  }
+
+  .support-button {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+@media (max-width: 500px) {
+  .support-button {
+    display: none;
+  }
+}
+
+
+.form-container {
+  animation: fadeInUp 1s ease forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

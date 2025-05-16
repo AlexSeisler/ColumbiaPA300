@@ -1,0 +1,68 @@
+.timeline-section {
+  background: #f6f4f9;
+  padding: 5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #2d1b5a;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.timeline-line {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  border-left: 3px solid #f2c94c;
+}
+
+.timeline-point-card {
+  position: relative;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -11px;
+  top: 0.25rem;
+  width: 16px;
+  height: 16px;
+  background: #f2c94c;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(242, 201, 76, 0.5);
+}
+
+.timeline-card {
+  background: white;
+  border-left: 4px solid #2d1b5a;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-left: 1.5rem;
+  width: 100%;
+}
+
+.timeline-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.timeline-date {
+  font-weight: bold;
+  color: #f2c94c;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.timeline-event {
+  font-size: 1.1rem;
+  color: #333;
+}

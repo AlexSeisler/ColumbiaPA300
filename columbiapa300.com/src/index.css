@@ -1,68 +1,173 @@
+/* 🏛️ Columbia Borough 300th Anniversary - Global Styles */
+
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --color-primary: #2c1e4a;    /* Deep navy purple */
+  --color-accent: #f2c94c;     /* Warm gold */
+  --color-bg-light: #f9f9f9;
+  --color-bg-dark: #1f1a33;
+  --color-text-dark: #1a1a1a;
+  --color-text-light: #ffffff;
+  --color-subtle: #888888;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --max-width: 1100px;
+  --radius: 0.75rem;
+  --transition-default: all 0.3s ease;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-a:hover {
-  color: #535bf2;
+
+html {
+  scroll-behavior: smooth;
+  font-size: 100%;
 }
 
 body {
+  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  background: #ffffff;
+  color: #222;
+  line-height: 1.6;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+img {
+  max-width: 100%;
+  display: block;
+  border-radius: var(--radius);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-default);
+}
+
+a:hover,
+a:focus {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+
+section {
+  padding: 4rem 1rem;
+  position: relative;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+button,
+.cta {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: var(--transition-default);
+  box-shadow: var(--shadow-soft);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:hover,
+.cta:hover {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-hover);
+}
+
+hr {
+  margin: 2rem 0;
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-primary), transparent);
+}
+
+blockquote {
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  background: #fff8e1;
+  border-left: 5px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-style: italic;
+  color: var(--color-text-dark);
+}
+
+footer {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* Scroll animation stubs */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 2rem; }
+  .timeline-line { padding-left: 1rem; }
+  .timeline-card { font-size: 0.95rem; }
+  .footer-logo { width: 50px; }
+}
+
+.emoji-wobble {
+  animation: emojiWobble 2s infinite;
+}
+@keyframes emojiWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  75% { transform: rotate(-3deg); }
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
   }
-  a:hover {
-    color: #747bff;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  button,
+  .cta {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
   }
-  button {
-    background-color: #f9f9f9;
+
+  .container {
+    padding: 0 1rem;
   }
 }
