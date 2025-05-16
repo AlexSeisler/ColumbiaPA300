@@ -1,12 +1,10 @@
 import React from 'react';
 import '../styles/home/hero-banner.css';
 import CountdownTimer from './CountdownTimer';
-import ParticlesBackground from './ParticlesBackground';
 
 const HeroBanner = () => {
   return (
     <section className="hero-banner" id="hero">
-      <ParticlesBackground />
       <div className="hero-bg-overlay" />
       <div className="hero-content">
         <h1 className="hero-title">Celebrate 300 Years of Columbia</h1>
