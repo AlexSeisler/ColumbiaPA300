@@ -3,12 +3,16 @@ import '../styles/footer.css';
 
 const Footer = () => {
   return (
-    <footer className="site-footer">
-      <div className="footer-overlay" />
-      <div className="footer-content">
-        <img src="/clocktower.png" alt="Clocktower" className="footer-logo" />
-        <p>© 2025 Columbia Borough 300th Anniversary</p>
-        <p className="powered-by">Powered by ACS Results</p>
+    <footer className="footer">
+      <div className="footer-bg" />
+      <div className="footer-container">
+        <img src="/clocktower.png" alt="Clocktower" className="footer-logo glow" />
+        <div className="footer-text">
+          <p>© 2025 Columbia Borough 300th Anniversary</p>
+          <p className="powered-tag">
+            🛠️ Powered by <a href="https://redrosedigitalmedia.com/">Red Rose Digital Media</a>
+          </p>
+        </div>
       </div>
     </footer>
   );

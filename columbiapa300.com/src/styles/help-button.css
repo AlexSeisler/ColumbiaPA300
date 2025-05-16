@@ -1,0 +1,141 @@
+.help-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.help-button:hover {
+  transform: scale(1.05);
+}
+
+.help-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25), 0 0 8px rgba(242, 201, 76, 0.25);
+  color: #f2c94c;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  animation: pulseHelp 3s infinite;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.help-button-wrapper {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+}
+
+.help-orb {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  background: radial-gradient(circle at top left, #2c1e4a, #1a102d);
+  box-shadow: 0 0 16px rgba(242, 201, 76, 0.4);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.help-orb:hover {
+  background: #3d2c63;
+  box-shadow: 0 0 28px rgba(242, 201, 76, 0.75);
+  transform: scale(1.05);
+}
+
+.help-icon {
+  animation: spinLight 10s linear infinite;
+  font-size: 1.4rem;
+}
+
+.chat-icon,
+.help-label {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.4s ease-out;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.help-orb:hover .chat-icon,
+.help-orb:hover .help-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chat-icon {
+  font-size: 1.2rem;
+}
+
+.help-label {
+  font-size: 1rem;
+  color: #f2c94c;
+}
+
+@keyframes spinLight {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.help-tooltip {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 8px rgba(242, 201, 76, 0.15);
+  white-space: nowrap;
+  opacity: 0.95;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulseHelp {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(242, 201, 76, 0.2), 0 0 12px rgba(242, 201, 76, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(242, 201, 76, 0.4), 0 0 24px rgba(242, 201, 76, 0.15);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px) {
+  .help-button {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .help-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+  }
+}

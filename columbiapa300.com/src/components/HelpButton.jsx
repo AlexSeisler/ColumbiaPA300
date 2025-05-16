@@ -1,19 +1,14 @@
-// src/components/HelpButton.jsx
 import React from 'react';
 import '../styles/help-button.css';
 
 const HelpButton = () => {
   return (
-    <div className="help-button">
-      <a
-        href="mailto:columbia300@schooldistrict.edu"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="help-link"
-        aria-label="Need help? Contact support"
-      >
-        🟣 Need Help?
-      </a>
+    <div className="help-button-wrapper">
+      <button className="help-orb" aria-label="Need Help?">
+        <span className="help-icon">❓</span>
+        <span className="chat-icon">💬</span>
+        <span className="help-label">Need Help?</span>
+      </button>
     </div>
   );
 };

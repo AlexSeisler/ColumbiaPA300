@@ -1,5 +1,7 @@
 /* 🏛️ Columbia Borough 300th Anniversary - Global Styles */
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap');
+
 
 :root {
   --color-primary: #2c1e4a;    /* Deep navy purple */

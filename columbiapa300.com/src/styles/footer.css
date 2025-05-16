@@ -1,50 +1,79 @@
-.site-footer {
+.footer {
   position: relative;
-  background: #2d1b5a;
-  color: #f2f2f2;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  padding: 3rem 1rem 4rem;
   text-align: center;
-  padding: 3rem 1rem 2rem;
   overflow: hidden;
 }
 
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeInUp 1.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 .footer-logo {
-  width: 70px;
-  margin-bottom: 1rem;
-  opacity: 0.9;
-  animation: glowLogo 8s ease-in-out infinite;
+  width: 60px;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.2));
+  animation: glowPulse 4s infinite ease-in-out;
 }
 
-.powered-by {
-  font-size: 0.85rem;
-  color: #aaaaaa;
-  margin-top: 1rem;
+.footer-text p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  color: var(--color-text-light);
 }
 
-.footer-overlay {
+.powered-tag a {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.powered-tag a:hover {
+  color: #ffd700;
+}
+
+.footer-bg::before {
+  content: '';
   position: absolute;
-  top: 0;
-  left: 50%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, #f2c94c33, transparent 70%);
-  transform: translateX(-50%);
+  inset: 0;
+  background-image: radial-gradient(#ffffff44 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.03;
+  animation: shimmerStars 60s linear infinite;
+  pointer-events: none;
   z-index: 0;
-  filter: blur(40px);
-  animation: pulseAura 6s infinite ease-in-out;
 }
 
-.footer-content {
-  position: relative;
-  z-index: 2;
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Animations */
-@keyframes pulseAura {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.5; }
+@keyframes glowPulse {
+  0%, 100% { filter: drop-shadow(0 0 6px #fff5); }
+  50% { filter: drop-shadow(0 0 14px #fff8); }
 }
 
-@keyframes glowLogo {
-  0%, 100% { filter: drop-shadow(0 0 5px rgba(242,201,76,0.2)); }
-  50% { filter: drop-shadow(0 0 12px rgba(242,201,76,0.4)); }
+@keyframes shimmerStars {
+  0% { background-position: 0 0; }
+  100% { background-position: 600px 0; }
+}
+
+@media (max-width: 768px) {
+  .footer-logo {
+    width: 48px;
+  }
+  .footer-text p {
+    font-size: 0.85rem;
+  }
 }

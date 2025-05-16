@@ -1,20 +1,41 @@
+/* ===============================
+   Columbia 300 - Deluxe Header Styles
+   =============================== */
+
 .header {
-  background-color: #2c1e4a;
-  padding: 1rem 2rem;
-  color: white;
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
+  padding: 1rem 2rem;
+  backdrop-filter: blur(16px);
+  background: linear-gradient(145deg, #1e103f 0%, #2d1b5a 50%, #24133d 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+@keyframes ambientGlow {
+  0%   { transform: rotate(0deg) scale(1); opacity: 0.4; }
+  50%  { transform: rotate(180deg) scale(1.2); opacity: 0.7; }
+  100% { transform: rotate(360deg) scale(1); opacity: 0.4; }
 }
 
 .header-container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
+/* Logo + Title */
 .header-left {
   display: flex;
   align-items: center;
@@ -22,29 +43,157 @@
 }
 
 .logo {
-  height: 40px;
+  height: 48px;
+  animation: logoGlow 8s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(242, 201, 76, 0.4));
 }
 
 .site-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #f2c94c;
+  text-shadow: 0 0 4px rgba(242, 201, 76, 0.3);
 }
 
+/* Navigation */
 .header-nav ul {
   list-style: none;
   display: flex;
-  gap: 2rem;
+  gap: 2.25rem;
+}
+
+.header-nav li {
+  position: relative;
 }
 
 .header-nav a {
-  color: white;
-  text-decoration: none;
+  font-size: 1rem;
   font-weight: 500;
+  color: #ffffffcc;
+  padding: 0.4rem 0;
+  position: relative;
   transition: color 0.3s ease;
 }
 
+/* Hover underline = gold ribbon */
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  width: 0%;
+  height: 2px;
+  background-color: #f2c94c;
+  transition: width 0.35s ease;
+  border-radius: 2px;
+}
+
 .header-nav a:hover {
-  color: #f2c94c;
+  color: #fff;
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+/* Primary spinning ambient light */
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -30%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(242, 201, 76, 0.15), transparent 60%);
+  animation: ambientGlow 16s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+  transform: rotate(0deg);
+  transform-origin: center;
+  opacity: 0.6;
+}
+
+/* Secondary glow layer for subtle parallax */
+.header::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(circle at center, rgba(242, 201, 76, 0.08), transparent 65%);
+  animation: ambientGlowAlt 28s linear infinite reverse;
+  z-index: 0;
+  pointer-events: none;
+  transform: rotate(0deg);
+  transform-origin: center;
+  opacity: 0.4;
+}
+.header-nav a {
+  color: white;
+  font-weight: 500;
+  text-decoration: none; /* 🔥 Removes default underline */
+  position: relative;
+}
+
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  left: 0;
+  bottom: -4px;
+  background-color: #f2c94c;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.header-nav a:hover::after,
+.header-nav a:focus::after {
+  transform: scaleX(1);
+}
+
+/* Animations */
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(204, 218, 42, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(142, 242, 76, 0.7));
+  }
+}
+@keyframes ambientGlow {
+  0%   { transform: rotate(0deg) scale(1); opacity: 0.55; }
+  50%  { transform: rotate(180deg) scale(1.2); opacity: 0.75; }
+  100% { transform: rotate(360deg) scale(1); opacity: 0.55; }
+}
+
+@keyframes ambientGlowAlt {
+  0%   { transform: rotate(0deg) scale(1); opacity: 0.3; }
+  50%  { transform: rotate(360deg) scale(1.05); opacity: 0.4; }
+  100% { transform: rotate(720deg) scale(1); opacity: 0.3; }
+}
+/* Mobile layout */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .site-title {
+    font-size: 1.2rem;
+  }
+
+  .header-nav ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-nav a {
+    font-size: 0.95rem;
+  }
 }
