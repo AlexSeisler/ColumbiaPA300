@@ -53,30 +53,36 @@ const UploadSection = () => {
         const res = await fetch('/.netlify/functions/uploadToDrive', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json' // ✅ CRUCIAL
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             name: file.name,
             mimeType: file.type,
-            base64
+            base64,
           }),
         });
 
+        if (!res.ok) {
+          throw new Error(`Server responded with status ${res.status}`);
+        }
+
         const result = await res.json();
+
         if (result.success) {
           alert(`✅ ${file.name} uploaded!`);
         } else {
           alert(`⚠️ Upload failed for ${file.name}`);
         }
       } catch (err) {
-        console.error('Upload exception:', err);
-        alert(`❌ Upload error for ${file.name}`);
+        console.error('Upload error:', err);
+        alert(`❌ Upload error for ${file.name}: ${err.message}`);
       }
     };
 
     reader.readAsDataURL(file);
   }
 };
+
 
   return (
     <div className="upload-wrapper">
