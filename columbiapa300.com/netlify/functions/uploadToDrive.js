@@ -19,15 +19,21 @@ exports.handler = async (event) => {
 
     const drive = google.drive({ version: 'v3', auth });
 
+    const { Readable } = require('stream');
+
+    const bufferStream = new Readable();
+    bufferStream.push(buffer);
+    bufferStream.push(null);
+
     const res = await drive.files.create({
       requestBody: {
         name,
-        parents: [process.env.DRIVE_FOLDER_ID], // Make sure this is also set in Netlify!
+        parents: [process.env.DRIVE_FOLDER_ID],
         mimeType,
       },
       media: {
         mimeType,
-        body: Buffer.from(base64, 'base64'),
+        body: bufferStream, // ✅ now it's a stream!
       },
     });
 
