@@ -1,30 +1,18 @@
 const { google } = require('googleapis');
-const multiparty = require('multiparty');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: 'Method Not Allowed'
-    };
-  }
-
   try {
-    const form = new multiparty.Form();
-    const data = await new Promise((resolve, reject) => {
-      form.parse(event, (err, fields, files) => {
-        if (err) reject(err);
-        else resolve({ fields, files });
-      });
-    });
+    if (event.httpMethod !== 'POST') {
+      return {
+        statusCode: 405,
+        body: 'Method Not Allowed'
+      };
+    }
 
-    const file = data.files.file[0]; // assumes name="file"
-    const filePath = file.path;
-    const fileName = file.originalFilename;
-    const mimeType = file.headers['content-type'];
+    const contentType = event.headers['content-type'] || event.headers['Content-Type'];
+
+    // Parse body
+    const bodyBuffer = Buffer.from(event.body, 'base64'); // Netlify encodes it as base64
 
     const creds = JSON.parse(
       Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_B64, 'base64').toString('utf8')
@@ -37,21 +25,21 @@ exports.handler = async (event) => {
 
     const drive = google.drive({ version: 'v3', auth: await auth.getClient() });
 
-    const res = await drive.files.create({
+    const uploadRes = await drive.files.create({
       requestBody: {
-        name: fileName,
-        mimeType: mimeType,
-        parents: [process.env.DRIVE_FOLDER_ID]
+        name: 'upload-' + Date.now(),
+        mimeType: contentType,
+        parents: [process.env.DRIVE_FOLDER_ID],
       },
       media: {
-        mimeType,
-        body: fs.createReadStream(filePath)
+        mimeType: contentType,
+        body: bodyBuffer
       }
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, fileId: res.data.id })
+      body: JSON.stringify({ success: true, fileId: uploadRes.data.id })
     };
 
   } catch (err) {

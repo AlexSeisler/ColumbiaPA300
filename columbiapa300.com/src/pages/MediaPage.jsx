@@ -52,20 +52,18 @@ const handleSubmit = async () => {
 
   for (const file of files) {
     try {
-      setUploadingFileName(file.name);
-      setUploadProgress(0);
-
-      const formData = new FormData();
-      formData.append('file', file);
+      const arrayBuffer = await file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
 
       const res = await fetch('/.netlify/functions/uploadDirectToDrive', {
         method: 'POST',
-        body: formData
+        headers: {
+          'Content-Type': file.type
+        },
+        body: uint8Array
       });
 
       const result = await res.json();
-      console.log("📡 Upload result:", result);
-
       if (result.success) {
         alert(`✅ ${file.name} uploaded successfully!`);
       } else {
@@ -73,13 +71,12 @@ const handleSubmit = async () => {
       }
 
     } catch (err) {
-      console.error('❌ Upload error:', err);
+      console.error("❌ Upload error:", err);
       alert(`⚠️ ${file.name} upload failed.`);
-    } finally {
-      setUploadProgress(null);
     }
   }
 };
+
 
 
 
