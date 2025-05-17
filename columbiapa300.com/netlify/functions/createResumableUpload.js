@@ -16,36 +16,35 @@ exports.handler = async (event) => {
     const authClient = await auth.getClient();
     const drive = google.drive({ version: 'v3', auth: authClient });
 
-    // Correct approach: DO NOT include media or body here
     const res = await drive.files.create({
       requestBody: {
         name,
         mimeType,
         parents: [process.env.DRIVE_FOLDER_ID],
       },
-      media: {}, // Leave empty
-      supportsAllDrives: true,
     }, {
-      // Tell Google to generate resumable session
       params: {
         uploadType: 'resumable'
       },
       headers: {
-        'X-Upload-Content-Type': mimeType
+        'X-Upload-Content-Type': mimeType,
       }
     });
 
     const uploadUrl = res.headers.location;
+
+    console.log("✅ Created resumable URL:", uploadUrl);
+    console.log("🔎 Response headers:", res.headers);
 
     return {
       statusCode: 200,
       body: JSON.stringify({ uploadUrl }),
     };
   } catch (err) {
-    console.error("❌ Failed to create resumable upload session:", err);
+    console.error("❌ Netlify function error:", err.message);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message || "Upload session error" }),
+      body: JSON.stringify({ error: err.message }),
     };
   }
 };
