@@ -57,13 +57,16 @@ const UploadSection = () => {
         const base64 = reader.result.split(',')[1];
 
         const res = await fetch('/.netlify/functions/uploadToDrive', {
-          method: 'POST',
-          body: JSON.stringify({
-            name: file.name,
-            mimeType: file.type,
-            base64,
-          }),
-        });
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // ✅ Add this line
+        },
+        body: JSON.stringify({
+          name: file.name,
+          mimeType: file.type,
+          base64,
+        }),
+      });
 
         const result = await res.json();
         if (result.success) {
