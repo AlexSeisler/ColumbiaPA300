@@ -55,49 +55,32 @@ const handleSubmit = async () => {
       setUploadingFileName(file.name);
       setUploadProgress(0);
 
-      console.log("📂 Selected file:", {
-        name: file.name,
-        type: file.type,
-        size: file.size
-      });
+      const formData = new FormData();
+      formData.append('file', file);
 
-      const initRes = await fetch('/.netlify/functions/createResumableUpload', {
+      const res = await fetch('/.netlify/functions/uploadDirectToDrive', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: file.name, mimeType: file.type }),
+        body: formData
       });
 
-      const { uploadUrl } = await initRes.json();
-      console.log("🔗 Upload URL received:", uploadUrl);
+      const result = await res.json();
+      console.log("📡 Upload result:", result);
 
-      const res = await fetch(uploadUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': file.type
-          // ❌ REMOVE Content-Length here
-        },
-        body: file
-      });
-
-      console.log("📡 Upload response:", res.status, res.statusText);
-
-      if (res.ok) {
-        setUploadProgress(null);
+      if (result.success) {
         alert(`✅ ${file.name} uploaded successfully!`);
       } else {
-        const errorText = await res.text();
-        console.error("❌ Upload failed response:", errorText);
-        alert(`⚠️ ${file.name} upload failed. (${res.status})`);
+        alert(`⚠️ ${file.name} upload failed: ${result.error}`);
       }
 
     } catch (err) {
-      console.error("❌ Upload error:", err);
+      console.error('❌ Upload error:', err);
       alert(`⚠️ ${file.name} upload failed.`);
     } finally {
       setUploadProgress(null);
     }
   }
 };
+
 
 
 
