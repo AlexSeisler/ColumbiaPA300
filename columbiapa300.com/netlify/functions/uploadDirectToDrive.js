@@ -1,3 +1,5 @@
+
+
 const { google } = require('googleapis');
 const { Readable } = require('stream');
 
@@ -6,7 +8,9 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
-
+exports.config = {
+  bodyParser: false, // ✅ tells Netlify to send raw body
+};
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -17,6 +21,9 @@ exports.handler = async (event) => {
   }
 
   console.log("📥 uploadDirectToDrive triggered");
+  console.log("Incoming headers:", event.headers);
+  console.log("Incoming method:", event.httpMethod);
+  console.log("Raw body length:", event.body?.length);
 
   try {
     const contentType = event.headers['content-type'] || event.headers['Content-Type'];

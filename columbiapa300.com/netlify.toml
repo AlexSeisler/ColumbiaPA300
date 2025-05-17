@@ -2,7 +2,14 @@
   directory = "netlify/functions"
   external_node_modules = ["node-fetch", "googleapis"]
   included_files = ["netlify/functions/keys/google-service-account.json"]
+  node_bundler = "esbuild"
 
 [build]
   publish = "dist"
   command = "npm run build"
+
+[functions.uploadDirectToDrive]
+  included_files = ["*"]
+  external_node_modules = ["googleapis"]
+  node_bundler = "esbuild"
+  format = "cjs"
