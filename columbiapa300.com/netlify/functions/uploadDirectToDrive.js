@@ -1,6 +1,6 @@
 const { google } = require('googleapis');
+const { Readable } = require('stream');
 
-// Define CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -8,18 +8,17 @@ const corsHeaders = {
 };
 
 exports.handler = async (event) => {
-  // Handle CORS preflight request
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: 'CORS preflight response',
+      body: 'CORS preflight success',
     };
   }
 
-  try {
-    console.log("📥 uploadDirectToDrive triggered");
+  console.log("📥 uploadDirectToDrive triggered");
 
+  try {
     const contentType = event.headers['content-type'] || event.headers['Content-Type'];
     const fileBuffer = Buffer.from(event.body, 'base64');
 
@@ -42,7 +41,7 @@ exports.handler = async (event) => {
       },
       media: {
         mimeType: contentType,
-        body: fileBuffer,
+        body: Readable.from(fileBuffer), // ✅ Fixed: must be a stream
       },
     });
 
