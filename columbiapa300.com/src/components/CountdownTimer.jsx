@@ -30,7 +30,7 @@ const CountdownTimer = ({ targetDate }) => {
   return (
     <div className="countdown">
       <p>
-        {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s left to vote!
+        {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s until voting opens!
       </p>
     </div>
   )
