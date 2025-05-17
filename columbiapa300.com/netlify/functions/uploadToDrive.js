@@ -1,8 +1,4 @@
 const { google } = require('googleapis');
-const { Readable } = require('stream');
-
-const serviceKey = require('./keys/google-service-account.json');
-
 
 exports.handler = async (event) => {
   try {
@@ -10,30 +6,34 @@ exports.handler = async (event) => {
     const { name, mimeType, base64 } = body;
 
     const buffer = Buffer.from(base64, 'base64');
-    const stream = Readable.from(buffer); // ✅ Convert to stream
+
+    // ✅ DECODE base64 env var into JSON object
+    const keyJson = JSON.parse(
+      Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_B64, 'base64').toString('utf-8')
+    );
 
     const auth = new google.auth.GoogleAuth({
-      credentials: serviceKey,
+      credentials: keyJson,
       scopes: ['https://www.googleapis.com/auth/drive.file'],
     });
 
     const drive = google.drive({ version: 'v3', auth });
 
-    const response = await drive.files.create({
+    const res = await drive.files.create({
       requestBody: {
         name,
-        parents: [process.env.DRIVE_FOLDER_ID],
+        parents: [process.env.DRIVE_FOLDER_ID], // Make sure this is also set in Netlify!
         mimeType,
       },
       media: {
         mimeType,
-        body: stream, // ✅ Use stream
+        body: Buffer.from(base64, 'base64'),
       },
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, fileId: response.data.id }),
+      body: JSON.stringify({ success: true, fileId: res.data.id }),
     };
   } catch (err) {
     console.error('Upload error:', err);
