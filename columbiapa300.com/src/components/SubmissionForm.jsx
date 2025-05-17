@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/home/submission-form.css';
 
 const SubmissionForm = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -10,7 +11,7 @@ const SubmissionForm = () => {
     file: null,
     agreement: false,
   });
-
+  const toggleForm = () => setIsOpen((prev) => !prev);
   const [dragActive, setDragActive] = useState(false);
 
   const handleChange = (e) => {
@@ -89,28 +90,35 @@ const SubmissionForm = () => {
 };
 
   return (
-    <section className="submission-form" id="contest">
-      <div className="form-container fade-in-up">
-        <div className="form-badge-wrapper">
-          <div className="form-badge sparkle-float pulse-ring">🎨</div>
-        </div>
+  <section className="submission-form" id="contest">
+    <div className="form-container fade-in-up">
+      <div className="form-badge-wrapper">
+        <div className="form-badge sparkle-float pulse-ring">🎨</div>
+      </div>
 
-        <h2 className="form-title decorated-title">
-          <span className="scroll-left">📜</span>
-          Submit Your Logo Design
-          <span className="scroll-right">📜</span>
-        </h2>
+      <h2 className="form-title decorated-title">
+        <span className="scroll-left">📜</span>
+        Submit Your Logo Design
+        <span className="scroll-right">📜</span>
+      </h2>
 
-        <div className="civic-badge glow-hover badge-glow">🎖️ Community Choice</div>
+      <div className="civic-badge glow-hover badge-glow">🎖️ Community Choice</div>
 
-        <p className="instructions">
-          All Columbia Borough students are invited to participate! Submit your logo to be featured in the 300th Anniversary Celebration.
-        </p>
+      <p className="instructions">
+        All Columbia Borough students are invited to participate! Submit your logo to be featured in the 300th Anniversary Celebration.
+      </p>
 
-        <div className="form-tagline-banner pulse-highlight shimmer-on-scroll">
-          ✍️ <strong>Columbia students are shaping history — one logo at a time.</strong>
-        </div>
+      <div className="form-tagline-banner pulse-highlight shimmer-on-scroll">
+        ✍️ <strong>Columbia students are shaping history — one logo at a time.</strong>
+      </div>
 
+      {/* CTA Button */}
+      <button className="submit-toggle-cta pulse-highlight" onClick={toggleForm}>
+        {isOpen ? '🛑 Close Form' : '🎨 Submit Your Logo'}
+      </button>
+
+      {/* Collapsible Wrapper */}
+      <div className={`collapsible-wrapper ${isOpen ? 'open' : ''}`}>
         <form className="form-frame drop-in paper-frame" onSubmit={handleSubmit}>
           <label>
             Email *
@@ -136,7 +144,7 @@ const SubmissionForm = () => {
 
           <label>
             School Name *
-            <div className="radio-group">
+            <div className="radio-group" name="school">
               {['Columbia High School', 'Our Lady of the Angels', 'Home-School', 'Other'].map((school) => (
                 <label key={school}>
                   <input
@@ -155,7 +163,7 @@ const SubmissionForm = () => {
 
           <label>
             Grade Level *
-            <div className="radio-group">
+            <div className="radio-group" name="grade">
               {['6th grade', '7th grade', '8th grade', '9th grade', '10th grade', '11th grade', '12th grade'].map((grade) => (
                 <label key={grade}>
                   <input
@@ -204,18 +212,21 @@ const SubmissionForm = () => {
             📬 Submit Design
           </button>
         </form>
+      </div>
 
-        <div className="form-footer-cta">
-          <div className="creative-sparkle-line shimmer-pop">
-            ✨ <span className="highlighted-phrase">Show us your creativity</span> — we’re excited to showcase student designs at the Borough Meeting!
-          </div>
-          <div className="submission-privacy-tag">
-            🔐 Submissions are private and sent directly to the Columbia Borough team.
-          </div>
+      {/* Footer CTA */}
+      <div className="form-footer-cta">
+        <div className="creative-sparkle-line shimmer-pop">
+          ✨ <span className="highlighted-phrase">Show us your creativity</span> — we’re excited to showcase student designs at the Borough Meeting!
+        </div>
+        <div className="submission-privacy-tag">
+          🔐 Submissions are private and sent directly to the Columbia Borough team.
         </div>
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
+
 };
 
 export default SubmissionForm;
