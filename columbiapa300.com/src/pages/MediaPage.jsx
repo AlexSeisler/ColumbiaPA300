@@ -44,7 +44,9 @@ const UploadSection = () => {
     inputRef.current?.click();
   };
 
-const handleSubmit = async () => {
+const handleSubmit = async (e) => {
+  e.preventDefault(); // ✅ This stops the browser from reloading
+
   if (!files.length) {
     alert("⚠️ Please select a file before submitting.");
     return;
@@ -59,23 +61,25 @@ const handleSubmit = async () => {
         method: 'POST',
         headers: {
           'Content-Type': file.type,
+          'Content-Length': uint8Array.byteLength,
         },
         body: uint8Array,
       });
-      if (res.ok) {
-      alert(`✅ ${file.name} uploaded successfully!`);
-    } else {
-      const text = await res.text();
-      console.error("❌ Upload failed response:", text);
-      alert(`⚠️ ${file.name} upload failed. (${res.status})`);
-    }
-    } catch (error) {
-      
-    }
 
-      
+      if (res.ok) {
+        alert(`✅ ${file.name} uploaded successfully!`);
+      } else {
+        const text = await res.text();
+        console.error("❌ Upload failed response:", text);
+        alert(`⚠️ ${file.name} upload failed. (${res.status})`);
+      }
+    } catch (error) {
+      console.error("❌ Upload error:", error);
+      alert(`⚠️ ${file.name} upload failed: ${error.message}`);
+    }
   }
 };
+
 
 
 
