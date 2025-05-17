@@ -42,31 +42,25 @@ const UploadSection = () => {
     inputRef.current?.click();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+  for (const file of files) {
+    const reader = new FileReader();
 
-    if (!files.length) {
-      alert("⚠️ Please select files before submitting.");
-      return;
-    }
+    reader.onloadend = async () => {
+      const base64 = reader.result.split(',')[1];
 
-    for (const file of files) {
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        const base64 = reader.result.split(',')[1];
-
+      try {
         const res = await fetch('/.netlify/functions/uploadToDrive', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // ✅ Add this line
-        },
-        body: JSON.stringify({
-          name: file.name,
-          mimeType: file.type,
-          base64,
-        }),
-      });
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json' // ✅ CRUCIAL
+          },
+          body: JSON.stringify({
+            name: file.name,
+            mimeType: file.type,
+            base64
+          }),
+        });
 
         const result = await res.json();
         if (result.success) {
@@ -74,11 +68,15 @@ const UploadSection = () => {
         } else {
           alert(`⚠️ Upload failed for ${file.name}`);
         }
-      };
+      } catch (err) {
+        console.error('Upload exception:', err);
+        alert(`❌ Upload error for ${file.name}`);
+      }
+    };
 
-      reader.readAsDataURL(file);
-    }
-  };
+    reader.readAsDataURL(file);
+  }
+};
 
   return (
     <div className="upload-wrapper">
