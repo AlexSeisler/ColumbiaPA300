@@ -49,31 +49,44 @@ const SubmissionForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const fileName = formData.file?.name || '';
+  const fileName = formData.file?.name || '';
 
-    const payload = {
-      email: formData.email,
-      name: formData.name,
-      school: formData.school,
-      grade: formData.grade,
-      agreement: formData.agreement,
-      fileName
-    };
+  const payload = {
+    email: formData.email,
+    name: formData.name,
+    school: formData.school,
+    grade: formData.grade,
+    agreement: formData.agreement,
+    fileName
+  };
 
-    const res = await fetch('/.netlify/functions/submitForm', {
-      method: 'POST',
-      body: JSON.stringify(payload)
+  const res = await fetch('/.netlify/functions/submitForm', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+
+  const result = await res.json();
+  if (result.success) {
+    alert('✅ Submission successful!');
+
+    // Clear form
+    setFormData({
+      email: '',
+      name: '',
+      school: '',
+      grade: '',
+      file: null,
+      agreement: false
     });
 
-    const result = await res.json();
-    if (result.success) {
-      alert('✅ Submission successful!');
-    } else {
-      alert('⚠️ There was an error submitting the form.');
-    }
-  };
+    document.querySelector('input[type="file"]').value = null;
+  } else {
+    alert('⚠️ There was an error submitting the form.');
+    console.error(result.error);
+  }
+};
 
   return (
     <section className="submission-form" id="contest">

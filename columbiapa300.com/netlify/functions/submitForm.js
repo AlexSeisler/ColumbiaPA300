@@ -29,22 +29,26 @@ exports.handler = async function(event) {
       },
       body: JSON.stringify({
         fields: {
-          Email: body.email,
-          "Full Name": body.name,
-          School: body.school,
-          "Grade Level": body.grade,
-          Agreement: body.agreement ? "Yes" : "No",
-          "Logo File Name": body.fileName || "Not uploaded"
-        }
+        Email: body.email,
+        "Full Name": body.name,
+        School: body.school,
+        Grade: body.grade,
+        Agreement: body.agreement ? true : false,
+        "File Upload": body.fileName || "Not uploaded"
+      }
       })
     });
 
     const airtableData = await response.json();
 
     return {
-      statusCode: 200,
-      body: JSON.stringify({ success: true, record: airtableData })
-    };
+  statusCode: 200,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type"
+  },
+  body: JSON.stringify({ success: true, record: airtableData })
+};
   } catch (error) {
     return {
       statusCode: 500,
