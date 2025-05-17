@@ -69,6 +69,7 @@ const handleSubmit = async () => {
       const xhr = new XMLHttpRequest();
       xhr.open('PUT', uploadUrl, true);
       xhr.setRequestHeader('Content-Type', file.type);
+      xhr.setRequestHeader('Content-Length', file.size); // ✅ Explicit file length
 
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
