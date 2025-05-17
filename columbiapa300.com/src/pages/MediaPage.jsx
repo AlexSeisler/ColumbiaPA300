@@ -6,7 +6,6 @@ const UploadSection = () => {
   const [files, setFiles] = useState([]);
   const inputRef = useRef(null);
 
-  // Drag handlers
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -17,43 +16,69 @@ const UploadSection = () => {
     }
   };
 
-const handleDrop = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  setDragActive(false);
-
-  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    setFiles(prev => [...prev, ...droppedFiles]);
-    e.dataTransfer.clearData();
-
-    if (inputRef.current) {
-      inputRef.current.value = null; // ✅ Reset drag input too
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      setFiles(prev => [...prev, ...droppedFiles]);
+      e.dataTransfer.clearData();
+      if (inputRef.current) {
+        inputRef.current.value = null;
+      }
     }
-  }
-};
-const handleFileChange = (e) => {
-  if (e.target.files && e.target.files.length > 0) {
-    const selectedFiles = Array.from(e.target.files);
-    setFiles(prev => [...prev, ...selectedFiles]);
+  };
 
-    // ✅ Reset the input so selecting the same file again works
-    e.target.value = null;
-  }
-};
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFiles = Array.from(e.target.files);
+      setFiles(prev => [...prev, ...selectedFiles]);
+      e.target.value = null; // Reset so same file can be reselected
+    }
+  };
 
   const handleBrowseClick = () => {
     inputRef.current?.click();
   };
 
-  const handleSubmit = () => {
-    alert('This is where your upload handler would go (e.g., Google Drive, API)');
-    console.log('Submitting files:', files);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!files.length) {
+      alert("⚠️ Please select files before submitting.");
+      return;
+    }
+
+    for (const file of files) {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        const base64 = reader.result.split(',')[1];
+
+        const res = await fetch('/.netlify/functions/uploadToDrive', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: file.name,
+            mimeType: file.type,
+            base64,
+          }),
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert(`✅ ${file.name} uploaded!`);
+        } else {
+          alert(`⚠️ Upload failed for ${file.name}`);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
     <div className="upload-wrapper">
-      {/* Header */}
       <div className="upload-header">
         <h2>📥 Submit Your Columbia Moment</h2>
         <p>Upload a photo or short video that captures the spirit of Columbia — past or present.</p>
@@ -64,46 +89,45 @@ const handleFileChange = (e) => {
         </ul>
       </div>
 
-      {/* Upload Zone */}
-      <div
-        className={`upload-container ${dragActive ? 'drag-active' : ''}`}
-        onDragEnter={handleDrag}
-        onDragOver={handleDrag}
-        onDragLeave={handleDrag}
-        onDrop={handleDrop}
-      >
-        <input
-          type="file"
-          multiple
-          ref={inputRef}
-          onChange={handleFileChange}
-          className="file-input-hidden"
-        />
-        <div className="upload-inner">
-          <span className="upload-emoji" role="img" aria-label="upload">📤</span>
-          <p>Click or drag files here to upload</p>
-          <button type="button" className="upload-btn" onClick={handleBrowseClick}>Choose Files</button>
-        </div>
-      </div>
-
-      {/* Submit + File Preview */}
-      {files.length > 0 && (
-        <>
-          <button className="submit-btn" onClick={handleSubmit}>
-            ✅ Submit Files
-          </button>
-          <div className="file-preview">
-            <h4>Uploaded Files</h4>
-            <ul>
-              {files.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
+      <form onSubmit={handleSubmit}>
+        <div
+          className={`upload-container ${dragActive ? 'drag-active' : ''}`}
+          onDragEnter={handleDrag}
+          onDragOver={handleDrag}
+          onDragLeave={handleDrag}
+          onDrop={handleDrop}
+        >
+          <input
+            type="file"
+            multiple
+            ref={inputRef}
+            onChange={handleFileChange}
+            className="file-input-hidden"
+          />
+          <div className="upload-inner" onClick={handleBrowseClick}>
+            <span className="upload-emoji" role="img" aria-label="upload">📤</span>
+            <p>Click or drag files here to upload</p>
+            <button type="button" className="upload-btn">Choose Files</button>
           </div>
-        </>
-      )}
+        </div>
 
-      {/* Fallback Note */}
+        {files.length > 0 && (
+          <>
+            <button type="submit" className="submit-btn">
+              ✅ Submit Files
+            </button>
+            <div className="file-preview">
+              <h4>Uploaded Files</h4>
+              <ul>
+                {files.map((file, index) => (
+                  <li key={index}>{file.name}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
+      </form>
+
       <p className="media-fallback">
         📬 Trouble uploading? Email:{' '}
         <a href="mailto:edwinortiz@redrosedigitalmedia.com">edwinortiz@redrosedigitalmedia.com</a>

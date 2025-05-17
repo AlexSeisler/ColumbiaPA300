@@ -1,6 +1,6 @@
 [functions]
   directory = "netlify/functions"
-  external_node_modules = ["node-fetch"]
+  external_node_modules = ["node-fetch", "googleapis"]
 
 [build]
   publish = "dist"
