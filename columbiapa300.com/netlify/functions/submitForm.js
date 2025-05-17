@@ -1,7 +1,6 @@
-// netlify/functions/submitForm.js
-const fetch = require('node-fetch'); // ✅ Use this
+const fetch = require('node-fetch');
 
-export async function handler(event) {
+exports.handler = async function(event) {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -10,6 +9,15 @@ export async function handler(event) {
   }
 
   const { VITE_AIRTABLE_TOKEN, VITE_AIRTABLE_BASE_ID, VITE_AIRTABLE_TABLE_NAME } = process.env;
+   // ✅ Failsafe for missing env vars
+  if (!VITE_AIRTABLE_TOKEN || !VITE_AIRTABLE_BASE_ID || !VITE_AIRTABLE_TABLE_NAME) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: "Missing Airtable credentials in environment variables"
+      })
+    };
+  }
   const body = JSON.parse(event.body);
 
   try {
@@ -43,4 +51,4 @@ export async function handler(event) {
       body: JSON.stringify({ error: error.message })
     };
   }
-}
+};
