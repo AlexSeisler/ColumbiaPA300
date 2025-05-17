@@ -40,7 +40,17 @@ exports.handler = async function(event) {
     });
 
     const airtableData = await response.json();
+  console.log("AIRTABLE RESPONSE:", airtableData);
 
+  if (!response.ok) {
+    return {
+      statusCode: response.status,
+      body: JSON.stringify({
+        error: airtableData,
+        message: "Airtable rejected the request"
+      })
+    };
+  }
     return {
   statusCode: 200,
   headers: {
