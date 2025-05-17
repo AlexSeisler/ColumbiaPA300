@@ -16,26 +16,24 @@ exports.handler = async (event) => {
     const authClient = await auth.getClient();
     const drive = google.drive({ version: 'v3', auth: authClient });
 
-    const res = await drive.files.create(
-      {
-        requestBody: {
-          name,
-          mimeType,
-          parents: [process.env.DRIVE_FOLDER_ID],
-        },
-        media: {
-          mimeType,
-          body: null, // only requesting session, not sending data
-        },
+    // Correct approach: DO NOT include media or body here
+    const res = await drive.files.create({
+      requestBody: {
+        name,
+        mimeType,
+        parents: [process.env.DRIVE_FOLDER_ID],
       },
-      {
-        // This generates resumable URL
-        headers: {
-          'X-Upload-Content-Type': mimeType,
-          'X-Upload-Content-Length': event.headers['content-length'] || '750000000',
-        },
+      media: {}, // Leave empty
+      supportsAllDrives: true,
+    }, {
+      // Tell Google to generate resumable session
+      params: {
+        uploadType: 'resumable'
+      },
+      headers: {
+        'X-Upload-Content-Type': mimeType
       }
-    );
+    });
 
     const uploadUrl = res.headers.location;
 
