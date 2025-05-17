@@ -55,7 +55,12 @@ const handleSubmit = async () => {
       setUploadingFileName(file.name);
       setUploadProgress(0);
 
-      // Step 1: Get resumable upload URL
+      console.log("📂 Selected file:", {
+        name: file.name,
+        type: file.type,
+        size: file.size
+      });
+
       const initRes = await fetch('/.netlify/functions/createResumableUpload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,32 +69,31 @@ const handleSubmit = async () => {
 
       const { uploadUrl } = await initRes.json();
       console.log("🔗 Upload URL received:", uploadUrl);
-      if (!uploadUrl) throw new Error("No upload URL returned");
-
-      // Step 2: Upload via fetch using Blob (stable method)
-      console.log("📦 Uploading file:", file.name, file.type, file.size);
 
       const res = await fetch(uploadUrl, {
         method: 'PUT',
         headers: {
-          'Content-Type': file.type,
-          'Content-Length': file.size.toString(), // Ensures Drive processes full stream
+          'Content-Type': file.type
+          // ❌ REMOVE Content-Length here
         },
-        body: file, // Raw File or Blob object
+        body: file
       });
+
+      console.log("📡 Upload response:", res.status, res.statusText);
 
       if (res.ok) {
         setUploadProgress(null);
         alert(`✅ ${file.name} uploaded successfully!`);
       } else {
-        const text = await res.text();
-        console.error("❌ Upload failed response:", text);
+        const errorText = await res.text();
+        console.error("❌ Upload failed response:", errorText);
         alert(`⚠️ ${file.name} upload failed. (${res.status})`);
-        setUploadProgress(null);
       }
+
     } catch (err) {
       console.error("❌ Upload error:", err);
       alert(`⚠️ ${file.name} upload failed.`);
+    } finally {
       setUploadProgress(null);
     }
   }
