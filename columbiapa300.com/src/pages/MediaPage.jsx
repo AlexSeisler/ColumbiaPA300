@@ -55,7 +55,7 @@ const handleSubmit = async () => {
       setUploadingFileName(file.name);
       setUploadProgress(0);
 
-      // Step 1: Get Resumable Upload URL
+      // Step 1: Get resumable upload URL
       const initRes = await fetch('/.netlify/functions/createResumableUpload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,34 +65,25 @@ const handleSubmit = async () => {
       const { uploadUrl } = await initRes.json();
       if (!uploadUrl) throw new Error("No upload URL returned");
 
-      // Step 2: Upload via XMLHttpRequest for progress
-      const xhr = new XMLHttpRequest();
-      xhr.open('PUT', uploadUrl, true);
-      xhr.setRequestHeader('Content-Type', file.type);
-      xhr.setRequestHeader('Content-Length', file.size); // ✅ Explicit file length
+      // Step 2: Upload via fetch using Blob (stable method)
+      const res = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': file.type,
+          'Content-Length': file.size.toString(), // Ensures Drive processes full stream
+        },
+        body: file, // Raw File or Blob object
+      });
 
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const percent = Math.round((e.loaded / e.total) * 100);
-          setUploadProgress(percent);
-        }
-      };
-
-      xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          setUploadProgress(null);
-          alert(`✅ ${file.name} uploaded successfully!`);
-        } else {
-          alert(`⚠️ ${file.name} failed to upload: ${xhr.statusText}`);
-        }
-      };
-
-      xhr.onerror = () => {
-        alert(`⚠️ ${file.name} upload failed (network error).`);
+      if (res.ok) {
         setUploadProgress(null);
-      };
-
-      xhr.send(file);
+        alert(`✅ ${file.name} uploaded successfully!`);
+      } else {
+        const text = await res.text();
+        console.error("❌ Upload failed response:", text);
+        alert(`⚠️ ${file.name} upload failed. (${res.status})`);
+        setUploadProgress(null);
+      }
     } catch (err) {
       console.error("❌ Upload error:", err);
       alert(`⚠️ ${file.name} upload failed.`);
@@ -100,6 +91,7 @@ const handleSubmit = async () => {
     }
   }
 };
+
 
 
 
