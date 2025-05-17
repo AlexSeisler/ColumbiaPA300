@@ -18,13 +18,13 @@ const HelpButton = () => {
     <>
       <div className="help-button-wrapper">
         <button
-          className="help-bubble-button"
-          aria-label="Need Help?"
-          onClick={openModal}
-        >
-          <span className="help-icon">❓</span>
-          <span className="help-text">💬 Need Help?</span>
-        </button>
+        className="help-bubble-button"
+        aria-label="Need Help?"
+        onClick={openModal}
+      >
+        <span className="help-icon">❓</span>
+        <span className="help-text">💬 Need Help?</span>
+      </button>
       </div>
 
       {isOpen && (

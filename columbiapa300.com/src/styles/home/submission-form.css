@@ -233,6 +233,112 @@ iframe {
   transform: none !important;
   animation: none !important;
 }
+.form-footer-cta {
+  margin-top: 2rem;
+  padding: 1.5rem 1rem 2rem;
+  text-align: center;
+  border-top: 1px dashed #ddd;
+  animation: fadeInUp 1s ease;
+}
+
+.creative-sparkle-line {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  color: #2c234d;
+  display: inline-block;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.highlighted-phrase {
+  font-weight: 700;
+  color: #ff9800;
+  background: linear-gradient(to right, #ffa726, #ffeb3b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 2s infinite alternate;
+}
+.form-badge-wrapper {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+.form-badge {
+  position: relative;
+  z-index: 2;
+  width: 70px;
+  height: 70px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #ffda6b, 0 0 18px 8px rgba(255, 214, 98, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  animation: badge-pulse 4s ease-in-out infinite;
+}
+
+.form-badge::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: -60px;
+  width: 190px;
+  height: 100px;
+  background: radial-gradient(ellipse at center, rgba(255, 235, 125, 0.25), transparent 70%);
+  z-index: -1;
+  filter: blur(12px);
+  transform: rotate(-2deg);
+}
+.form-tagline-banner {
+  background: linear-gradient(to right, #2c234d, #403068);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.9rem 1.2rem;
+  border-radius: 40px;
+  box-shadow: 0 0 14px rgba(64, 48, 104, 0.4);
+  margin: 1.5rem auto;
+  max-width: 720px;
+  text-align: center;
+  animation: banner-glow 3.5s infinite ease-in-out;
+}
+
+@keyframes banner-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(75, 60, 140, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(128, 100, 255, 0.45);
+  }
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px #ffda6b, 0 0 18px 8px rgba(255, 214, 98, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px #ffe49d, 0 0 32px 12px rgba(255, 221, 110, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+.submission-privacy-tag {
+  font-size: 0.95rem;
+  color: #666;
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@keyframes glowText {
+  from { text-shadow: 0 0 4px rgba(255, 193, 7, 0.4); }
+  to   { text-shadow: 0 0 12px rgba(255, 193, 7, 0.6); }
+}
 
 /* Anti-scroll-flicker overlay (hidden on desktop) */
 .form-frame::before {
@@ -253,6 +359,73 @@ iframe {
   overflow-anchor: none;
   scroll-margin: 0;
   display: block;
+}
+.form-badge-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.25), transparent 70%);
+  animation: pulse 2.5s infinite ease;
+  z-index: 0;
+}
+
+.decorated-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: #2c234d;
+  text-shadow: 0 0 8px rgba(136, 117, 255, 0.15);
+}
+
+.scroll-left, .scroll-right {
+  font-size: 1.3rem;
+  transform: rotate(-12deg);
+  opacity: 0.8;
+}
+
+.badge-glow {
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.badge-glow:hover {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.paper-frame {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.shimmer-on-scroll {
+  background: linear-gradient(to right, #2c234d 0%, #3c2c6d 50%, #2c234d 100%);
+  background-size: 200% auto;
+  animation: shimmer 4s linear infinite;
+  color: #fff;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
 }
 
 /* ✅ Mobile enhancements */
