@@ -1,7 +1,8 @@
 const { google } = require('googleapis');
 const { Readable } = require('stream');
 
-const serviceKey = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON); // ✅ Use env var
+const serviceKey = require('./keys/google-service-account.json');
+
 
 exports.handler = async (event) => {
   try {
