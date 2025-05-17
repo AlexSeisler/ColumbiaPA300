@@ -62,17 +62,18 @@ const handleSubmit = async () => {
         },
         body: uint8Array,
       });
-
-      const result = await res.json();
-      if (result.success) {
-        alert(`✅ ${file.name} uploaded successfully!`);
-      } else {
-        alert(`⚠️ ${file.name} upload failed: ${result.error}`);
-      }
-    } catch (err) {
-      console.error("❌ Upload error:", err);
-      alert(`⚠️ ${file.name} upload failed.`);
+      if (res.ok) {
+      alert(`✅ ${file.name} uploaded successfully!`);
+    } else {
+      const text = await res.text();
+      console.error("❌ Upload failed response:", text);
+      alert(`⚠️ ${file.name} upload failed. (${res.status})`);
     }
+    } catch (error) {
+      
+    }
+
+      
   }
 };
 
