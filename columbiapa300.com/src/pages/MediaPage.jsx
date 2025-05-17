@@ -42,13 +42,25 @@ const UploadSection = () => {
     inputRef.current?.click();
   };
 
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
   for (const file of files) {
     try {
+      console.log('📦 Starting upload for:', file.name);
+
       const base64 = await new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = reject;
+        reader.onloadend = () => {
+          console.log('📄 FileReader result:', reader.result);
+          const parts = reader.result.split(',');
+          if (parts.length < 2) {
+            throw new Error('Invalid Base64 result format.');
+          }
+          resolve(parts[1]);
+        };
+        reader.onerror = (err) => {
+          console.error('❌ FileReader error:', err);
+          reject(err);
+        };
         reader.readAsDataURL(file);
       });
 
@@ -65,18 +77,17 @@ const UploadSection = () => {
       });
 
       const result = await res.json();
+      console.log('✅ Upload result:', result);
 
       alert(`✅ ${file.name} uploaded successfully!`);
-      
-      if (res.ok && result.success) {
-      } else {
-        console.error('Upload failed result:', result);
-      }
     } catch (err) {
-      console.error('Upload error:', err);
+      console.error('❌ Upload error:', err);
+      alert(`⚠️ Upload failed for ${file.name}`);
     }
   }
 };
+
+
 
 
 
