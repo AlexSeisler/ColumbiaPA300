@@ -1,6 +1,6 @@
 const { google } = require('googleapis');
 
-// Define headers once
+// Define CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -8,11 +8,12 @@ const corsHeaders = {
 };
 
 exports.handler = async (event) => {
+  // Handle CORS preflight request
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: 'CORS preflight success',
+      body: 'CORS preflight response',
     };
   }
 

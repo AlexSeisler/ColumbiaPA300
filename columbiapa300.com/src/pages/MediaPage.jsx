@@ -58,9 +58,9 @@ const handleSubmit = async () => {
       const res = await fetch('/.netlify/functions/uploadDirectToDrive', {
         method: 'POST',
         headers: {
-          'Content-Type': file.type
+          'Content-Type': file.type,
         },
-        body: uint8Array
+        body: uint8Array,
       });
 
       const result = await res.json();
@@ -69,13 +69,13 @@ const handleSubmit = async () => {
       } else {
         alert(`⚠️ ${file.name} upload failed: ${result.error}`);
       }
-
     } catch (err) {
       console.error("❌ Upload error:", err);
       alert(`⚠️ ${file.name} upload failed.`);
     }
   }
 };
+
 
 
 
