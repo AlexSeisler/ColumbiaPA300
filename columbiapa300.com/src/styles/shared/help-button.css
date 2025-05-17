@@ -189,21 +189,3 @@
 }
 
 /* Mobile */
-@media (max-width: 600px) {
-  .help-bubble-button {
-    bottom: 1.25rem;
-    right: 1.25rem;
-    width: 44px;
-    padding: 0.5rem;
-    font-size: 1.25rem;
-  }
-
-  .help-icon {
-    font-size: 1.2rem;
-  }
-
-  .help-modal {
-    width: 90%;
-    font-size: 0.95rem;
-  }
-}
