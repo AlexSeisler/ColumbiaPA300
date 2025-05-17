@@ -5,6 +5,8 @@ const UploadSection = () => {
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
   const inputRef = useRef(null);
+  const [uploadProgress, setUploadProgress] = useState(null); // percentage (0–100)
+  const [uploadingFileName, setUploadingFileName] = useState('');
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -50,51 +52,50 @@ const handleSubmit = async () => {
 
   for (const file of files) {
     try {
-      console.log("📦 Starting upload for:", file.name);
+      setUploadingFileName(file.name);
+      setUploadProgress(0);
 
-      const base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-
-      console.log("📄 FileReader result:", base64.slice(0, 100) + "...");
-
-      const res = await fetch('/.netlify/functions/uploadToDrive', {
+      // Step 1: Get Resumable Upload URL
+      const initRes = await fetch('/.netlify/functions/createResumableUpload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: file.name,
-          mimeType: file.type,
-          base64,
-        }),
+        body: JSON.stringify({ name: file.name, mimeType: file.type }),
       });
 
-      console.log("📡 Raw response:", res);
+      const { uploadUrl } = await initRes.json();
+      if (!uploadUrl) throw new Error("No upload URL returned");
 
-      const resultText = await res.text();
-      let result;
+      // Step 2: Upload via XMLHttpRequest for progress
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', uploadUrl, true);
+      xhr.setRequestHeader('Content-Type', file.type);
 
-      try {
-        result = JSON.parse(resultText);
-      } catch (err) {
-        console.error("❌ Failed to parse JSON:", resultText);
-        alert(`⚠️ ${file.name} upload failed: Invalid server response.`);
-        continue;
-      }
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          setUploadProgress(percent);
+        }
+      };
 
-      console.log("📦 Parsed result:", result);
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          setUploadProgress(null);
+          alert(`✅ ${file.name} uploaded successfully!`);
+        } else {
+          alert(`⚠️ ${file.name} failed to upload: ${xhr.statusText}`);
+        }
+      };
 
-      if (res.ok && result.success) {
-        alert(`✅ ${file.name} uploaded successfully!`);
-      } else {
-        alert(`⚠️ ${file.name} upload failed: ${result.error || "Unknown error."}`);
-      }
+      xhr.onerror = () => {
+        alert(`⚠️ ${file.name} upload failed (network error).`);
+        setUploadProgress(null);
+      };
 
+      xhr.send(file);
     } catch (err) {
-      console.error('❌ Upload error:', err?.message || err || 'Unknown error');
+      console.error("❌ Upload error:", err);
       alert(`⚠️ ${file.name} upload failed.`);
+      setUploadProgress(null);
     }
   }
 };
@@ -104,63 +105,80 @@ const handleSubmit = async () => {
 
 
 
+
+
   return (
-    <div className="upload-wrapper">
-      <div className="upload-header">
-        <h2>📥 Submit Your Columbia Moment</h2>
-        <p>Upload a photo or short video that captures the spirit of Columbia — past or present.</p>
-        <ul className="upload-instructions">
-          <li>Supported: JPG, PNG, MP4, MOV</li>
-          <li>Deadline: <strong>June 1, 2025</strong></li>
-          <li>Files are reviewed before being published to the community wall.</li>
-        </ul>
+  <div className="upload-wrapper">
+    <div className="upload-header">
+      <h2>📥 Submit Your Columbia Moment</h2>
+      <p>Upload a photo or short video that captures the spirit of Columbia — past or present.</p>
+      <ul className="upload-instructions">
+        <li>Supported: JPG, PNG, MP4, MOV</li>
+        <li>Deadline: <strong>June 1, 2025</strong></li>
+        <li>Files are reviewed before being published to the community wall.</li>
+      </ul>
+    </div>
+
+    <form onSubmit={handleSubmit}>
+      <div
+        className={`upload-container ${dragActive ? 'drag-active' : ''}`}
+        onDragEnter={handleDrag}
+        onDragOver={handleDrag}
+        onDragLeave={handleDrag}
+        onDrop={handleDrop}
+      >
+        <input
+          type="file"
+          multiple
+          ref={inputRef}
+          onChange={handleFileChange}
+          className="file-input-hidden"
+        />
+        <div className="upload-inner" onClick={handleBrowseClick}>
+          <span className="upload-emoji" role="img" aria-label="upload">📤</span>
+          <p>Click or drag files here to upload</p>
+          <button type="button" className="upload-btn">Choose Files</button>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div
-          className={`upload-container ${dragActive ? 'drag-active' : ''}`}
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-        >
-          <input
-            type="file"
-            multiple
-            ref={inputRef}
-            onChange={handleFileChange}
-            className="file-input-hidden"
-          />
-          <div className="upload-inner" onClick={handleBrowseClick}>
-            <span className="upload-emoji" role="img" aria-label="upload">📤</span>
-            <p>Click or drag files here to upload</p>
-            <button type="button" className="upload-btn">Choose Files</button>
+      {files.length > 0 && (
+        <>
+          <button type="submit" className="submit-btn">
+            ✅ Submit Files
+          </button>
+
+          <div className="file-preview">
+            <h4>Uploaded Files</h4>
+            <ul>
+              {files.map((file, index) => (
+                <li key={index}>{file.name}</li>
+              ))}
+            </ul>
           </div>
-        </div>
 
-        {files.length > 0 && (
-          <>
-            <button type="submit" className="submit-btn">
-              ✅ Submit Files
-            </button>
-            <div className="file-preview">
-              <h4>Uploaded Files</h4>
-              <ul>
-                {files.map((file, index) => (
-                  <li key={index}>{file.name}</li>
-                ))}
-              </ul>
+          {/* 👇 Fancy Upload Progress Bar */}
+          {uploadProgress !== null && (
+            <div className="progress-bar-container">
+              <p>🚀 Uploading <strong>{uploadingFileName}</strong>: {uploadProgress}%</p>
+              <div className="progress-bar-outer">
+                <div
+                  className="progress-bar-inner"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
             </div>
-          </>
-        )}
-      </form>
+          )}
+        </>
+      )}
+    </form>
 
-      <p className="media-fallback">
-        📬 Trouble uploading? Email:{' '}
-        <a href="mailto:edwinortiz@redrosedigitalmedia.com">edwinortiz@redrosedigitalmedia.com</a>
-      </p>
-    </div>
-  );
+    <p className="media-fallback">
+      📬 Trouble uploading? Email:{' '}
+      <a href="mailto:edwinortiz@redrosedigitalmedia.com">edwinortiz@redrosedigitalmedia.com</a>
+    </p>
+  </div>
+);
+
 };
 
 export default UploadSection;
