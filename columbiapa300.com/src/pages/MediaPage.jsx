@@ -44,44 +44,41 @@ const UploadSection = () => {
 
   const handleSubmit = async () => {
   for (const file of files) {
-    const reader = new FileReader();
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-    reader.onloadend = async () => {
-      const base64 = reader.result.split(',')[1];
+      const res = await fetch('/.netlify/functions/uploadToDrive', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: file.name,
+          mimeType: file.type,
+          base64,
+        }),
+      });
 
-      try {
-        const res = await fetch('/.netlify/functions/uploadToDrive', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: file.name,
-            mimeType: file.type,
-            base64,
-          }),
-        });
+      const result = await res.json();
 
-        if (!res.ok) {
-          throw new Error(`Server responded with status ${res.status}`);
-        }
-
-        const result = await res.json();
-
-        if (result.success) {
-          alert(`✅ ${file.name} uploaded!`);
-        } else {
-          alert(`⚠️ Upload failed for ${file.name}`);
-        }
-      } catch (err) {
-        console.error('Upload error:', err);
-        alert(`❌ Upload error for ${file.name}: ${err.message}`);
+      if (res.ok && result.success) {
+        alert(`✅ ${file.name} uploaded successfully!`);
+      } else {
+        console.error('Upload failed result:', result);
+        alert(`⚠️ Upload failed for ${file.name}`);
       }
-    };
-
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert(`❌ Upload error for ${file.name}: ${err.message}`);
+    }
   }
 };
+
 
 
   return (
