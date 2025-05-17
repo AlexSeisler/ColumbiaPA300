@@ -1,6 +1,7 @@
 [functions]
   directory = "netlify/functions"
   external_node_modules = ["node-fetch", "googleapis"]
+  included_files = ["netlify/functions/keys/google-service-account.json"]
 
 [build]
   publish = "dist"
