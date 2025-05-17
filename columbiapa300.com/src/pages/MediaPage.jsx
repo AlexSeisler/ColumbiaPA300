@@ -17,24 +17,30 @@ const UploadSection = () => {
     }
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+const handleDrop = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  setDragActive(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const droppedFiles = Array.from(e.dataTransfer.files);
-      setFiles(prev => [...prev, ...droppedFiles]);
-      e.dataTransfer.clearData();
-    }
-  };
+  if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    setFiles(prev => [...prev, ...droppedFiles]);
+    e.dataTransfer.clearData();
 
-  const handleFileChange = (e) => {
-    if (e.target.files) {
-      const selectedFiles = Array.from(e.target.files);
-      setFiles(prev => [...prev, ...selectedFiles]);
+    if (inputRef.current) {
+      inputRef.current.value = null; // ✅ Reset drag input too
     }
-  };
+  }
+};
+const handleFileChange = (e) => {
+  if (e.target.files && e.target.files.length > 0) {
+    const selectedFiles = Array.from(e.target.files);
+    setFiles(prev => [...prev, ...selectedFiles]);
+
+    // ✅ Reset the input so selecting the same file again works
+    e.target.value = null;
+  }
+};
 
   const handleBrowseClick = () => {
     inputRef.current?.click();
@@ -65,7 +71,6 @@ const UploadSection = () => {
         onDragOver={handleDrag}
         onDragLeave={handleDrag}
         onDrop={handleDrop}
-        onClick={handleBrowseClick}
       >
         <input
           type="file"
