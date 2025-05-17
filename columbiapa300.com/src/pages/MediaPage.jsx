@@ -43,32 +43,27 @@ const UploadSection = () => {
   };
 
 const handleSubmit = async () => {
+  if (!files.length) {
+    alert("⚠️ Please select a file before submitting.");
+    return;
+  }
+
   for (const file of files) {
     try {
-      console.log('📦 Starting upload for:', file.name);
+      console.log("📦 Starting upload for:", file.name);
 
       const base64 = await new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = () => {
-          console.log('📄 FileReader result:', reader.result);
-          const parts = reader.result.split(',');
-          if (parts.length < 2) {
-            throw new Error('Invalid Base64 result format.');
-          }
-          resolve(parts[1]);
-        };
-        reader.onerror = (err) => {
-          console.error('❌ FileReader error:', err);
-          reject(err);
-        };
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
         reader.readAsDataURL(file);
       });
 
+      console.log("📄 FileReader result:", base64.slice(0, 100) + "...");
+
       const res = await fetch('/.netlify/functions/uploadToDrive', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: file.name,
           mimeType: file.type,
@@ -76,16 +71,34 @@ const handleSubmit = async () => {
         }),
       });
 
-      const result = await res.json();
-      console.log('✅ Upload result:', result);
+      console.log("📡 Raw response:", res);
 
-      alert(`✅ ${file.name} uploaded successfully!`);
+      const resultText = await res.text();
+      let result;
+
+      try {
+        result = JSON.parse(resultText);
+      } catch (err) {
+        console.error("❌ Failed to parse JSON:", resultText);
+        alert(`⚠️ ${file.name} upload failed: Invalid server response.`);
+        continue;
+      }
+
+      console.log("📦 Parsed result:", result);
+
+      if (res.ok && result.success) {
+        alert(`✅ ${file.name} uploaded successfully!`);
+      } else {
+        alert(`⚠️ ${file.name} upload failed: ${result.error || "Unknown error."}`);
+      }
+
     } catch (err) {
-      console.error('❌ Upload error:', err);
-      alert(`⚠️ Upload failed for ${file.name}`);
+      console.error('❌ Upload error:', err?.message || err || 'Unknown error');
+      alert(`⚠️ ${file.name} upload failed.`);
     }
   }
 };
+
 
 
 
