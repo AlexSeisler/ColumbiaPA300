@@ -304,7 +304,205 @@ iframe {
   text-align: center;
   animation: banner-glow 3.5s infinite ease-in-out;
 }
+.form-frame.paper-frame {
+  background: #fffefb;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  margin-top: 2rem;
+  max-width: 720px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  border-top: 5px solid #fdd835;
+}
 
+/* === Labels & Inputs === */
+.form-frame label {
+  font-weight: 600;
+  color: #2c234d;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-frame input[type="text"],
+.form-frame input[type="email"],
+.form-frame input[type="file"] {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 1.5px solid #ccc;
+  background: #fff;
+  font-size: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-frame input[type="text"]:focus,
+.form-frame input[type="email"]:focus,
+.form-frame input[type="file"]:focus {
+  outline: none;
+  border-color: #886df1;
+  box-shadow: 0 0 0 2px rgba(136, 109, 241, 0.15);
+}
+
+/* === Radio Buttons === */
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #2c234d;
+}
+
+/* === File Upload Field === */
+input[type="file"] {
+  font-size: 0.95rem;
+  background-color: #fff;
+  border: 1.5px solid #ccc;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+}
+
+/* === Checkbox Agreement === */
+.checkbox-agreement {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.checkbox-agreement input[type="checkbox"] {
+  margin-top: 0.3rem;
+  transform: scale(1.1);
+}
+
+/* === Submit Button === */
+.submit-button {
+  background: linear-gradient(145deg, #2c234d, #3a2e70);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submit-button:hover {
+  background-color: #1e183c;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.submit-button:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* === Responsive Design === */
+@media (max-width: 640px) {
+  .form-frame.paper-frame {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .submit-button {
+    align-self: stretch;
+    text-align: center;
+    justify-content: center;
+  }
+}
+.radio-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.25rem;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.radio-group label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #2c234d;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.radio-group input[type="radio"] {
+  transform: scale(1.25);
+  accent-color: #886df1;
+  cursor: pointer;
+}
+.upload-dropzone {
+  position: relative;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  background-color: #fafafa;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #2c234d;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-dropzone:hover {
+  background-color: #f5f1ff;
+  border-color: #886df1;
+}
+
+.upload-dropzone input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.upload-text {
+  font-weight: 600;
+  z-index: 1;
+  position: relative;
+  pointer-events: none;
+  color: #2c234d;
+}
+.upload-dropzone.drag-active {
+  background-color: #f9f5ff;
+  border-color: #886df1;
+  box-shadow: 0 0 0 4px rgba(136, 109, 241, 0.1);
+}
 @keyframes banner-glow {
   0%, 100% {
     box-shadow: 0 0 10px rgba(75, 60, 140, 0.3);
@@ -364,7 +562,13 @@ iframe {
   position: relative;
   margin-bottom: 1rem;
 }
-
+@media (max-width: 640px) {
+  .radio-group {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.75rem 1rem;
+  }
+}
 .pulse-ring::before {
   content: "";
   position: absolute;
