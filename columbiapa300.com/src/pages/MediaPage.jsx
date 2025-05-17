@@ -63,9 +63,12 @@ const handleSubmit = async () => {
       });
 
       const { uploadUrl } = await initRes.json();
+      console.log("🔗 Upload URL received:", uploadUrl);
       if (!uploadUrl) throw new Error("No upload URL returned");
 
       // Step 2: Upload via fetch using Blob (stable method)
+      console.log("📦 Uploading file:", file.name, file.type, file.size);
+
       const res = await fetch(uploadUrl, {
         method: 'PUT',
         headers: {
