@@ -42,45 +42,41 @@ const UploadSection = () => {
     inputRef.current?.click();
   };
 
-const handleSubmit = async () => {
-  if (files.length === 0) {
-    alert("❗ Please select at least one file before submitting.");
-    return;
-  }
+  const handleSubmit = async () => {
+  for (const file of files) {
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-  const maxSize = 50 * 1024 * 1024; // 50MB
-  const oversized = files.find(file => file.size > maxSize);
-  if (oversized) {
-    alert(`❗ File too large: ${oversized.name}. Max size is 50MB.`);
-    return;
-  }
-
-  files.forEach((file) => {
-    const reader = new FileReader();
-
-    reader.onloadend = async () => {
-      const base64 = reader.result.split(',')[1];
-
-      // Netlify uses `/api/` for live endpoint rewrites
-      await fetch('/api/uploadToDrive', {
+      const res = await fetch('/.netlify/functions/uploadToDrive', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           name: file.name,
           mimeType: file.type,
           base64,
         }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
-    };
 
-    reader.readAsDataURL(file);
-  });
+      const result = await res.json();
 
-  alert("✅ Files submitted! Upload may take a few seconds to appear in Drive.");
+      alert(`✅ ${file.name} uploaded successfully!`);
+      
+      if (res.ok && result.success) {
+      } else {
+        console.error('Upload failed result:', result);
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+    }
+  }
 };
-
 
 
 
