@@ -1,0 +1,7 @@
+[functions]
+  directory = "netlify/functions"
+  external_node_modules = ["node-fetch"]
+
+[build]
+  publish = "dist"
+  command = "npm run build"

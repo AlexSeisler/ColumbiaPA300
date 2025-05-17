@@ -1,5 +1,5 @@
 // netlify/functions/submitForm.js
-import fetch from 'node-fetch';
+const fetch = require('node-fetch'); // ✅ Use this
 
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
