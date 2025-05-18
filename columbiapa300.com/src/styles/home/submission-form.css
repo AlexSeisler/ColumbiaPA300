@@ -394,30 +394,38 @@ input[type="file"] {
 
 /* === Submit Button === */
 .submit-button {
-  background: linear-gradient(145deg, #2c234d, #3a2e70);
-  color: #fff;
+  background: linear-gradient(to right, #3a2b8a, #5a3aff);
+  color: white;
   font-weight: 600;
-  font-size: 1rem;
-  padding: 0.85rem 1.5rem;
+  font-size: 1.1rem;
+  padding: 0.9rem 1.5rem;
   border: none;
   border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(58, 42, 138, 0.3);
+  transition: all 0.25s ease;
+  cursor: pointer;
 }
 
 .submit-button:hover {
-  background-color: #1e183c;
+  background: linear-gradient(to right, #5a3aff, #7a5bff);
+  box-shadow: 0 6px 14px rgba(58, 42, 138, 0.4);
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .submit-button:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(58, 42, 138, 0.25);
+}
+
+.submit-button.uploading {
+  background: #b3b3b3;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 
@@ -757,6 +765,85 @@ input[type="file"] {
   max-height: 2000px; /* enough to reveal entire form */
   opacity: 1;
   pointer-events: auto;
+}
+.thank-you-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.thank-you-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.thank-you-modal h2 {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+.progress-bar-container {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.progress-bar-outer {
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 12px;
+  margin: 0.5rem auto;
+  width: 80%;
+}
+.submit-button.uploading {
+  background: #aaa !important;
+  cursor: not-allowed;
+}
+
+.progress-bar-inner {
+  background: linear-gradient(to right, #4a2fbd, #6d4aff);
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease-in-out;
+}
+
+.close-modal-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #4a2fbd;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  background: #3a23a4;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* === CTA Button Styling === */

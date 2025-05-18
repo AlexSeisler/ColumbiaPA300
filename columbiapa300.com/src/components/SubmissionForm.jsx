@@ -3,6 +3,12 @@ import '../styles/home/submission-form.css';
 
 const SubmissionForm = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [showThankYouModal, setShowThankYouModal] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(null);
+  const [uploadingFileName, setUploadingFileName] = useState('');
+
+
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -51,43 +57,109 @@ const SubmissionForm = () => {
 
   const handleSubmit = async (e) => {
   e.preventDefault();
+  let fileId = null;
 
-  const fileName = formData.file?.name || '';
+  if (formData.file) {
+    try {
+      setUploadingFileName(formData.file.name);
+      setUploadProgress(0);
 
+      const arrayBuffer = await formData.file.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/.netlify/functions/uploadDirectToDrive');
+      xhr.setRequestHeader('Content-Type', formData.file.type);
+      xhr.setRequestHeader('x-file-name', formData.file.name);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          setUploadProgress(percent);
+        }
+      };
+
+      xhr.onload = async () => {
+        try {
+          const json = JSON.parse(xhr.responseText);
+          if (xhr.status === 200 && json.success && json.fileId) {
+            fileId = json.fileId;
+            await submitToAirtable(fileId);
+          } else {
+            setSubmissionStatus({
+              type: 'error',
+              message: '⚠️ There was a problem uploading your file.',
+            });
+          }
+        } catch (err) {
+          setSubmissionStatus({
+            type: 'error',
+            message: '⚠️ File upload response could not be parsed.',
+          });
+        }
+      };
+
+      xhr.onerror = () => {
+        setSubmissionStatus({
+          type: 'error',
+          message: '⚠️ File upload failed due to a network error.',
+        });
+      };
+
+      xhr.send(uint8Array);
+    } catch (err) {
+      setSubmissionStatus({
+        type: 'error',
+        message: '⚠️ Upload failed. Try again or email admin@columbiapa300.com.',
+      });
+    }
+  } else {
+    await submitToAirtable(null); // No file uploaded
+  }
+};
+
+const submitToAirtable = async (fileId) => {
   const payload = {
     email: formData.email,
     name: formData.name,
     school: formData.school,
     grade: formData.grade,
     agreement: formData.agreement,
-    fileName
+    fileId,
   };
 
   const res = await fetch('/.netlify/functions/submitForm', {
     method: 'POST',
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
   });
 
   const result = await res.json();
-  if (result.success) {
-    alert('✅ Submission successful!');
 
-    // Clear form
+  if (result.success) {
+    setShowThankYouModal(true); // ✅ Trigger thank-you
     setFormData({
       email: '',
       name: '',
       school: '',
       grade: '',
       file: null,
-      agreement: false
+      agreement: false,
     });
-
+    setUploadProgress(null);
+    setUploadingFileName('');
     document.querySelector('input[type="file"]').value = null;
   } else {
-    alert('⚠️ There was an error submitting the form.');
-    console.error(result.error);
+    setSubmissionStatus({
+      type: 'error',
+      message: '⚠️ Something went wrong submitting your form. Please try again or email admin@columbiapa300.com.',
+    });
   }
 };
+
+
+
+
 
   return (
   <section className="submission-form" id="contest">
@@ -208,11 +280,26 @@ const SubmissionForm = () => {
             I confirm that this design is my original work and give Columbia Borough permission to use it for public display.
           </label>
 
-          <button type="submit" className="submit-button pulse-highlight">
-            📬 Submit Design
-          </button>
+          <button
+          type="submit"
+          className={`submit-button pulse-highlight ${uploadProgress !== null ? 'uploading' : ''}`}
+          disabled={uploadProgress !== null}
+        >
+          {uploadProgress !== null ? '⏳ Uploading...' : '📬 Submit Design'}
+        </button>
         </form>
       </div>
+        {uploadProgress !== null && (
+        <div className="progress-bar-container">
+          <p>🚀 Uploading <strong>{uploadingFileName}</strong>: {uploadProgress}%</p>
+          <div className="progress-bar-outer">
+            <div
+              className="progress-bar-inner"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+        </div>
+        )}
 
       {/* Footer CTA */}
       <div className="form-footer-cta">
@@ -224,7 +311,21 @@ const SubmissionForm = () => {
         </div>
       </div>
     </div>
+    {showThankYouModal && (
+  <div className="thank-you-modal-overlay">
+    <div className="thank-you-modal">
+      <h2>🎉 Thank You for Submitting!</h2>
+      <p>Your logo has been successfully uploaded and is being reviewed by the Columbia Borough 300 team.</p>
+      <p>We’re proud of your creativity and can’t wait to showcase your work!</p>
+      <button onClick={() => setShowThankYouModal(false)} className="close-modal-btn">
+        ✨ Close
+      </button>
+    </div>
+  </div>
+)}
+
   </section>
+  
 );
 
 };

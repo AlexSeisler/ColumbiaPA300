@@ -9,16 +9,38 @@ exports.handler = async function(event) {
   }
 
   const { VITE_AIRTABLE_TOKEN, VITE_AIRTABLE_BASE_ID, VITE_AIRTABLE_TABLE_NAME } = process.env;
-   // ✅ Failsafe for missing env vars
+
   if (!VITE_AIRTABLE_TOKEN || !VITE_AIRTABLE_BASE_ID || !VITE_AIRTABLE_TABLE_NAME) {
+    console.error("❌ Missing Airtable credentials in environment variables");
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: "Missing Airtable credentials in environment variables"
-      })
+      body: JSON.stringify({ error: "Missing Airtable credentials in environment variables" })
     };
   }
+
   const body = JSON.parse(event.body);
+
+  console.log("📨 Received form data:", body);
+  console.log("📁 File ID (from uploadDirectToDrive):", body.fileId);
+
+  const fileUrl = body.fileId
+    ? `https://drive.google.com/uc?export=download&id=${body.fileId}`
+    : null;
+
+  console.log("🔗 Constructed Drive file URL:", fileUrl);
+
+  const airtablePayload = {
+    fields: {
+      Email: body.email,
+      "Full Name": body.name,
+      School: body.school,
+      Grade: body.grade,
+      Agreement: body.agreement ? true : false,
+      "File Upload": fileUrl ? [{ url: fileUrl }] : []
+    }
+  };
+
+  console.log("📤 Sending Airtable payload:", airtablePayload);
 
   try {
     const response = await fetch(`https://api.airtable.com/v0/${VITE_AIRTABLE_BASE_ID}/${VITE_AIRTABLE_TABLE_NAME}`, {
@@ -27,39 +49,33 @@ exports.handler = async function(event) {
         Authorization: `Bearer ${VITE_AIRTABLE_TOKEN}`,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        fields: {
-        Email: body.email,
-        "Full Name": body.name,
-        School: body.school,
-        Grade: body.grade,
-        Agreement: body.agreement ? true : false,
-        "File Upload": body.fileName || "Not uploaded"
-      }
-      })
+      body: JSON.stringify(airtablePayload)
     });
 
     const airtableData = await response.json();
-  console.log("AIRTABLE RESPONSE:", airtableData);
+    console.log("✅ AIRTABLE RESPONSE:", airtableData);
 
-  if (!response.ok) {
+    if (!response.ok) {
+      console.error("❌ Airtable rejected the request:", airtableData);
+      return {
+        statusCode: response.status,
+        body: JSON.stringify({
+          error: airtableData,
+          message: "Airtable rejected the request"
+        })
+      };
+    }
+
     return {
-      statusCode: response.status,
-      body: JSON.stringify({
-        error: airtableData,
-        message: "Airtable rejected the request"
-      })
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type"
+      },
+      body: JSON.stringify({ success: true, record: airtableData })
     };
-  }
-    return {
-  statusCode: 200,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type"
-  },
-  body: JSON.stringify({ success: true, record: airtableData })
-};
   } catch (error) {
+    console.error("❌ Submission failed:", error.message);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message })
