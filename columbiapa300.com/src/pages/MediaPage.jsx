@@ -35,25 +35,22 @@ const UploadSection = () => {
     }
   };
 
-  const MAX_SIZE_MB = 50;
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'video/mp4', 'video/quicktime'];
+  const MAX_SIZE_MB = 100;
+  const ALLOWED_DISPLAY_TYPES = ['image/jpeg', 'image/png', 'video/mp4', 'video/quicktime'];
 
-const handleFileChange = (e) => {
-  const selectedFiles = Array.from(e.target.files);
-  const validFiles = selectedFiles.filter(file => {
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      alert(`❌ Unsupported file type: ${file.name}`);
-      return false;
-    }
-    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-      alert(`❌ ${file.name} is too large (max ${MAX_SIZE_MB}MB).`);
-      return false;
-    }
-    return true;
-  });
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
 
-  setFiles(prev => [...prev, ...validFiles]);
-};
+    const validFiles = selectedFiles.filter(file => {
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        alert(`❌ ${file.name} is too large. Max file size is ${MAX_SIZE_MB}MB.`);
+        return false;
+      }
+      return true; // ✅ we accept all types, only limit size
+    });
+
+    setFiles(prev => [...prev, ...validFiles]);
+  };
 
 
   const handleBrowseClick = () => {
