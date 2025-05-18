@@ -35,7 +35,7 @@ const UploadSection = () => {
     }
   };
 
-  const MAX_SIZE_MB = 100;
+  const MAX_SIZE_MB = 500;
   const ALLOWED_DISPLAY_TYPES = ['image/jpeg', 'image/png', 'video/mp4', 'video/quicktime'];
 
   const handleFileChange = (e) => {
