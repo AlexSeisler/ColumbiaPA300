@@ -35,13 +35,26 @@ const UploadSection = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFiles = Array.from(e.target.files);
-      setFiles(prev => [...prev, ...selectedFiles]);
-      e.target.value = null; // Reset so same file can be reselected
+  const MAX_SIZE_MB = 50;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'video/mp4', 'video/quicktime'];
+
+const handleFileChange = (e) => {
+  const selectedFiles = Array.from(e.target.files);
+  const validFiles = selectedFiles.filter(file => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert(`❌ Unsupported file type: ${file.name}`);
+      return false;
     }
-  };
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      alert(`❌ ${file.name} is too large (max ${MAX_SIZE_MB}MB).`);
+      return false;
+    }
+    return true;
+  });
+
+  setFiles(prev => [...prev, ...validFiles]);
+};
+
 
   const handleBrowseClick = () => {
     inputRef.current?.click();
