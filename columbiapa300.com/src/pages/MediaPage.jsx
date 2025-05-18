@@ -5,8 +5,11 @@ const UploadSection = () => {
   const [dragActive, setDragActive] = useState(false);
   const [files, setFiles] = useState([]);
   const inputRef = useRef(null);
-  const [uploadProgress, setUploadProgress] = useState(null); // percentage (0–100)
+  const [uploadProgress, setUploadProgress] = useState(null); // 0–100
   const [uploadingFileName, setUploadingFileName] = useState('');
+  const [uploadComplete, setUploadComplete] = useState(false);
+  const [uploading, setUploading] = useState(false); // 🆕 disables submit
+
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -45,15 +48,22 @@ const UploadSection = () => {
   };
 
 const handleSubmit = async (e) => {
-  e.preventDefault(); // ✅ This stops the browser from reloading
+  e.preventDefault();
+  setUploadComplete(false);
+  setUploading(true); // ✅ Start locking submit
+  setUploadProgress(null);
 
   if (!files.length) {
     alert("⚠️ Please select a file before submitting.");
+    setUploading(false);
     return;
   }
 
   for (const file of files) {
     try {
+      setUploadingFileName(file.name);
+      setUploadProgress(0);
+
       const arrayBuffer = await file.arrayBuffer();
       const uint8Array = new Uint8Array(arrayBuffer);
 
@@ -62,12 +72,15 @@ const handleSubmit = async (e) => {
         headers: {
           'Content-Type': file.type,
           'Content-Length': uint8Array.byteLength,
+          'x-file-name': file.name, // ✅ use this on backend
         },
         body: uint8Array,
       });
 
       if (res.ok) {
-        alert(`✅ ${file.name} uploaded successfully!`);
+        const json = await res.json();
+        console.log("✅ Upload success:", json);
+        setUploadProgress(100);
       } else {
         const text = await res.text();
         console.error("❌ Upload failed response:", text);
@@ -78,16 +91,16 @@ const handleSubmit = async (e) => {
       alert(`⚠️ ${file.name} upload failed: ${error.message}`);
     }
   }
+
+  // ✅ Reset after loop
+  setUploading(false);
+  setUploadProgress(null);
+  setUploadingFileName('');
+  setUploadComplete(true);
+  setFiles([]);
+
+  if (inputRef.current) inputRef.current.value = null;
 };
-
-
-
-
-
-
-
-
-
 
 
 
@@ -105,57 +118,77 @@ const handleSubmit = async (e) => {
     </div>
 
     <form onSubmit={handleSubmit}>
-      <div
-        className={`upload-container ${dragActive ? 'drag-active' : ''}`}
-        onDragEnter={handleDrag}
-        onDragOver={handleDrag}
-        onDragLeave={handleDrag}
-        onDrop={handleDrop}
+  <div
+    className={`upload-container ${dragActive ? 'drag-active' : ''}`}
+    onDragEnter={handleDrag}
+    onDragOver={handleDrag}
+    onDragLeave={handleDrag}
+    onDrop={handleDrop}
+  >
+    <input
+      type="file"
+      multiple
+      ref={inputRef}
+      onChange={handleFileChange}
+      className="file-input-hidden"
+    />
+    <div className="upload-inner" onClick={handleBrowseClick}>
+      <span className="upload-emoji" role="img" aria-label="upload">📤</span>
+      <p>Click or drag files here to upload</p>
+      <button type="button" className="upload-btn">Choose Files</button>
+    </div>
+  </div>
+
+  {files.length > 0 && (
+    <>
+      {/* ✅ Finalized Single Submit Button */}
+      <button
+        type="submit"
+        className="submit-btn"
+        disabled={uploading || !files.length}
+        style={{
+          opacity: uploading || !files.length ? 0.6 : 1,
+          cursor: uploading || !files.length ? 'not-allowed' : 'pointer',
+        }}
       >
-        <input
-          type="file"
-          multiple
-          ref={inputRef}
-          onChange={handleFileChange}
-          className="file-input-hidden"
-        />
-        <div className="upload-inner" onClick={handleBrowseClick}>
-          <span className="upload-emoji" role="img" aria-label="upload">📤</span>
-          <p>Click or drag files here to upload</p>
-          <button type="button" className="upload-btn">Choose Files</button>
-        </div>
+        {uploading ? "⏳ Uploading..." : "✅ Submit Files"}
+      </button>
+
+      {/* ✅ File Preview List */}
+      <div className="file-preview">
+        <h4>Uploaded Files</h4>
+        <ul>
+          {files.map((file, index) => (
+            <li key={index}>{file.name}</li>
+          ))}
+        </ul>
       </div>
 
-      {files.length > 0 && (
-        <>
-          <button type="submit" className="submit-btn">
-            ✅ Submit Files
-          </button>
-
-          <div className="file-preview">
-            <h4>Uploaded Files</h4>
-            <ul>
-              {files.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
+      {/* ✅ Upload Progress Bar */}
+      {uploadProgress !== null && (
+        <div className="progress-bar-container">
+          <p>🚀 Uploading <strong>{uploadingFileName}</strong>: {uploadProgress}%</p>
+          <div className="progress-bar-outer">
+            <div
+              className="progress-bar-inner"
+              style={{ width: `${uploadProgress}%` }}
+            />
           </div>
-
-          {/* 👇 Fancy Upload Progress Bar */}
-          {uploadProgress !== null && (
-            <div className="progress-bar-container">
-              <p>🚀 Uploading <strong>{uploadingFileName}</strong>: {uploadProgress}%</p>
-              <div className="progress-bar-outer">
-                <div
-                  className="progress-bar-inner"
-                  style={{ width: `${uploadProgress}%` }}
-                />
-              </div>
-            </div>
-          )}
-        </>
+        </div>
       )}
-    </form>
+
+      {/* ✅ Post-Upload Success Message */}
+      {uploadComplete && files.length === 0 && (
+      <p className="upload-success-message">🎉 All files uploaded and cleared!</p>
+    )}
+
+    </>
+  )}
+</form>
+
+      {uploadComplete && (
+      <p className="upload-success-message">🎉 All files uploaded and cleared!</p>
+    )}
 
     <p className="media-fallback">
       📬 Trouble uploading? Email:{' '}

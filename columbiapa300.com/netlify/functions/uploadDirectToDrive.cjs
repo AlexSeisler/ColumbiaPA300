@@ -1,5 +1,3 @@
-
-
 const { google } = require('googleapis');
 const { Readable } = require('stream');
 
@@ -8,9 +6,11 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
+
 exports.config = {
-  bodyParser: false, // ✅ tells Netlify to send raw body
+  bodyParser: false, // ✅ Ensure Netlify passes raw body as base64
 };
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -24,10 +24,21 @@ exports.handler = async (event) => {
   console.log("Incoming headers:", event.headers);
   console.log("Incoming method:", event.httpMethod);
   console.log("Raw body length:", event.body?.length);
+  console.log("isBase64Encoded:", event.isBase64Encoded);
 
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'];
-    const fileBuffer = Buffer.from(event.body, 'base64');
+    if (!event.body) {
+      throw new Error("No body received");
+    }
+
+    const contentType =
+      event.headers['content-type'] || event.headers['Content-Type'] || 'application/octet-stream';
+
+    const buffer = event.isBase64Encoded
+      ? Buffer.from(event.body, 'base64')
+      : Buffer.from(event.body); // fallback in case Netlify passes raw
+
+    console.log("✅ Parsed buffer, length:", buffer.length);
 
     const creds = JSON.parse(
       Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_B64, 'base64').toString('utf8')
@@ -42,23 +53,25 @@ exports.handler = async (event) => {
 
     const uploadRes = await drive.files.create({
       requestBody: {
-        name: 'upload-' + Date.now(),
+        name: event.headers['x-file-name'] || ('upload-' + Date.now()),
         mimeType: contentType,
         parents: [process.env.DRIVE_FOLDER_ID],
       },
       media: {
         mimeType: contentType,
-        body: Readable.from(fileBuffer), // ✅ Fixed: must be a stream
+        body: Readable.from(buffer), // ✅ buffer → stream
       },
     });
+
+    console.log("✅ Upload success, file ID:", uploadRes.data.id);
 
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify({ success: true, fileId: uploadRes.data.id }),
+      body: JSON.stringify({ success: true}),
     };
   } catch (err) {
-    console.error('Upload error:', err);
+    console.error("❌ Upload error:", err);
     return {
       statusCode: 500,
       headers: corsHeaders,

@@ -13,3 +13,6 @@
   external_node_modules = ["googleapis"]
   node_bundler = "esbuild"
   format = "cjs"
+
+[dev]
+  envFiles = [".env"]
