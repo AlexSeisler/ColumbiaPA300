@@ -57,6 +57,7 @@ const UploadSection = () => {
     inputRef.current?.click();
   };
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
   setUploadComplete(false);
@@ -64,7 +65,7 @@ const handleSubmit = async (e) => {
   setUploadProgress(null);
 
   if (!files.length) {
-    alert("⚠️ Please select a file before submitting.");
+    console.warn("⚠️ No files selected for upload.");
     setUploading(false);
     return;
   }
@@ -75,8 +76,7 @@ const handleSubmit = async (e) => {
       setUploadProgress(0);
 
       if (file.size > 10 * 1024 * 1024) {
-        // 🔁 Resumable Upload for Large Files
-
+        // 🔁 Resumable Upload
         const initRes = await fetch('/.netlify/functions/createResumableUpload', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -89,52 +89,44 @@ const handleSubmit = async (e) => {
         const { uploadUrl } = await initRes.json();
 
         await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', uploadUrl);
-        xhr.setRequestHeader('Content-Type', file.type);
+          const xhr = new XMLHttpRequest();
+          xhr.open('PUT', uploadUrl);
+          xhr.setRequestHeader('Content-Type', file.type);
 
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) {
-            const percent = Math.round((e.loaded / e.total) * 100);
-            setUploadProgress(percent);
-          }
-        };
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+              const percent = Math.round((e.loaded / e.total) * 100);
+              setUploadProgress(percent);
+            }
+          };
 
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            console.log("✅ Resumable upload success");
-            resolve(); // ✅ Success, no alert
-          } else {
-            console.error("❌ Resumable upload failed:", xhr.status, xhr.responseText);
-            alert(`⚠️ ${file.name} upload failed. (${xhr.status})`);
-            reject(new Error(xhr.responseText));
-          }
-        };
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              console.log("✅ Resumable upload success");
+              resolve();
+            } else {
+              console.error("❌ Resumable upload failed:", xhr.status, xhr.responseText);
+              reject(new Error(`Resumable failed: ${xhr.status}`));
+            }
+          };
 
-        xhr.onerror = () => {
-        const isUploadComplete = xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300;
+          xhr.onerror = () => {
+            const isUploadComplete = xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300;
 
-        if (isUploadComplete || uploadProgress === 100) {
-          // 🚫 Do nothing — it likely succeeded
-          console.warn(`ℹ️ Suppressed error: ${file.name} upload completed anyway.`);
-          resolve(); // treat it as successful
-        } else {
-          // ✅ This was a real error
-          alert(`⚠️ ${file.name} upload failed due to network error.`);
-          reject(new Error("Network error"));
-        }
-      };
+            if (isUploadComplete || uploadProgress === 100) {
+              console.warn(`⚠️ Suppressed error: ${file.name} upload likely completed.`);
+              resolve();
+            } else {
+              console.error(`❌ Network error on ${file.name}`);
+              reject(new Error("Network error"));
+            }
+          };
 
-
-
-        xhr.send(file);
-      });
-
-
+          xhr.send(file);
+        });
 
       } else {
-        // 📦 Standard Upload for Small Files
-
+        // 📦 Direct Upload
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
 
@@ -154,24 +146,21 @@ const handleSubmit = async (e) => {
           setUploadProgress(100);
         } else {
           const text = await res.text();
-          console.error("❌ Direct upload failed:", text);
-          alert(`⚠️ ${file.name} upload failed. (${res.status})`);
+          console.error(`❌ ${file.name} direct upload failed:`, text);
         }
       }
 
     } catch (error) {
-      console.error("❌ Upload error:", error);
-      alert(`⚠️ ${file.name} upload failed: ${error.message}`);
+      console.error(`❌ ${file.name} upload failed:`, error.message);
     }
   }
 
-  // ✅ Cleanup UI
+  // 🔄 Reset
   setUploading(false);
   setUploadProgress(null);
   setUploadingFileName('');
   setUploadComplete(true);
   setFiles([]);
-
   if (inputRef.current) inputRef.current.value = null;
 };
 
