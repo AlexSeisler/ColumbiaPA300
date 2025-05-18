@@ -159,7 +159,7 @@ const handleSubmit = async (e) => {
 
     <p className="media-fallback">
       📬 Trouble uploading? Email:{' '}
-      <a href="mailto:edwinortiz@redrosedigitalmedia.com">edwinortiz@redrosedigitalmedia.com</a>
+      <a href="mailto:admin@columbiapa300.com">admin@columbiapa300.com</a>
     </p>
   </div>
 );

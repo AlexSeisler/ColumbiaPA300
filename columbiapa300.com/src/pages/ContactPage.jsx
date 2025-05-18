@@ -18,8 +18,8 @@ const ContactPage = () => {
           <div className="contact-card">
             <h2>✉️ Email Us</h2>
             <p>We respond within 24 hours.</p>
-            <a href="mailto:columbia300@schooldistrict.edu" className="contact-link">
-              columbia300@schooldistrict.edu
+            <a href="mailto:admin@columbiapa300.com" className="contact-link">
+              admin@columbiapa300.com
             </a>
           </div>
 

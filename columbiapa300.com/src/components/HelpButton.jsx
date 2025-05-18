@@ -33,10 +33,10 @@ const HelpButton = () => {
             <h2>Need Help?</h2>
             <p>If you're having trouble submitting content or using the site, contact us:</p>
             <a
-              href="mailto:edwinortiz@redrosedigitalmedia.com"
+              href="mailto:admin@columbiapa300.com"
               className="help-email"
             >
-              📩 edwinortiz@redrosedigitalmedia.com
+              📩 admin@columbiapa300.com
             </a>
             <button className="help-close" onClick={closeModal}>
               Close
