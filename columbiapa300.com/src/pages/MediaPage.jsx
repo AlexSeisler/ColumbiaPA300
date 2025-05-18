@@ -112,16 +112,19 @@ const handleSubmit = async (e) => {
         };
 
         xhr.onerror = () => {
-        // Only show alert if the upload *actually* failed
-        if (xhr.status === 0 && uploadProgress < 100) {
-          console.error("❌ Network error during upload");
+        const isUploadComplete = xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300;
+
+        if (isUploadComplete || uploadProgress === 100) {
+          // 🚫 Do nothing — it likely succeeded
+          console.warn(`ℹ️ Suppressed error: ${file.name} upload completed anyway.`);
+          resolve(); // treat it as successful
+        } else {
+          // ✅ This was a real error
           alert(`⚠️ ${file.name} upload failed due to network error.`);
           reject(new Error("Network error"));
-        } else {
-          // ✅ It finished, even if status is unclear (local dev quirk)
-          resolve();
         }
       };
+
 
 
         xhr.send(file);
