@@ -60,7 +60,7 @@ const UploadSection = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   setUploadComplete(false);
-  setUploading(true); // ✅ Start locking submit
+  setUploading(true);
   setUploadProgress(null);
 
   if (!files.length) {
@@ -74,35 +74,95 @@ const handleSubmit = async (e) => {
       setUploadingFileName(file.name);
       setUploadProgress(0);
 
-      const arrayBuffer = await file.arrayBuffer();
-      const uint8Array = new Uint8Array(arrayBuffer);
+      if (file.size > 10 * 1024 * 1024) {
+        // 🔁 Resumable Upload for Large Files
 
-      const res = await fetch('/.netlify/functions/uploadDirectToDrive', {
-        method: 'POST',
-        headers: {
-          'Content-Type': file.type,
-          'Content-Length': uint8Array.byteLength,
-          'x-file-name': file.name, // ✅ use this on backend
-        },
-        body: uint8Array,
+        const initRes = await fetch('/.netlify/functions/createResumableUpload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: file.name,
+            mimeType: file.type,
+          }),
+        });
+
+        const { uploadUrl } = await initRes.json();
+
+        await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', uploadUrl);
+        xhr.setRequestHeader('Content-Type', file.type);
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            setUploadProgress(percent);
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            console.log("✅ Resumable upload success");
+            resolve(); // ✅ Success, no alert
+          } else {
+            console.error("❌ Resumable upload failed:", xhr.status, xhr.responseText);
+            alert(`⚠️ ${file.name} upload failed. (${xhr.status})`);
+            reject(new Error(xhr.responseText));
+          }
+        };
+
+        xhr.onerror = () => {
+        // Only show alert if the upload *actually* failed
+        if (xhr.status === 0 && uploadProgress < 100) {
+          console.error("❌ Network error during upload");
+          alert(`⚠️ ${file.name} upload failed due to network error.`);
+          reject(new Error("Network error"));
+        } else {
+          // ✅ It finished, even if status is unclear (local dev quirk)
+          resolve();
+        }
+      };
+
+
+        xhr.send(file);
       });
 
-      if (res.ok) {
-        const json = await res.json();
-        console.log("✅ Upload success:", json);
-        setUploadProgress(100);
+
+
       } else {
-        const text = await res.text();
-        console.error("❌ Upload failed response:", text);
-        alert(`⚠️ ${file.name} upload failed. (${res.status})`);
+        // 📦 Standard Upload for Small Files
+
+        const arrayBuffer = await file.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
+
+        const res = await fetch('/.netlify/functions/uploadDirectToDrive', {
+          method: 'POST',
+          headers: {
+            'Content-Type': file.type,
+            'Content-Length': uint8Array.byteLength,
+            'x-file-name': file.name,
+          },
+          body: uint8Array,
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          console.log("✅ Direct upload success:", json);
+          setUploadProgress(100);
+        } else {
+          const text = await res.text();
+          console.error("❌ Direct upload failed:", text);
+          alert(`⚠️ ${file.name} upload failed. (${res.status})`);
+        }
       }
+
     } catch (error) {
       console.error("❌ Upload error:", error);
       alert(`⚠️ ${file.name} upload failed: ${error.message}`);
     }
   }
 
-  // ✅ Reset after loop
+  // ✅ Cleanup UI
   setUploading(false);
   setUploadProgress(null);
   setUploadingFileName('');
@@ -111,6 +171,7 @@ const handleSubmit = async (e) => {
 
   if (inputRef.current) inputRef.current.value = null;
 };
+
 
 
 
