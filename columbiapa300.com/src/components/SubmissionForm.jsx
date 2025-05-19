@@ -177,7 +177,7 @@ const submitToAirtable = async (fileId) => {
       <div className="civic-badge glow-hover badge-glow">🎖️ Community Choice</div>
 
       <p className="instructions">
-        All Columbia Borough students are invited to participate! Submit your logo to be featured in the 300th Anniversary Celebration.
+        All Columbia Borough students in grades 7-12th are invited to participate! Submit your logo to be featured in the 300th Anniversary Celebration.
       </p>
 
       <div className="form-tagline-banner pulse-highlight shimmer-on-scroll">
@@ -236,7 +236,7 @@ const submitToAirtable = async (fileId) => {
           <label>
             Grade Level *
             <div className="radio-group" name="grade">
-              {['6th grade', '7th grade', '8th grade', '9th grade', '10th grade', '11th grade', '12th grade'].map((grade) => (
+              {['7th grade', '8th grade', '9th grade', '10th grade', '11th grade', '12th grade'].map((grade) => (
                 <label key={grade}>
                   <input
                     type="radio"
