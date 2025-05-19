@@ -11,12 +11,13 @@ export default function DonationsPage() {
   };
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    amount: "",
-    recurring: false,
-    note: "",
-  });
+      name: "",
+      email: "",
+      amount: "",
+      recurring: false,
+      note: "",
+      purpose: "", // ✅ Add this
+    });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
