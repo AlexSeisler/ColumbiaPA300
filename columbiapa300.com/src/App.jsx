@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import VotePage from './pages/VotePage';
 import MediaPage from './pages/MediaPage';
 import ContactPage from './pages/ContactPage';
+import DonationsPage from './pages/DonationsPage'; // ✅ NEW import
 import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/vote" element={<VotePage />} />
           <Route path="/media" element={<MediaPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/donate" element={<DonationsPage />} /> 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

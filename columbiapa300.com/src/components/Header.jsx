@@ -27,6 +27,7 @@ const Header = () => {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/vote">Vote</Link></li>
             <li><Link to="/media">Media</Link></li>
+            <li><Link to="/donate" className="donate-link">Donate</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </nav>
@@ -38,6 +39,7 @@ const Header = () => {
           <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
           <li><Link to="/vote" onClick={toggleMenu}>Vote</Link></li>
           <li><Link to="/media" onClick={toggleMenu}>Media</Link></li>
+          <li><Link to="/donate" className="donate-link">Donate</Link></li>
           <li><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
         </ul>
       </nav>

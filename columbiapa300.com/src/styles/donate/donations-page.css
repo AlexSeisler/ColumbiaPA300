@@ -1,0 +1,285 @@
+/* === Page Wrapper === */
+.donations-page {
+  padding: 2rem 1rem;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+/* === Header Section === */
+.header-section h1 {
+  font-size: 2rem;
+  color: #2c234d;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.header-section p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #444;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* === Why Support === */
+.why-support-section {
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+
+.why-support-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #2c234d;
+}
+
+.why-support-section p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.why-support-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.why-support-section li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+/* === Donation Form === */
+.donation-form-section {
+  background: #fffefb;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  margin-top: 2rem;
+  border-top: 5px solid #fdd835;
+}
+
+.donation-form-section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #2c234d;
+}
+
+.donation-form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.donation-form-section label {
+  font-weight: 600;
+  color: #2c234d;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.donation-form-section input[type="text"],
+.donation-form-section input[type="email"],
+.donation-form-section input[type="number"],
+.donation-form-section textarea {
+  padding: 0.75rem;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.donation-form-section input:focus,
+.donation-form-section textarea:focus {
+  border-color: #886df1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(136, 109, 241, 0.1);
+}
+
+/* === Tier Buttons === */
+.tier-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.tier-buttons button {
+  flex: 1 1 auto;
+  min-width: 160px;
+  text-align: center;
+  background: #f9f7ff;
+  border: 2px solid #886df1;
+  color: #2c234d;
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tier-buttons button:hover {
+  background: #ece6ff;
+  box-shadow: 0 6px 10px rgba(136, 109, 241, 0.25);
+  transform: translateY(-1px);
+}
+
+.tier-buttons button:focus,
+.tier-buttons button:active {
+  outline: none;
+  transform: scale(0.98);
+}
+
+.tier-buttons button.selected {
+  background: #886df1;
+  color: white;
+  border-color: #674dc5;
+  box-shadow: 0 6px 12px rgba(136, 109, 241, 0.3);
+}
+
+.tier-buttons button.selected:hover {
+  background: #7457da;
+}
+
+/* === Recurring Checkbox === */
+.recurring-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  color: #2c234d;
+}
+
+.recurring-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #886df1;
+  cursor: pointer;
+}
+
+/* === Impact Message === */
+.impact-message {
+  font-style: italic;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* === Submit Button === */
+.donate-button {
+  background: linear-gradient(to right, #2c234d, #3a2e70);
+  color: white;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  align-self: flex-start;
+  will-change: transform;
+}
+
+.donate-button:hover {
+  background: #1e183c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.donate-button:active {
+  transform: scale(0.97);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* === Sponsor CTA === */
+.sponsor-cta-section {
+  margin-top: 3rem;
+  background: #fdf8ed;
+  padding: 2rem;
+  border-radius: 12px;
+  border-left: 5px solid #fdd835;
+}
+
+.sponsor-cta-section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.sponsor-cta-section ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.sponsor-cta-section li {
+  margin-bottom: 0.5rem;
+}
+
+.sponsor-cta-section a {
+  font-weight: 600;
+  color: #2c234d;
+  text-decoration: underline;
+}
+
+/* === Thank You Modal === */
+.thank-you-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.modal-content h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content button {
+  background: #2c234d;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.modal-content button:hover {
+  background: #1a1438;
+}
+
+/* === Responsive Behavior === */
+@media (max-width: 640px) {
+  .tier-buttons {
+    flex-direction: column;
+  }
+
+  .donate-button {
+    width: 100%;
+    text-align: center;
+    align-self: stretch;
+  }
+}
