@@ -470,3 +470,81 @@
     padding: 0.85rem;
   }
 }
+/* ===== MOBILE FIXES ===== */
+@media (max-width: 640px) {
+  .donations-page {
+    padding: 1rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .donation-form-section {
+    padding: 1.5rem;
+    width: 100%;
+  }
+
+  .donation-form-section form {
+    width: 100%;
+  }
+
+  .donation-form-section label,
+  .donation-form-section input,
+  .donation-form-section textarea,
+  .donation-form-section select {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .tier-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .tier-buttons button {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .radio-group {
+    width: 100%;
+  }
+
+  .radio-group label {
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+    padding: 1rem;
+  }
+
+  .radio-group input[type="radio"] {
+    margin-right: 0.75rem;
+  }
+
+  .donate-button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .sponsor-cta-section {
+    padding: 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .modal-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .modal-content p {
+    font-size: 1rem;
+  }
+
+  .modal-content button {
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+  }
+}
