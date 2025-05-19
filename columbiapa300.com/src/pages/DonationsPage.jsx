@@ -95,7 +95,7 @@ function DonationForm({ formData, handleChange, handleSubmit }) {
             onChange={handleChange}
           />
         </label>
-
+      
         <div className="tier-buttons">
   <button
     type="button"
@@ -151,6 +151,49 @@ function DonationForm({ formData, handleChange, handleSubmit }) {
         />
         <label htmlFor="recurring">Make this a recurring monthly donation</label>
       </div>
+      <label>
+        Where would you like your donation to go? *
+        <div className="radio-group">
+          <label className={formData.purpose === 'General Borough Fund' ? 'selected' : ''}>
+            <input
+              type="radio"
+              name="purpose"
+              value="General Borough Fund"
+              checked={formData.purpose === 'General Borough Fund'}
+              onChange={handleChange}
+              required
+            />
+            <span>🏛️ General Borough Fund (support operations & heritage)</span>
+          </label>
+
+          <label className={formData.purpose === 'Community Events' ? 'selected' : ''}>
+            <input
+              type="radio"
+              name="purpose"
+              value="Community Events"
+              checked={formData.purpose === 'Community Events'}
+              onChange={handleChange}
+              required
+            />
+            <span>🎉 Community Events (parades, contests, and public gatherings)</span>
+          </label>
+
+          <label className={formData.purpose === 'Marketing & Outreach' ? 'selected' : ''}>
+            <input
+              type="radio"
+              name="purpose"
+              value="Marketing & Outreach"
+              checked={formData.purpose === 'Marketing & Outreach'}
+              onChange={handleChange}
+              required
+            />
+            <span>📣 Marketing & Outreach (signage, ads, videos)</span>
+          </label>
+        </div>
+      </label>
+
+
+
 
         <label>
           Optional Message
@@ -168,8 +211,8 @@ function DonationForm({ formData, handleChange, handleSubmit }) {
         </p>
 
         <button type="submit" className="donate-button">
-          Donate Now
-        </button>
+        💖 Donate Now
+      </button>
       </form>
     </section>
   );
