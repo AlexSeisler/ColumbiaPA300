@@ -9,10 +9,11 @@ const Header = () => {
   return (
     <header className="header" role="banner">
       <div className="header-container">
-        <div className="header-left">
-          <img src="/logo.png" alt="Columbia Borough Logo" className="logo" />
-          <h1 className="site-title">Columbia Borough 300th Anniversary</h1>
-        </div>
+        <a href="https://www.columbiapa.net/" target="_blank" rel="noopener noreferrer" className="header-left">
+        <img src="/logo.png" alt="Columbia Borough Logo" className="logo" />
+        <h1 className="site-title">Columbia Borough 300th Anniversary</h1>
+      </a>
+
 
         {/* Hamburger Toggle */}
         <div className="mobile-menu-toggle" onClick={toggleMenu} aria-label="Toggle navigation" role="button">
