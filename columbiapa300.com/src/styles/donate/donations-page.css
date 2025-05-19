@@ -576,3 +576,66 @@
     word-break: break-word;
   }
 }
+.donations-page {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-section:nth-child(1) { animation-delay: 0.1s; }
+.fade-section:nth-child(2) { animation-delay: 0.2s; }
+/* and so on... */
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.tier-buttons button,
+.radio-group label {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tier-buttons button:hover,
+.radio-group label:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(136, 109, 241, 0.15);
+}
+.why-support-section {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideInLeft 0.6s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.donate-button.submitting {
+  animation: pulse 0.5s ease-in-out;
+}
