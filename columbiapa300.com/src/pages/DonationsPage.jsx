@@ -4,11 +4,31 @@ import "../styles/donate/donations-page.css";
 export default function DonationsPage() {
   const [showModal, setShowModal] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Donation Submitted:", formData);
-    setShowModal(true); // Trigger Thank You modal
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch("/.netlify/functions/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (data.id) {
+      const stripe = window.Stripe("pk_test_..."); // OR process.env.VITE_STRIPE_PUBLISHABLE_KEY
+      stripe.redirectToCheckout({ sessionId: data.id });
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  } catch (err) {
+    console.error("Stripe error", err);
+    alert("Connection to Stripe failed.");
+  }
+};
+
+
 
   const [formData, setFormData] = useState({
       name: "",
