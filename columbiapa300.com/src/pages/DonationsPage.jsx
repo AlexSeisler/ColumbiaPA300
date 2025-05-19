@@ -17,7 +17,7 @@ export default function DonationsPage() {
     const data = await response.json();
 
     if (data.id) {
-      const stripe = window.Stripe("pk_test_..."); // OR process.env.VITE_STRIPE_PUBLISHABLE_KEY
+      const stripe = window.Stripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY); // OR process.env.VITE_STRIPE_PUBLISHABLE_KEY
       stripe.redirectToCheckout({ sessionId: data.id });
     } else {
       alert("Something went wrong. Please try again.");
