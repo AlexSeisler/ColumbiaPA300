@@ -56,6 +56,16 @@ html, body,
   flex-direction: column;
   min-height: 100vh;
 }
+/* Improve button responsiveness */
+button, .donate-button, .tier-buttons button {
+  will-change: transform;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+/* Reduce layout thrashing */
+.radio-group label {
+  will-change: background, transform;
+}
 
 /* Main content container */
 .main-content {
