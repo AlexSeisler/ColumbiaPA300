@@ -43,6 +43,56 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
+.submission-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  justify-content: flex-start;
+}
+
+.submission-radio-group label {
+  flex: 1 1 calc(50% - 0.75rem);
+  max-width: calc(50% - 0.75rem);
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  background: #fcfbff;
+  font-weight: 500;
+  color: #2c234d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.submission-radio-group input[type="radio"] {
+  accent-color: #6a5acd;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.submission-radio-group label:hover {
+  background: #f1efff;
+  border-color: #b8aaff;
+}
+
+.submission-radio-group input[type="radio"]:checked + span {
+  font-weight: 600;
+  color: #2c234d;
+}
+
+/* Mobile stacking */
+@media (max-width: 640px) {
+  .submission-radio-group label {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
 
 .form-badge {
   display: inline-block;
@@ -350,22 +400,7 @@ iframe {
 }
 
 /* === Radio Buttons === */
-.radio-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.5rem;
-  margin-top: 0.25rem;
-  padding-left: 0.25rem;
-}
 
-.radio-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-weight: 500;
-  font-size: 0.95rem;
-  color: #2c234d;
-}
 
 /* === File Upload Field === */
 input[type="file"] {
@@ -435,10 +470,7 @@ input[type="file"] {
     padding: 1.5rem 1.25rem;
   }
 
-  .radio-group {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+  
 
   .submit-button {
     align-self: stretch;
@@ -446,30 +478,7 @@ input[type="file"] {
     justify-content: center;
   }
 }
-.radio-group {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 1.25rem;
-  justify-content: space-between;
-  flex-direction: row;
-}
 
-.radio-group label {
-  cursor: pointer;
-  font-weight: 500;
-  color: #2c234d;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  white-space: nowrap;
-}
-
-.radio-group input[type="radio"] {
-  transform: scale(1.25);
-  accent-color: #886df1;
-  cursor: pointer;
-}
 .upload-dropzone {
   position: relative;
   border: 2px dashed #ccc;
@@ -552,6 +561,76 @@ input[type="file"] {
 .form-badge-wrapper {
   position: relative;
   margin-bottom: 1rem;
+}
+radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #2c234d;
+}
+
+@media (max-width: 768px) {
+  /* Centered School Name radios */
+  .radio-group[name="school"] {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Grade radios: centered grid */
+  .radio-group[name="grade"] {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+  }
+
+  .radio-group[name="grade"] label {
+    width: auto;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .radio-group label {
+    justify-content: center;
+  }
+}
+.radio-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+.radio-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.25rem;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.radio-group label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #2c234d;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.radio-group input[type="radio"] {
+  transform: scale(1.25);
+  accent-color: #886df1;
+  cursor: pointer;
 }
 @media (max-width: 640px) {
   .radio-group {
@@ -727,31 +806,7 @@ input[type="file"] {
     max-height: none !important;
   }
 }
-@media (max-width: 768px) {
-  /* Centered School Name radios */
-  .radio-group[name="school"] {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
 
-  /* Grade radios: centered grid */
-  .radio-group[name="grade"] {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem 1.5rem;
-  }
-
-  .radio-group[name="grade"] label {
-    width: auto;
-    min-width: 100px;
-    text-align: center;
-  }
-
-  .radio-group label {
-    justify-content: center;
-  }
-}
 /* === Collapsible Form Wrapper === */
 .collapsible-wrapper {
   max-height: 0;

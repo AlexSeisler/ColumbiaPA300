@@ -215,42 +215,43 @@ const submitToAirtable = async (fileId) => {
           </label>
 
           <label>
-            School Name *
-            <div className="radio-group" name="school">
-              {['Columbia High School', 'Our Lady of the Angels', 'Home-School', 'Other'].map((school) => (
-                <label key={school}>
-                  <input
-                    type="radio"
-                    name="school"
-                    value={school}
-                    checked={formData.school === school}
-                    onChange={handleChange}
-                    required
-                  />
-                  {school}
-                </label>
-              ))}
-            </div>
-          </label>
+          School Name *
+          <div className="submission-radio-group" name="school">
+            {['Columbia High School', 'Our Lady of the Angels', 'Home-School', 'Other'].map((school) => (
+              <label key={school}>
+                <input
+                  type="radio"
+                  name="school"
+                  value={school}
+                  checked={formData.school === school}
+                  onChange={handleChange}
+                  required
+                />
+                <span>{school}</span>
+              </label>
+            ))}
+          </div>
+        </label>
 
-          <label>
-            Grade Level *
-            <div className="radio-group" name="grade">
-              {['7th grade', '8th grade', '9th grade', '10th grade', '11th grade', '12th grade'].map((grade) => (
-                <label key={grade}>
-                  <input
-                    type="radio"
-                    name="grade"
-                    value={grade}
-                    checked={formData.grade === grade}
-                    onChange={handleChange}
-                    required
-                  />
-                  {grade}
-                </label>
-              ))}
-            </div>
-          </label>
+        <label>
+          Grade Level *
+          <div className="submission-radio-group" name="grade">
+            {['7th grade', '8th grade', '9th grade', '10th grade', '11th grade', '12th grade'].map((grade) => (
+              <label key={grade}>
+                <input
+                  type="radio"
+                  name="grade"
+                  value={grade}
+                  checked={formData.grade === grade}
+                  onChange={handleChange}
+                  required
+                />
+                <span>{grade}</span>
+              </label>
+            ))}
+          </div>
+        </label>
+
 
           <label className={`upload-dropzone ${dragActive ? 'drag-active' : ''}`}>
             <input
