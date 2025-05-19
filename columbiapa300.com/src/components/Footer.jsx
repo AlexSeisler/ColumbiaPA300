@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/home/footer.css';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -13,6 +14,9 @@ const Footer = () => {
             🛠️ Powered by <a href="https://redrosedigitalmedia.com/">Red Rose Digital Media</a>
           </p>
         </div>
+      </div>
+      <div className="footer-links">
+        <Link to="/privacy">Privacy Policy</Link>
       </div>
     </footer>
   );

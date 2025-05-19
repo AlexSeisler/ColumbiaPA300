@@ -1,0 +1,80 @@
+/* === Privacy Policy Page Styles === */
+
+.privacy-policy-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #2c234d;
+  background-color: #fffefb;
+  line-height: 1.7;
+}
+
+/* === Headings === */
+.privacy-policy-page h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2c234d;
+  text-align: center;
+  font-weight: 700;
+}
+
+.privacy-policy-page h2 {
+  font-size: 1.35rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #4c3ca2;
+  border-bottom: 2px solid #fdd835;
+  padding-bottom: 0.25rem;
+}
+
+/* === Paragraphs and Lists === */
+.privacy-policy-page p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #444;
+}
+
+.privacy-policy-page ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.privacy-policy-page li {
+  margin-bottom: 0.5rem;
+}
+
+/* === Contact Section === */
+.privacy-policy-page .contact {
+  margin-top: 2.5rem;
+  padding: 1rem;
+  background: #f9f7ff;
+  border-left: 5px solid #886df1;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(136, 109, 241, 0.05);
+}
+
+.privacy-policy-page a {
+  color: #4c3ca2;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.privacy-policy-page a:hover {
+  color: #7457da;
+}
+
+/* === Responsive Behavior === */
+@media (max-width: 640px) {
+  .privacy-policy-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .privacy-policy-page h1 {
+    font-size: 1.6rem;
+  }
+
+  .privacy-policy-page h2 {
+    font-size: 1.2rem;
+  }
+}
