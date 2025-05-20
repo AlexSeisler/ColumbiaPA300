@@ -101,7 +101,15 @@ const handleSubmit = async (e) => {
           };
 
           xhr.onload = () => {
+            console.log("📦 File uploaded (resumable), status:", xhr.status, "size:", file.size);
+
             if (xhr.status >= 200 && xhr.status < 300) {
+              if (file.size === 0) {
+                console.warn("⚠️ Upload finished but file size is 0.");
+                resolve();
+                return;
+              }
+
               console.log("✅ Resumable upload success");
               resolve();
             } else {
@@ -126,7 +134,7 @@ const handleSubmit = async (e) => {
         });
 
       } else {
-        // 📦 Direct Upload → UPDATED TO mediaUpload.js
+        // 📦 Direct Upload → mediaUpload.js
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
 
@@ -154,7 +162,7 @@ const handleSubmit = async (e) => {
     }
   }
 
-  // 🔄 Reset
+  // 🔄 Reset UI state
   setUploading(false);
   setUploadProgress(null);
   setUploadingFileName('');
@@ -162,9 +170,6 @@ const handleSubmit = async (e) => {
   setFiles([]);
   if (inputRef.current) inputRef.current.value = null;
 };
-
-
-
 
 
 

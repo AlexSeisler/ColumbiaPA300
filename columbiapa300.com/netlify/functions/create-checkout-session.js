@@ -26,6 +26,18 @@ exports.handler = async (event) => {
       success_url: 'https://columbiapa300.com/thank-you',
       cancel_url: 'https://columbiapa300.com/donate',
     });
+    const body = JSON.parse(event.body);
+
+    const slackMessage = {
+      text: `💸 *New Donation Initiated*\n👤 ${body.name} (${body.email})\n🎯 Fund: ${body.purpose}\n💵 Amount: $${body.amount}\n📝 Note: ${body.note || 'None'}`
+    };
+
+    await fetch(process.env.SLACK_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(slackMessage),
+    });
+
 
     return {
       statusCode: 200,

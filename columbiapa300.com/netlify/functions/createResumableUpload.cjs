@@ -53,6 +53,20 @@ exports.handler = async function (event) {
 
     console.log("✅ Created resumable URL:", uploadUrl);
 
+    // ✅ Slack notification moved here
+    try {
+      await fetch(process.env.SLACK_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: `📤 *New Large Upload Started*\n📁 *${name}* (${mimeType})\n🔗 Uploading via resumable session.`,
+        }),
+      });
+      console.log("📣 Slack notified for resumable upload");
+    } catch (err) {
+      console.warn("⚠️ Slack webhook failed:", err.message);
+    }
+
     return {
       statusCode: 200,
       headers: corsHeaders,

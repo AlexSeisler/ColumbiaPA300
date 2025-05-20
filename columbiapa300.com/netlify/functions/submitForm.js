@@ -65,6 +65,15 @@ exports.handler = async function(event) {
         })
       };
     }
+    const slackMessage = {
+  text: `🎨 *New Logo Submission*\n👤 ${body.name} (${body.email})\n🏫 ${body.school} – Grade ${body.grade}\n📎 <${fileUrl}|View Uploaded Logo>`
+};
+
+  await fetch(process.env.SLACK_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(slackMessage),
+  });
 
     return {
       statusCode: 200,
