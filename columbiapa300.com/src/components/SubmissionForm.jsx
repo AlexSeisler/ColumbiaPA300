@@ -314,16 +314,21 @@ const submitToAirtable = async (fileId) => {
       </div>
     </div>
     {showThankYouModal && (
-  <div className="thank-you-modal-overlay">
-    <div className="thank-you-modal">
-      <h2>🎉 Thank You for Submitting!</h2>
-      <p>Your logo has been successfully uploaded and is being reviewed by the Columbia Borough 300 team.</p>
-      <p>We’re proud of your creativity and can’t wait to showcase your work!</p>
-      <button onClick={() => setShowThankYouModal(false)} className="close-modal-btn">
+  <div className="thank-you-modal">
+    <div className="thank-you-content">
+      <h2 className="thank-you-title">🎉 Thank You for Submitting!</h2>
+      <p className="thank-you-message">
+        Your logo has been successfully uploaded and is being reviewed by the Columbia Borough 300 team.
+      </p>
+      <p className="thank-you-message">
+        We’re proud of your creativity and can’t wait to showcase your work!
+      </p>
+      <button className="thank-you-close" onClick={handleClose}>
         ✨ Close
       </button>
     </div>
   </div>
+
 )}
 
   </section>

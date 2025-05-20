@@ -921,3 +921,68 @@ radio-group {
   background-color: var(--color-accent);
   color: var(--color-primary);
 }
+.thank-you-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.thank-you-content {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  max-width: 540px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: popIn 0.4s ease-out;
+}
+
+.thank-you-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.thank-you-message {
+  font-size: 1.05rem;
+  color: var(--color-text-dark);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.thank-you-close {
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.thank-you-close:hover {
+  background: var(--color-accent);
+  color: #1a1a1a;
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
