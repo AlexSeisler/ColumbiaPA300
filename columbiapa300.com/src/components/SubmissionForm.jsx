@@ -132,6 +132,7 @@ const submitToAirtable = async (fileId) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
+    'x-upload-type': 'logo', // ✅ NEW HEADER
   });
 
   const result = await res.json();

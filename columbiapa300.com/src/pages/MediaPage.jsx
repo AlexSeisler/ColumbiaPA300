@@ -126,11 +126,11 @@ const handleSubmit = async (e) => {
         });
 
       } else {
-        // 📦 Direct Upload
+        // 📦 Direct Upload → UPDATED TO mediaUpload.js
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
 
-        const res = await fetch('/.netlify/functions/uploadDirectToDrive', {
+        const res = await fetch('/.netlify/functions/mediaUpload', {
           method: 'POST',
           headers: {
             'Content-Type': file.type,
@@ -163,6 +163,7 @@ const handleSubmit = async (e) => {
   setFiles([]);
   if (inputRef.current) inputRef.current.value = null;
 };
+
 
 
 

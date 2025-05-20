@@ -1,7 +1,10 @@
 [functions]
   directory = "netlify/functions"
   external_node_modules = ["node-fetch", "googleapis"]
-  included_files = ["netlify/functions/keys/google-service-account.json"]
+  included_files = [
+    "netlify/functions/keys/google-service-account.json",
+    "netlify/functions/**/*.cjs"
+  ]
   node_bundler = "esbuild"
 
 [build]
@@ -19,3 +22,5 @@
 
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLISHABLE_KEY"
+
+
