@@ -59,16 +59,16 @@ exports.handler = async (event) => {
 
     // 📤 Upload the file
     const uploadRes = await drive.files.create({
-      requestBody: {
-        name: fileName,
-        mimeType: contentType,
-        parents: [parentFolder],
-      },
-      media: {
-        mimeType: contentType,
-        body: Readable.from(buffer),
-      },
-    });
+  requestBody: {
+    name: fileName,
+    mimeType: contentType,
+    parents: [process.env.DRIVE_FOLDER_ID],
+  },
+  media: {
+    mimeType: contentType,
+    body: Readable.from(buffer),
+  },
+});
 
     const fileId = uploadRes.data.id;
     const fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;

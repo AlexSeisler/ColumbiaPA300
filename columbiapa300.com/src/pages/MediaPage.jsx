@@ -135,7 +135,6 @@ const handleSubmit = async (e) => {
           headers: {
             'Content-Type': file.type,
             'Content-Length': uint8Array.byteLength,
-            'x-file-name': file.name,
           },
           body: uint8Array,
         });
