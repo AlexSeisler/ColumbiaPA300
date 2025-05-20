@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import '../styles/home/countdown-timer.css'
+import React, { useEffect, useState } from 'react';
+import '../styles/home/countdown-timer.css';
 
-const CountdownTimer = ({ targetDate }) => {
+const CountdownTimer = () => {
+  const targetDate = new Date('2025-06-01T00:00:00'); // 🎯 Corrected deadline
+
   const calculateTimeLeft = () => {
-    const difference = +new Date(targetDate) - +new Date()
-    let timeLeft = {}
+    const now = new Date();
+    const difference = +targetDate - +now;
+    let timeLeft = {};
 
     if (difference > 0) {
       timeLeft = {
@@ -12,28 +15,42 @@ const CountdownTimer = ({ targetDate }) => {
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
-      }
+      };
     }
 
-    return timeLeft
-  }
+    return timeLeft;
+  };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [isTimeUp, setIsTimeUp] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+      const newTimeLeft = calculateTimeLeft();
+      setTimeLeft(newTimeLeft);
+      if (
+        Object.keys(newTimeLeft).length === 0 ||
+        +targetDate - +new Date() <= 0
+      ) {
+        setIsTimeUp(true);
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="countdown">
-      <p>
-        {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s until voting opens!
-      </p>
+      {isTimeUp ? (
+        <p className="countdown-finished">🎉 Voting is now open!</p>
+      ) : (
+        <p>
+          {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s until voting opens!
+        </p>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default CountdownTimer
+export default CountdownTimer;
