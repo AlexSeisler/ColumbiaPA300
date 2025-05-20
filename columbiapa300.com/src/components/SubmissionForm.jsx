@@ -54,6 +54,9 @@ const SubmissionForm = () => {
       setFormData({ ...formData, file });
     }
   };
+  const handleClose = () => {
+    setShowThankYouModal(false);
+  };
 
   const handleSubmit = async (e) => {
   e.preventDefault();
