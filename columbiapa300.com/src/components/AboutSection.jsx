@@ -18,7 +18,7 @@ const AboutSection = () => {
         <div className="civic-ribbon emoji-float">📜 300 Years in the Making</div>
         <h2 className="about-title">Why This Year Matters</h2>
         <p className="about-description">
-          In 1725, a borough was born...
+          In 1726, a borough was born...
         </p>
         <p className="about-description highlight">
           This anniversary is more than a moment. It's a movement.

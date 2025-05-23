@@ -321,7 +321,7 @@ const submitToAirtable = async (fileId) => {
     <div className="thank-you-content">
       <h2 className="thank-you-title">🎉 Thank You for Submitting!</h2>
       <p className="thank-you-message">
-        Your logo has been successfully uploaded and is being reviewed by the Columbia Borough 300 team.
+        Your logo has been successfully uploaded and is being reviewed by the Columbia Borough 300 committee.
       </p>
       <p className="thank-you-message">
         We’re proud of your creativity and can’t wait to showcase your work!

@@ -180,7 +180,7 @@ const handleSubmit = async (e) => {
       <h2>📥 Submit Your Columbia Moment</h2>
       <p>Upload a photo or short video that captures the spirit of Columbia — past or present.</p>
       <ul className="upload-instructions">
-        <li>Supported: JPG, PNG, MP4, MOV</li>
+        <li>All Types Supported: JPG, PNG, MP4, MOV (Suggested)</li>
         <li>Deadline: <strong>June 1, 2025</strong></li>
         <li>Files are reviewed before being published to the community wall.</li>
       </ul>
