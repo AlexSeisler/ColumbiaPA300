@@ -22,7 +22,7 @@ const VotePage = () => {
   }));
 
   const handleVoteClick = (id) => {
-    if (!isVotingOpen || localStorage.getItem('voted')) return;
+    
     setSelectedId(id);
   };
 
