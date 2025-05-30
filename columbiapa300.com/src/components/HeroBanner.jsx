@@ -1,6 +1,5 @@
 import React from 'react';
 import '../styles/home/hero-banner.css';
-import CountdownTimer from './CountdownTimer';
 
 const HeroBanner = () => {
   return (
@@ -11,10 +10,10 @@ const HeroBanner = () => {
         <p className="hero-subtitle">
           Join us for a borough-wide celebration of history, creativity, and community pride.
         </p>
-        <div className="hero-countdown-box">
-          <CountdownTimer targetDate="2025-06-02T23:59:59" />
+        <div className="hero-cta-box">
+          <a href="/vote" className="hero-cta vote-now">🗳️ Vote Now</a>
+          <a href="#contest" className="hero-cta">🎨 Submit a Logo</a>
         </div>
-        <a href="#contest" className="hero-cta">🎨 Submit a Logo</a>
         <div className="scroll-down-cue">⌄</div>
       </div>
     </section>
