@@ -1,56 +1,136 @@
-// src/pages/VotePage.jsx
-import React from 'react';
+// VotePage.jsx (Updated with Close Buttons)
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/vote/vote-page.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
+localStorage.removeItem('voted');
+
 const VotePage = () => {
-  const submissions = [
-    { id: 1, student: "Student 1", icon: "🎨" },
-    { id: 2, student: "Student 2", icon: "🌟" },
-    { id: 3, student: "Student 3", icon: "🕊️" },
-    { id: 4, student: "Student 4", icon: "🏛️" },
-  ];
+  const navigate = useNavigate();
+  const isVotingOpen = true;
+  const [selectedId, setSelectedId] = useState(null);
+  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+
+  const submissions = Array.from({ length: 7 }, (_, i) => ({
+    id: i + 1,
+    student: `Student ${i + 1}`,
+    src: `/logos/logo${i + 1}.png`,
+  }));
+
+  const handleVoteClick = (id) => {
+    if (!isVotingOpen || localStorage.getItem('voted')) return;
+    setSelectedId(id);
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/.netlify/functions/submit-vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, voteId: selectedId }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      localStorage.setItem('voted', 'true');
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleClose = () => {
+    setSelectedId(null);
+    setFormData({ name: '', email: '' });
+    setError(null);
+    setSubmitted(false);
+  };
 
   return (
     <>
       <main className="vote-page">
         <section className="vote-header">
-        <div className="vote-banner">
-          <span role="img" aria-label="scroll">📜</span>
-          <h1 className="glow-header">Official Logo Vote</h1>
-        </div>
-
-        <p className="vote-subtext">
-          Columbia is turning 300 — and our students designed its legacy.
-          <br />
-          Help choose the **official logo** that will represent this once-in-a-lifetime celebration.
-        </p>
-
-        <div className="vote-details">
-          <p>
-            🗓️ <strong>Voting opens:</strong> June 1, 2025 &nbsp;&nbsp;|&nbsp;&nbsp; 📍 <strong>Closes:</strong> June 2, 2025
+          <div className="vote-banner">
+            <span role="img" aria-label="scroll">📜</span>
+            <h1 className="glow-header">Official Logo Vote</h1>
+          </div>
+          <p className="vote-subtext">
+            Columbia is turning 300 — and our students designed its legacy.<br />
+            Help choose the <strong>official logo</strong> for the celebration.
           </p>
-          <p>
-            🧑‍⚖️ <em>One vote per person. Results revealed at the borough meeting.</em>
-          </p>
-        </div>
-      </section>
-
-        <section className="logo-grid">
-          {submissions.map((submission, index) => (
-            <div className={`logo-card card-style-${index + 1}`} key={submission.id}>
-              <div className="emoji-icon" aria-hidden="true">{submission.icon}</div>
-              <h2 className="logo-title">Logo Submission {submission.id}</h2>
-              <h3 className="student-label">{submission.student}</h3>
-              <button className="vote-btn" disabled>🗳 Vote (Opens June 1)</button>
-            </div>
-          ))}
+          <div className="vote-details">
+            <p>🗓️ <strong>Voting opens:</strong> June 1, 2025 &nbsp;&nbsp;|&nbsp;&nbsp; 📍 <strong>Closes:</strong> June 2, 2025</p>
+            <p>🧑‍⚖️ <em>One vote per person. Results revealed at the borough meeting.</em></p>
+          </div>
         </section>
 
-        <div className="vote-warning">
-          <span role="img" aria-label="lock">🔒</span> Voting is not yet active. Please return on <strong>June 1</strong> to cast your vote!
-        </div>
+        <section className="carousel">
+          <h2 className="carousel-header">Vote for Your Favorite Logo</h2>
+          <div className="carousel-track">
+            {submissions.map((logo) => (
+              <div className="carousel-card" key={logo.id}>
+                <img src={logo.src} alt={`Logo ${logo.id}`} className="carousel-image" />
+                <h3>Logo #{logo.id}</h3>
+                <button
+                  className="vote-btn"
+                  onClick={() => handleVoteClick(logo.id)}
+                  disabled={!isVotingOpen || localStorage.getItem('voted')}
+                >
+                  {isVotingOpen ? '🗳 Vote' : '🗳 Vote (Opens June 1)'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {selectedId && !submitted && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <button className="modal-close" onClick={handleClose}>✖</button>
+              <h3>Vote for Logo #{selectedId}</h3>
+              <form onSubmit={handleSubmit} className="vote-form">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Full Name"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                <button type="submit">Submit Vote</button>
+                {error && <p className="error-message">{error}</p>}
+              </form>
+            </div>
+          </div>
+        )}
+
+        {submitted && (
+          <div className="modal-overlay">
+            <div className="modal">
+              <button className="modal-close" onClick={handleClose}>✖</button>
+              <h2>🎉 Thank you for voting!</h2>
+              <p>Want to shout out your pick? Submit a 10-second video here.</p>
+              <button onClick={() => navigate('/media')}>Submit Video Reaction</button>
+              <p>Help bring these celebrations to life.</p>
+              <button onClick={() => navigate('/donate')}>Support with a Donation</button>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
