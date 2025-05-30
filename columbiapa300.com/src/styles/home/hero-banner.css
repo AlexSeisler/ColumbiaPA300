@@ -95,19 +95,53 @@
   animation: glowPulse 2.5s infinite ease-in-out;
 }
 
-.hero-cta {
-  display: inline-block;
-  background: #f2c94c;
-  color: #2d1b5a;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: transform 0.3s ease, background 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  animation: subtleBounce 5s ease-in-out infinite;
+.hero-cta-box {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
 }
 
+.hero-cta {
+  background-color: #ffcc5c;
+  color: #2c234d;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-cta:hover {
+  transform: scale(1.05);
+  background-color: #ffd77f;
+}
+
+.vote-now {
+  background-color: #8a6eff;
+  color: #fff;
+}
+
+.vote-now:hover {
+  background-color: #a193ff;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .hero-cta {
+    font-size: 0.95rem;
+    padding: 0.65rem 1.25rem;
+  }
+
+  .hero-cta-box {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+}
 .hero-banner::after {
   content: '';
   position: absolute;
