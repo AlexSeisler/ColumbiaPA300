@@ -8,7 +8,6 @@ const SubmissionForm = () => {
   const [uploadProgress, setUploadProgress] = useState(null);
   const [uploadingFileName, setUploadingFileName] = useState('');
 
-
   const [formData, setFormData] = useState({
     email: '',
     name: '',
@@ -54,112 +53,80 @@ const SubmissionForm = () => {
       setFormData({ ...formData, file });
     }
   };
+
   const handleClose = () => {
     setShowThankYouModal(false);
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  let fileId = null;
+    e.preventDefault();
 
-  if (formData.file) {
-    try {
-      setUploadingFileName(formData.file.name);
-      setUploadProgress(0);
+    if (formData.file) {
+      try {
+        setUploadingFileName(formData.file.name);
+        setUploadProgress(0);
 
-      const arrayBuffer = await formData.file.arrayBuffer();
-      const uint8Array = new Uint8Array(arrayBuffer);
+        const arrayBuffer = await formData.file.arrayBuffer();
+        const uint8Array = new Uint8Array(arrayBuffer);
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', '/.netlify/functions/uploadDirectToDrive');
-      xhr.setRequestHeader('Content-Type', formData.file.type);
-      xhr.setRequestHeader('x-file-name', formData.file.name);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/.netlify/functions/uploadDirectToDrive');
+        xhr.setRequestHeader('Content-Type', formData.file.type);
+        xhr.setRequestHeader('x-file-name', formData.file.name);
 
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const percent = Math.round((e.loaded / e.total) * 100);
-          setUploadProgress(percent);
-        }
-      };
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            setUploadProgress(percent);
+          }
+        };
 
-      xhr.onload = async () => {
-        try {
-          const json = JSON.parse(xhr.responseText);
-          if (xhr.status === 200 && json.success && json.fileId) {
-            fileId = json.fileId;
-            await submitToAirtable(fileId);
-          } else {
+        xhr.onload = async () => {
+          try {
+            const json = JSON.parse(xhr.responseText);
+            if (xhr.status === 200 && json.success && json.fileId) {
+              setShowThankYouModal(true);
+              setFormData({
+                email: '',
+                name: '',
+                school: '',
+                grade: '',
+                file: null,
+                agreement: false,
+              });
+              setUploadProgress(null);
+              setUploadingFileName('');
+              document.querySelector('input[type="file"]').value = null;
+            } else {
+              setSubmissionStatus({
+                type: 'error',
+                message: '⚠️ There was a problem uploading your file.',
+              });
+            }
+          } catch (err) {
             setSubmissionStatus({
               type: 'error',
-              message: '⚠️ There was a problem uploading your file.',
+              message: '⚠️ File upload response could not be parsed.',
             });
           }
-        } catch (err) {
+        };
+
+        xhr.onerror = () => {
           setSubmissionStatus({
             type: 'error',
-            message: '⚠️ File upload response could not be parsed.',
+            message: '⚠️ File upload failed due to a network error.',
           });
-        }
-      };
+        };
 
-      xhr.onerror = () => {
+        xhr.send(uint8Array);
+      } catch (err) {
         setSubmissionStatus({
           type: 'error',
-          message: '⚠️ File upload failed due to a network error.',
+          message: '⚠️ Upload failed. Try again or email admin@columbiapa300.com.',
         });
-      };
-
-      xhr.send(uint8Array);
-    } catch (err) {
-      setSubmissionStatus({
-        type: 'error',
-        message: '⚠️ Upload failed. Try again or email admin@columbiapa300.com.',
-      });
+      }
     }
-  } else {
-    await submitToAirtable(null); // No file uploaded
-  }
-};
-
-const submitToAirtable = async (fileId) => {
-  const payload = {
-    email: formData.email,
-    name: formData.name,
-    school: formData.school,
-    grade: formData.grade,
-    agreement: formData.agreement,
-    fileId,
   };
-
-  const res = await fetch('/.netlify/functions/submitForm', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    'x-upload-type': 'logo', // ✅ NEW HEADER
-  });
-
-  const result = await res.json();
-
-  if (result.success) {
-    setShowThankYouModal(true); // ✅ Trigger thank-you
-    setFormData({
-      email: '',
-      name: '',
-      school: '',
-      grade: '',
-      file: null,
-      agreement: false,
-    });
-    setUploadProgress(null);
-    setUploadingFileName('');
-    document.querySelector('input[type="file"]').value = null;
-  } else {
-    setSubmissionStatus({
-      type: 'error',
-      message: '⚠️ Something went wrong submitting your form. Please try again or email admin@columbiapa300.com.',
-    });
-  }
-};
 
 
 
