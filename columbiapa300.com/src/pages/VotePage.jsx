@@ -15,7 +15,7 @@ const VotePage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
 
-  const submissions = Array.from({ length: 7 }, (_, i) => ({
+  const submissions = Array.from({ length: 8 }, (_, i) => ({
     id: i + 1,
     student: `Student ${i + 1}`,
     src: `/logos/logo${i + 1}.png`,
