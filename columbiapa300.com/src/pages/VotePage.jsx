@@ -66,7 +66,7 @@ const VotePage = () => {
             Help choose the <strong>official logo</strong> for the celebration.
           </p>
           <div className="vote-details">
-            <p>🗓️ <strong>Voting opens:</strong> June 1, 2025 &nbsp;&nbsp;|&nbsp;&nbsp; 📍 <strong>Closes:</strong> June 2, 2025</p>
+            <p>🗓️ <strong>Voting Closes:</strong> June 2, 2025</p>
             <p>🧑‍⚖️ <em>One vote per person. Results revealed at the borough meeting.</em></p>
           </div>
         </section>
