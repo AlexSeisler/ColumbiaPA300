@@ -301,28 +301,28 @@
   to { opacity: 0; }
 }
 
+@keyframes swipePulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+  50% { transform: translateX(-50%) scale(1.05); opacity: 0.85; }
+}
+
 .swipe-hint-popup {
   position: absolute;
-  top: 80px;
+  top: 80px; /* Reliable positioning */
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.4rem 0.9rem;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 10px;
   font-size: 0.85rem;
   font-weight: 500;
   color: #5d5bff;
   z-index: 999;
   pointer-events: none;
+  animation: swipePulse 1.5s ease-in-out infinite;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  animation: swipePulse 1.8s ease-in-out infinite;
 }
 
 .swipe-hint-popup.fade-out {
   animation: fadeOut 0.5s ease forwards;
-}
-
-@keyframes swipePulse {
-  0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
-  50% { transform: translateX(-50%) scale(1.05); opacity: 0.85; }
 }

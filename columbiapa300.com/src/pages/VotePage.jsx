@@ -13,7 +13,6 @@ const VotePage = () => {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
-
   const [showSwipeHint, setShowSwipeHint] = useState(true);
   const [fadingOut, setFadingOut] = useState(false);
 
@@ -23,10 +22,7 @@ const VotePage = () => {
 
     const dismissHint = () => {
       setFadingOut(true);
-      setTimeout(() => {
-        setShowSwipeHint(false);
-      }, 500); // sync with fadeOut CSS duration
-
+      setTimeout(() => setShowSwipeHint(false), 500); // match fadeOut CSS duration
       track.removeEventListener('scroll', dismissHint);
       track.removeEventListener('touchstart', dismissHint);
     };
@@ -46,9 +42,7 @@ const VotePage = () => {
     src: `/logos/logo${i + 1}.png`,
   }));
 
-  const handleVoteClick = (id) => {
-    setSelectedId(id);
-  };
+  const handleVoteClick = (id) => setSelectedId(id);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
