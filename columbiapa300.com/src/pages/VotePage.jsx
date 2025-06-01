@@ -13,9 +13,8 @@ const VotePage = () => {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
-  const [showSwipeHint, setShowSwipeHint] = useState(() => {
-    return !localStorage.getItem('swipeHintDismissed');
-  });
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
+
   const [fadingOut, setFadingOut] = useState(false);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ const VotePage = () => {
       setFadingOut(true);
       setTimeout(() => {
         setShowSwipeHint(false);
-        localStorage.setItem('swipeHintDismissed', 'true');
       }, 500); // match fadeOut animation
       track.removeEventListener('scroll', dismissHint);
       track.removeEventListener('touchstart', dismissHint);
