@@ -13,6 +13,7 @@ const VotePage = () => {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+
   const [showSwipeHint, setShowSwipeHint] = useState(true);
   const [fadingOut, setFadingOut] = useState(false);
 
@@ -20,19 +21,20 @@ const VotePage = () => {
     const track = document.querySelector('.carousel-track');
     if (!track || !showSwipeHint) return;
 
-    const dismissHint = () => {
-      setFadingOut(true);
-      setTimeout(() => setShowSwipeHint(false), 500); // match fadeOut CSS duration
-      track.removeEventListener('scroll', dismissHint);
-      track.removeEventListener('touchstart', dismissHint);
+    const checkScrollEnd = () => {
+      const scrollLeft = track.scrollLeft;
+      const maxScrollLeft = track.scrollWidth - track.clientWidth;
+
+      if (scrollLeft >= maxScrollLeft - 20) {
+        setFadingOut(true);
+        setTimeout(() => setShowSwipeHint(false), 500);
+        track.removeEventListener('scroll', checkScrollEnd);
+      }
     };
 
-    track.addEventListener('scroll', dismissHint);
-    track.addEventListener('touchstart', dismissHint);
-
+    track.addEventListener('scroll', checkScrollEnd);
     return () => {
-      track.removeEventListener('scroll', dismissHint);
-      track.removeEventListener('touchstart', dismissHint);
+      track.removeEventListener('scroll', checkScrollEnd);
     };
   }, [showSwipeHint]);
 
