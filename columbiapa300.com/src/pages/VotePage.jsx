@@ -25,30 +25,7 @@ const VotePage = () => {
     
     setSelectedId(id);
   };
-const [showSwipeHint, setShowSwipeHint] = useState(() => {
-  return !localStorage.getItem('swipeHintDismissed');
-});
 
-useEffect(() => {
-  const track = document.querySelector('.carousel-track');
-
-  const dismissHint = () => {
-    setShowSwipeHint(false);
-    localStorage.setItem('swipeHintDismissed', 'true');
-    track?.removeEventListener('scroll', dismissHint);
-    track?.removeEventListener('touchstart', dismissHint);
-  };
-
-  if (track) {
-    track.addEventListener('scroll', dismissHint);
-    track.addEventListener('touchstart', dismissHint); // tap fallback
-  }
-
-  return () => {
-    track?.removeEventListener('scroll', dismissHint);
-    track?.removeEventListener('touchstart', dismissHint);
-  };
-}, []);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
