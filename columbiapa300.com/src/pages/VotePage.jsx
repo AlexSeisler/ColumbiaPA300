@@ -97,12 +97,6 @@ useEffect(() => {
 
         <section className="carousel">
           <h2 className="carousel-header">Vote for Your Favorite Logo</h2>
-          {showSwipeHint && (
-          <div className="swipe-hint-popup">
-            ⬅️ Swipe for more logos
-          </div>
-        )}
-
           <div className="carousel-track">
             {submissions.map((logo) => (
               <div className="carousel-card" key={logo.id}>
