@@ -253,6 +253,10 @@
     margin-bottom: 1rem;
     padding: 0 1rem;
   }
+  .carousel {
+  position: relative;
+  padding-top: 3rem;
+}
 }
 
 @media (max-width: 480px) {
@@ -263,27 +267,62 @@
   }
 }
 /* Swipe Hint Popup */
+@keyframes swipePulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+  50% { transform: translateX(-50%) scale(1.05); opacity: 0.85; }
+}
+
 .swipe-hint-popup {
   position: absolute;
-  top: 0.25rem; /* Inside .carousel, just above track */
+  top: 6rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #ffffffee;
-  border: 2px dashed #5d5bff;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  color: #2c234d;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  animation: fadeIn 1.5s ease forwards;
-  z-index: 5;
-  width: max-content;
-  max-width: 90%;
+  padding: 0.4rem 0.9rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #5d5bff;
+  z-index: 999;
+  pointer-events: none;
+  animation: swipePulse 1.8s ease-in-out infinite;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
+
 
 
 @media (min-width: 769px) {
   .swipe-hint-popup {
     display: none;
   }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.swipe-hint-popup {
+  position: absolute;
+  top: 5.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.4rem 0.9rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #5d5bff;
+  z-index: 999;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  animation: swipePulse 1.8s ease-in-out infinite;
+}
+
+.swipe-hint-popup.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes swipePulse {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+  50% { transform: translateX(-50%) scale(1.05); opacity: 0.85; }
 }

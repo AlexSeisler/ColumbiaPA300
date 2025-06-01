@@ -1,4 +1,3 @@
-// VotePage.jsx (with Swipe Hint Popup)
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/vote/vote-page.css';
@@ -17,14 +16,18 @@ const VotePage = () => {
   const [showSwipeHint, setShowSwipeHint] = useState(() => {
     return !localStorage.getItem('swipeHintDismissed');
   });
+  const [fadingOut, setFadingOut] = useState(false);
 
   useEffect(() => {
     const track = document.querySelector('.carousel-track');
-    if (!track) return;
+    if (!track || !showSwipeHint) return;
 
     const dismissHint = () => {
-      setShowSwipeHint(false);
-      localStorage.setItem('swipeHintDismissed', 'true');
+      setFadingOut(true);
+      setTimeout(() => {
+        setShowSwipeHint(false);
+        localStorage.setItem('swipeHintDismissed', 'true');
+      }, 500); // match fadeOut animation
       track.removeEventListener('scroll', dismissHint);
       track.removeEventListener('touchstart', dismissHint);
     };
@@ -36,7 +39,7 @@ const VotePage = () => {
       track.removeEventListener('scroll', dismissHint);
       track.removeEventListener('touchstart', dismissHint);
     };
-  }, []);
+  }, [showSwipeHint]);
 
   const submissions = Array.from({ length: 8 }, (_, i) => ({
     id: i + 1,
@@ -97,7 +100,9 @@ const VotePage = () => {
           <h2 className="carousel-header">Vote for Your Favorite Logo</h2>
 
           {showSwipeHint && (
-            <div className="swipe-hint-popup">⬅️ Swipe for more logos</div>
+            <div className={`swipe-hint-popup ${fadingOut ? 'fade-out' : ''}`}>
+              ➡️ Swipe for more logos
+            </div>
           )}
 
           <div className="carousel-track">
@@ -115,6 +120,9 @@ const VotePage = () => {
               </div>
             ))}
           </div>
+
+          {/* Dev-only Reset Button for Swipe Hint */}
+          
         </section>
 
         {selectedId && !submitted && (
