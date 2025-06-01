@@ -1,5 +1,5 @@
-// VotePage.jsx (Updated with Close Buttons)
-import React, { useState } from 'react';
+// VotePage.jsx (with Swipe Hint Popup)
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/vote/vote-page.css';
 import Header from '../components/Header';
@@ -14,6 +14,29 @@ const VotePage = () => {
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(() => {
+    return !localStorage.getItem('swipeHintDismissed');
+  });
+
+  useEffect(() => {
+    const track = document.querySelector('.carousel-track');
+    if (!track) return;
+
+    const dismissHint = () => {
+      setShowSwipeHint(false);
+      localStorage.setItem('swipeHintDismissed', 'true');
+      track.removeEventListener('scroll', dismissHint);
+      track.removeEventListener('touchstart', dismissHint);
+    };
+
+    track.addEventListener('scroll', dismissHint);
+    track.addEventListener('touchstart', dismissHint);
+
+    return () => {
+      track.removeEventListener('scroll', dismissHint);
+      track.removeEventListener('touchstart', dismissHint);
+    };
+  }, []);
 
   const submissions = Array.from({ length: 8 }, (_, i) => ({
     id: i + 1,
@@ -22,10 +45,8 @@ const VotePage = () => {
   }));
 
   const handleVoteClick = (id) => {
-    
     setSelectedId(id);
   };
-
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -74,6 +95,11 @@ const VotePage = () => {
 
         <section className="carousel">
           <h2 className="carousel-header">Vote for Your Favorite Logo</h2>
+
+          {showSwipeHint && (
+            <div className="swipe-hint-popup">⬅️ Swipe for more logos</div>
+          )}
+
           <div className="carousel-track">
             {submissions.map((logo) => (
               <div className="carousel-card" key={logo.id}>
