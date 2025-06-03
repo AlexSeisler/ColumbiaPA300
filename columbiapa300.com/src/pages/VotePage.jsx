@@ -88,9 +88,20 @@ const VoteGame = () => {
   if (submitted) {
     return (
       <div className="vote-complete">
-        <h2>🎉 Thanks for participating!</h2>
-        <p>Your votes have been submitted.</p>
-      </div>
+      <h2>🎉 Thanks for participating!</h2>
+      <p>Your votes have been submitted.</p>
+
+      <a
+        href="https://www.facebook.com/share/p/1DidAoCqvK/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="thankyou-button"
+        style={{ marginTop: '2rem', display: 'inline-block' }}
+      >
+        📣 Comment That You Voted!
+      </a>
+    </div>
+
     );
   }
 

@@ -265,3 +265,17 @@
     overflow-x: hidden;
   }
 }
+.thankyou-button {
+  display: inline-block;
+  background-color: #0077cc;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.thankyou-button:hover {
+  background-color: #005fa3;
+}
