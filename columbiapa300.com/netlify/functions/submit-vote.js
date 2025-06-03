@@ -25,12 +25,12 @@ exports.handler = async function(event) {
   }
 
   const body = JSON.parse(event.body);
-  const { name, email, voteId } = body;
+  const { name, email, phone, voteIds } = body;
 
-  if (!name || !email || !voteId) {
+  if (!name || !email || !phone || !Array.isArray(voteIds) || voteIds.length !== 18) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: "Missing required fields" })
+      body: JSON.stringify({ error: "Missing or invalid fields" })
     };
   }
 
@@ -38,9 +38,11 @@ exports.handler = async function(event) {
     fields: {
       "Full Name": name,
       "Email": email,
-      "Vote ID": String(voteId),
+      "Phone": phone,
+      "Vote ID": voteIds.join(", ")
     }
   };
+
 
   try {
     const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_VOTES_BASE_ID}/${AIRTABLE_VOTES_TABLE}`.trim(), {

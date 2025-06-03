@@ -1,166 +1,156 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/vote/vote-page.css';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import '../styles/vote-page.css';
 
-localStorage.removeItem('voted');
+const TOTAL_VOTES_ALLOWED = 18;
+const BATCH_SIZE = 10;
 
-const VotePage = () => {
-  const navigate = useNavigate();
-  const isVotingOpen = true;
-  const [selectedId, setSelectedId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '' });
+const VoteGame = () => {
+  const [logos, setLogos] = useState([]);
+  const [currentBatchIndex, setCurrentBatchIndex] = useState(0);
+  const [votes, setVotes] = useState([]);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(null);
-
-  const [showSwipeHint, setShowSwipeHint] = useState(true);
-  const [fadingOut, setFadingOut] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: '', email: '', phone: '' });
+  const [formError, setFormError] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showThankYouPopup, setShowThankYouPopup] = useState(false);
 
   useEffect(() => {
-    const track = document.querySelector('.carousel-track');
-    if (!track || !showSwipeHint) return;
+    const logoArray = [];
+    for (let i = 1; i <= 178; i++) {
+      logoArray.push({ id: i, src: `/logos/logo${i}.jpg` });
+    }
+    setLogos(logoArray);
+  }, []);
 
-    const checkScrollEnd = () => {
-      const scrollLeft = track.scrollLeft;
-      const maxScrollLeft = track.scrollWidth - track.clientWidth;
+  const currentBatch = logos.slice(
+    currentBatchIndex * BATCH_SIZE,
+    (currentBatchIndex + 1) * BATCH_SIZE
+  );
 
-      if (scrollLeft >= maxScrollLeft - 20) {
-        setFadingOut(true);
-        setTimeout(() => setShowSwipeHint(false), 500);
-        track.removeEventListener('scroll', checkScrollEnd);
-      }
-    };
+  useEffect(() => {
+    if (currentBatch.length === 0 && votes.length < TOTAL_VOTES_ALLOWED) {
+      setCurrentBatchIndex((prev) => prev - 1);
+    }
+  }, [currentBatch, votes]);
 
-    track.addEventListener('scroll', checkScrollEnd);
-    return () => {
-      track.removeEventListener('scroll', checkScrollEnd);
-    };
-  }, [showSwipeHint]);
+  const isValidEmail = (email) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
 
-  const submissions = Array.from({ length: 8 }, (_, i) => ({
-    id: i + 1,
-    student: `Student ${i + 1}`,
-    src: `/logos/logo${i + 1}.png`,
-  }));
+  const isValidPhone = (phone) => /^\+?\d{10,15}$/.test(phone.replace(/[-\s()]/g, ''));
 
-  const handleVoteClick = (id) => setSelectedId(id);
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const { name, email, phone } = userInfo;
+    if (!name || !isValidEmail(email) || !isValidPhone(phone)) {
+      setFormError('Please enter a valid name, email, and phone number.');
+      return;
+    }
+    setFormError('');
+    setFormSubmitted(true);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleVote = (logoId) => {
+    if (votes.length >= TOTAL_VOTES_ALLOWED) return;
+    const updatedVotes = [...votes, logoId];
+    setVotes(updatedVotes);
+
+    if (updatedVotes.length === TOTAL_VOTES_ALLOWED) {
+      setShowThankYouPopup(true);
+      setTimeout(() => {
+        submitVotes(updatedVotes);
+      }, 2000);
+    } else {
+      if ((currentBatchIndex + 1) * BATCH_SIZE < logos.length) {
+        setCurrentBatchIndex(currentBatchIndex + 1);
+      }
+    }
+  };
+
+  const submitVotes = async (votesToSubmit) => {
     try {
       const res = await fetch('/.netlify/functions/submit-vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, voteId: selectedId }),
+        body: JSON.stringify({
+          voteIds: votesToSubmit,
+          ...userInfo,
+        }),
       });
-      if (!res.ok) throw new Error('Submission failed');
-      localStorage.setItem('voted', 'true');
+      if (!res.ok) throw new Error('Failed to submit votes');
       setSubmitted(true);
     } catch (err) {
-      setError(err.message);
+      console.error('Vote submission failed:', err);
     }
   };
 
-  const handleClose = () => {
-    setSelectedId(null);
-    setFormData({ name: '', email: '' });
-    setError(null);
-    setSubmitted(false);
-  };
+  if (submitted) {
+    return (
+      <div className="vote-complete">
+        <h2>🎉 Thanks for participating!</h2>
+        <p>Your votes have been submitted.</p>
+      </div>
+    );
+  }
+
+  if (!formSubmitted) {
+    return (
+      <div className="vote-game">
+        <h1>Before You Vote</h1>
+        <p>Please enter your info to begin voting.</p>
+        <form onSubmit={handleFormSubmit} className="vote-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={userInfo.name}
+            onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={userInfo.email}
+            onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+            required
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={userInfo.phone}
+            onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+            required
+          />
+          {formError && <p className="error-message">{formError}</p>}
+          <button type="submit">Start Voting</button>
+        </form>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <main className="vote-page">
-        <section className="vote-header">
-          <div className="vote-banner">
-            <span role="img" aria-label="scroll">📜</span>
-            <h1 className="glow-header">Official Logo Vote</h1>
+    <div className="vote-game">
+      {showThankYouPopup && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>🎉 Thank you!</h2>
+            <p>Submitting your votes...</p>
           </div>
-          <p className="vote-subtext">
-            Columbia is turning 300 — and our students designed its legacy.<br />
-            Help choose the <strong>official logo</strong> for the celebration.
-          </p>
-          <div className="vote-details">
-            <p>🗓️ <strong>Voting Closes:</strong> June 2, 2025</p>
-            <p>🧑‍⚖️ <em>One vote per person. Results revealed at the borough meeting.</em></p>
+        </div>
+      )}
+      <div className="vote-progress">
+        🗳️ Vote {Math.min(votes.length + 1, TOTAL_VOTES_ALLOWED)} of {TOTAL_VOTES_ALLOWED}
+      </div>
+      <div className="logo-grid">
+        {currentBatch.map((logo) => (
+          <div key={logo.id} className="logo-card">
+            <img src={logo.src} alt={`Logo ${logo.id}`} className="logo-img" />
+            <button onClick={() => handleVote(logo.id)}>Vote</button>
           </div>
-        </section>
-
-        <section className="carousel">
-          <h2 className="carousel-header">Vote for Your Favorite Logo</h2>
-
-          {showSwipeHint && (
-            <div className={`swipe-hint-popup ${fadingOut ? 'fade-out' : ''}`}>
-              ➡️ Swipe for more logos
-            </div>
-          )}
-
-          <div className="carousel-track">
-            {submissions.map((logo) => (
-              <div className="carousel-card" key={logo.id}>
-                <img src={logo.src} alt={`Logo ${logo.id}`} className="carousel-image" />
-                <h3>Logo #{logo.id}</h3>
-                <button
-                  className="vote-btn"
-                  onClick={() => handleVoteClick(logo.id)}
-                  disabled={!isVotingOpen || localStorage.getItem('voted')}
-                >
-                  {isVotingOpen ? '🗳 Vote' : '🗳 Vote (Opens June 1)'}
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {selectedId && !submitted && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <button className="modal-close" onClick={handleClose}>✖</button>
-              <h3>Vote for Logo #{selectedId}</h3>
-              <form onSubmit={handleSubmit} className="vote-form">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Full Name"
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                <button type="submit">Submit Vote</button>
-                {error && <p className="error-message">{error}</p>}
-              </form>
-            </div>
-          </div>
-        )}
-
-        {submitted && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <button className="modal-close" onClick={handleClose}>✖</button>
-              <h2>🎉 Thank you for voting!</h2>
-              <p>Want to shout out your pick? Submit a 10-second video here.</p>
-              <button onClick={() => navigate('/media')}>Submit Video Reaction</button>
-              <p>Help bring these celebrations to life.</p>
-              <button onClick={() => navigate('/donate')}>Support with a Donation</button>
-            </div>
-          </div>
-        )}
-      </main>
-    </>
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default VotePage;
+export default VoteGame;
