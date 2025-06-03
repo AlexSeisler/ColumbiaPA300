@@ -49,9 +49,9 @@ const VoteGame = () => {
   };
 
   const handleVote = (buttonIndex, logoId) => {
-    const absolutePosition = currentBatchIndex * BATCH_SIZE + buttonIndex + 1;
+    const relativePosition = buttonIndex + 1; // always 1–10
 
-    const updatedPositions = [...positions, absolutePosition];
+    const updatedPositions = [...positions, relativePosition];
     const updatedVotes = [...votes, logoId];
 
     setPositions(updatedPositions);
@@ -66,6 +66,7 @@ const VoteGame = () => {
       setCurrentBatchIndex((prev) => prev + 1);
     }
   };
+
 
   const submitVotes = async (votesToSubmit) => {
     try {
