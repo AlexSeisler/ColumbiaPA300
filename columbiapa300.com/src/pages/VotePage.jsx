@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/vote-page.css';
+import '../styles/vote/vote-page.css';
 
 const TOTAL_VOTES_ALLOWED = 18;
 const BATCH_SIZE = 10;
