@@ -8,11 +8,17 @@ const VoteGame = () => {
   const [logos, setLogos] = useState([]);
   const [currentBatchIndex, setCurrentBatchIndex] = useState(0);
   const [votes, setVotes] = useState([]);
+  const [positions, setPositions] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [userInfo, setUserInfo] = useState({ name: '', email: '', phone: '' });
   const [formError, setFormError] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [showThankYouPopup, setShowThankYouPopup] = useState(false);
+
+  const currentBatch = logos.slice(
+    currentBatchIndex * BATCH_SIZE,
+    (currentBatchIndex + 1) * BATCH_SIZE
+  );
 
   useEffect(() => {
     const logoArray = [];
@@ -22,19 +28,13 @@ const VoteGame = () => {
     setLogos(logoArray);
   }, []);
 
-  const currentBatch = logos.slice(
-    currentBatchIndex * BATCH_SIZE,
-    (currentBatchIndex + 1) * BATCH_SIZE
-  );
-
   useEffect(() => {
-    if (currentBatch.length === 0 && votes.length < TOTAL_VOTES_ALLOWED) {
-      setCurrentBatchIndex((prev) => prev - 1);
+    if (currentBatch.length === 0 && positions.length < TOTAL_VOTES_ALLOWED) {
+      setCurrentBatchIndex((prev) => Math.max(prev - 1, 0));
     }
-  }, [currentBatch, votes]);
+  }, [logos, currentBatchIndex, currentBatch, positions]);
 
   const isValidEmail = (email) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
-
   const isValidPhone = (phone) => /^\+?\d{10,15}$/.test(phone.replace(/[-\s()]/g, ''));
 
   const handleFormSubmit = (e) => {
@@ -48,20 +48,22 @@ const VoteGame = () => {
     setFormSubmitted(true);
   };
 
-  const handleVote = (logoId) => {
-    if (votes.length >= TOTAL_VOTES_ALLOWED) return;
+  const handleVote = (buttonIndex, logoId) => {
+    const absolutePosition = currentBatchIndex * BATCH_SIZE + buttonIndex + 1;
+
+    const updatedPositions = [...positions, absolutePosition];
     const updatedVotes = [...votes, logoId];
+
+    setPositions(updatedPositions);
     setVotes(updatedVotes);
 
-    if (updatedVotes.length === TOTAL_VOTES_ALLOWED) {
+    if (updatedPositions.length === TOTAL_VOTES_ALLOWED) {
       setShowThankYouPopup(true);
       setTimeout(() => {
-        submitVotes(updatedVotes);
+        submitVotes(updatedPositions);
       }, 2000);
     } else {
-      if ((currentBatchIndex + 1) * BATCH_SIZE < logos.length) {
-        setCurrentBatchIndex(currentBatchIndex + 1);
-      }
+      setCurrentBatchIndex((prev) => prev + 1);
     }
   };
 
@@ -139,13 +141,13 @@ const VoteGame = () => {
         </div>
       )}
       <div className="vote-progress">
-        🗳️ Vote {Math.min(votes.length + 1, TOTAL_VOTES_ALLOWED)} of {TOTAL_VOTES_ALLOWED}
+        🗳️ Vote {Math.min(positions.length + 1, TOTAL_VOTES_ALLOWED)} of {TOTAL_VOTES_ALLOWED}
       </div>
       <div className="logo-grid">
-        {currentBatch.map((logo) => (
+        {currentBatch.map((logo, index) => (
           <div key={logo.id} className="logo-card">
             <img src={logo.src} alt={`Logo ${logo.id}`} className="logo-img" />
-            <button onClick={() => handleVote(logo.id)}>Vote</button>
+            <button onClick={() => handleVote(index, logo.id)}>Vote</button>
           </div>
         ))}
       </div>
