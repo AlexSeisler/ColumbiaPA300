@@ -106,41 +106,55 @@ const VoteGame = () => {
   }
 
 if (!formSubmitted) {
-    return (
-      <div className="vote-game">
-        <h1>Before You Vote</h1>
-        <p>Please enter your info to begin voting.</p>
-        <form onSubmit={handleFormSubmit} className="vote-form">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={userInfo.name}
-            onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={userInfo.email}
-            onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-            required
-          />
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={userInfo.phone}
-            onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
-            required
-          />
-          {formError && <p className="error-message">{formError}</p>}
-          <button type="submit">Start Voting</button>
-        </form>
+  return (
+    <div className="vote-game">
+
+      <h1>Before You Vote</h1>
+      <p>Please enter your info to begin voting.</p>
+
+      <div className="voting-explainer-box">
+        <h3>🗳️ How to Vote for Your Favorite Columbia PA 300 Logo!</h3>
+        <ul>
+          <li>🔟 You'll be shown <strong>10 logos at a time</strong></li>
+          <li>✅ Choose your <strong>favorite from that group</strong></li>
+          <li>➡️ Then the <strong>next set of 10</strong> will appear</li>
+          <li>📄 There are <strong>18 pages total</strong></li>
+          <li>🖍️ You can <strong>vote for ONE logo per page!</strong></li>
+        </ul>
       </div>
-    );
-  }
+
+      <form onSubmit={handleFormSubmit} className="vote-form">
+        <input
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          value={userInfo.name}
+          onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={userInfo.email}
+          onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+          required
+        />
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          value={userInfo.phone}
+          onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+          required
+        />
+        {formError && <p className="error-message">{formError}</p>}
+        <button type="submit">Start Voting</button>
+      </form>
+    </div>
+  );
+}
+
 
   return (
     <div className="vote-game">
