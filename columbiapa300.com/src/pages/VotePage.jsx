@@ -105,7 +105,7 @@ const VoteGame = () => {
     );
   }
 
-  if (!formSubmitted) {
+if (!formSubmitted) {
     return (
       <div className="vote-game">
         <h1>Before You Vote</h1>
