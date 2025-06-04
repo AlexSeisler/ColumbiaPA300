@@ -317,3 +317,22 @@
 .voting-explainer-box li {
   margin-bottom: 0.5rem;
 }
+@media (max-width: 768px) {
+  .voting-explainer-box {
+    font-size: 0.95rem;
+    padding: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .voting-explainer-box h3 {
+    font-size: 1.05rem;
+  }
+
+  .voting-explainer-box ul {
+    padding-left: 1rem;
+  }
+
+  .voting-explainer-box li {
+    margin-bottom: 0.4rem;
+  }
+}
