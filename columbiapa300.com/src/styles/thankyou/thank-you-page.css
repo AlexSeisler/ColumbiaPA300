@@ -1,0 +1,33 @@
+.thank-you-page {
+  padding: 3rem;
+  text-align: center;
+  background: linear-gradient(135deg, #fef8f3, #fff);
+}
+
+.thank-you-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.cta-buttons {
+  margin-top: 2rem;
+}
+
+.cta-buttons a {
+  margin: 0 1rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  background: #4e2a84;
+  color: white;
+  text-decoration: none;
+}
+
+.tax-note {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}

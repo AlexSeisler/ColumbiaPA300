@@ -14,6 +14,7 @@ import ContactPage from './pages/ContactPage';
 import DonationsPage from './pages/DonationsPage'; // ✅ NEW import
 import NotFoundPage from './pages/NotFoundPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import ThankYouPage from './pages/ThankYouPage';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/media" element={<MediaPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/donate" element={<DonationsPage />} /> 
+          <Route path="/thank-you" element={<ThankYouPage />} />  {/* ✅ Add This */}
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
