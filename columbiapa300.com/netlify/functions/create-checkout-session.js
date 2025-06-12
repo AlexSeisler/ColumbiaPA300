@@ -1,43 +1,50 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+const recurringPriceMap = {
+  25: "price_1RZ2YAB0bQHfouEEvVfVhLeQ",
+  100: "price_1RZ2YZB0bQHfouEEDFl98Are",
+  250: "price_1RZ2ZNB0bQHfouEEAmW7Ocpb",
+  500: "price_1RZ2ZnB0bQHfouEEmYoCifnn"
+};
+
 exports.handler = async (event) => {
   const body = JSON.parse(event.body);
-  const { name, email, amount, recurring, note, purpose } = body;
+  const { name, email, amount, recurring, note } = body;
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      customer_email: email,
-      line_items: [
-        {
+    let session;
+    if (recurring) {
+      const priceId = recurringPriceMap[amount];
+      if (!priceId) throw new Error("Invalid recurring price");
+
+      session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        payment_method_types: ['card'],
+        customer_email: email,
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: 'https://columbiapa300.com/thank-you',
+        cancel_url: 'https://columbiapa300.com/donate'
+      });
+    } else {
+      session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        payment_method_types: ['card'],
+        customer_email: email,
+        line_items: [{
           price_data: {
             currency: 'usd',
             product_data: {
-              name: `Donation to: ${purpose}`,
-              description: `From ${name} — ${note || 'No message provided'}`,
+              name: "Donation to: Marketing & Outreach",
+              description: `From ${name} — ${note || 'No message provided'}`
             },
-            unit_amount: parseInt(amount) * 100,
-            recurring: recurring ? { interval: 'month' } : undefined,
+            unit_amount: parseInt(amount) * 100
           },
-          quantity: 1,
-        },
-      ],
-      mode: recurring ? 'subscription' : 'payment',
-      success_url: 'https://columbiapa300.com/thank-you',
-      cancel_url: 'https://columbiapa300.com/donate',
-    });
-    const body = JSON.parse(event.body);
-
-    const slackMessage = {
-      text: `💸 *New Donation Initiated*\n👤 ${body.name} (${body.email})\n🎯 Fund: ${body.purpose}\n💵 Amount: $${body.amount}\n📝 Note: ${body.note || 'None'}`
-    };
-
-    await fetch(process.env.SLACK_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(slackMessage),
-    });
-
+          quantity: 1
+        }],
+        success_url: 'https://columbiapa300.com/thank-you',
+        cancel_url: 'https://columbiapa300.com/donate'
+      });
+    }
 
     return {
       statusCode: 200,
