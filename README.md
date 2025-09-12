@@ -58,12 +58,12 @@ It enabled **student logo submissions, community voting, donations, and civic me
 ---
 
 ## 📂 Repository Structure
-
+```text
 /src → React frontend (components, pages, styles)
 /netlify → Backend functions (API gateway)
 /public → Static assets (logos, screenshots)
 /docs → Documentation (architecture, security, integrations)
-
+```
 ---
 
 ## 📊 Context
