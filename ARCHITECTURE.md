@@ -58,23 +58,24 @@ Serverless functions handle interactivity, persistence, and integrations:
 ```mermaid
 flowchart TD
 
-A[Resident / Student] -->|Frontend (React)| B[Netlify Hosting]
+A[Resident / Student] --> B[Frontend (React)]
+B --> C[Netlify Hosting]
 
-B -->|Logo Submission| C[Netlify Function: submitForm]
-C --> D[Airtable: Submissions]
-C --> E[Google Drive: Logos]
-C --> F[Slack Notification]
+C -->|Logo Submission| D[Netlify Function: submitForm]
+D --> E[Airtable: Submissions]
+D --> F[Google Drive: Logos]
+D --> G[Slack Notification]
 
-B -->|Vote Submission| G[Netlify Function: submit-vote]
-G --> H[Airtable: Votes]
+C -->|Vote Submission| H[Netlify Function: submit-vote]
+H --> I[Airtable: Votes]
 
-B -->|Donation| I[Netlify Function: create-checkout-session]
-I --> J[Stripe Checkout]
-J --> K[Donation Records]
+C -->|Donation| J[Netlify Function: create-checkout-session]
+J --> K[Stripe Checkout]
+K --> L[Donation Records]
 
-B -->|Media Upload| L[Netlify Function: mediaUpload / createResumableUpload]
-L --> M[Google Drive: Media]
-L --> F[Slack Notification]
+C -->|Media Upload| M[Netlify Function: mediaUpload / createResumableUpload]
+M --> N[Google Drive: Media]
+M --> G[Slack Notification]
 ```
 
 ## 🧩 Subsystem Breakdown
