@@ -1,5 +1,7 @@
 # ColumbiaPA300 - Civic Engagement Platform 🎉
 
+[![Live Demo on Netlify](https://img.shields.io/badge/Live-Demo-green?logo=netlify)](https://columbiapa300.netlify.app)
+
 ColumbiaPA300 is a **public-facing civic platform** built for the **300-year anniversary celebration of Columbia, PA**.  
 It enabled **student logo submissions, community voting, donations, and civic media uploads** - serving 100+ residents, students, and civic organizers.
 
@@ -7,7 +9,7 @@ It enabled **student logo submissions, community voting, donations, and civic me
 
 ## 🌐 Live Demo
 
-- **Was Live At (Client Production URL):** [https://columbiapa300.com](https://columbiapa300.netlify.app/)  
+- **Client Production URL (archived):** [https://columbiapa300.com](https://columbiapa300.netlify.app/)  
 - **Archived Deployment (Netlify):** [https://columbiapa300.netlify.app/](https://columbiapa300.netlify.app/)  
 - **Repo Owner:** [Alex Seisler](https://github.com/AlexSeisler)
 
@@ -58,19 +60,37 @@ It enabled **student logo submissions, community voting, donations, and civic me
 ---
 
 ## 📂 Repository Structure
+
 ```text
-/src → React frontend (components, pages, styles)
-/netlify → Backend functions (API gateway)
-/public → Static assets (logos, screenshots)
-/docs → Documentation (architecture, security, integrations)
+ColumbiaPA300/
+├── public/                 # Static assets (logos, civic branding, screenshots)
+├── src/                    # React frontend
+│   ├── components/         # UI components (Header, Footer, Forms, Timeline)
+│   ├── pages/              # Route-level pages (Home, Vote, Donate, Media)
+│   └── styles/             # CSS modules (per section/page)
+│
+├── netlify/functions/      # Serverless backend functions
+│   ├── create-checkout-session.js   # Stripe donations
+│   ├── submit-vote.js               # Airtable voting
+│   ├── submitForm.js                # Logo submissions
+│   └── mediaUpload.js               # File uploads (Drive + Slack)
+│
+├── docs/                   # Documentation (architecture, security, metrics)
+├── package.json
+├── vite.config.js
+└── README.md
 ```
+
 ---
 
 ## 📊 Context
 
-📜 Case Study
-ColumbiaPA300 was built as part of a civic engagement initiative for the Columbia Borough’s 300-year anniversary.
-It demonstrates the ability to deliver a production ready platform with real users, payments, and community trust.
+## 📖 Additional Documentation
+
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) → System design and data flow  
+- [INTEGRATIONS.md](./docs/INTEGRATIONS.md) → Airtable, Stripe, Google Drive, Slack integrations  
+- [SECURITY.md](./docs/SECURITY.md) → Data handling, Stripe PII considerations, file upload risks  
+- [METRICS.md](./docs/METRICS.md) → Adoption stats, usage proof, and screenshots  
 
 📌 Supporting System: SMMAA (prototype) → social media marketing automation for campaign traffic (not deployed, but tied to ColumbiaPA300).
 
