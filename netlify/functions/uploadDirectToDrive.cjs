@@ -1,10 +1,16 @@
-const { google } = require('googleapis');
-const { Readable } = require('stream');
+/**
+ * Netlify Function: uploadDirectToDrive
+ * Handles direct uploads of media files to Google Drive.
+ * Used for smaller files (non-resumable).
+ */
+
+const { google } = require("googleapis");
+const { Readable } = require("stream");
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, x-file-name",
 };
 
 exports.config = {
@@ -12,40 +18,45 @@ exports.config = {
 };
 
 exports.handler = async (event) => {
-  console.log("📥 uploadDirectToDrive triggered");
-  console.log("Headers:", event.headers);
-  console.log("Method:", event.httpMethod);
-  console.log("isBase64Encoded:", event.isBase64Encoded);
-  console.log("Body length (base64):", event.body?.length);
-
-  if (event.httpMethod === 'OPTIONS') {
+  if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: 'CORS preflight success',
+      body: "CORS OK",
     };
   }
 
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'] || 'application/octet-stream';
-    const fileName = event.headers['x-file-name'] || 'upload-' + Date.now();
+    const contentType =
+      event.headers["content-type"] ||
+      event.headers["Content-Type"] ||
+      "application/octet-stream";
+
+    const fileName = event.headers["x-file-name"] || `upload-${Date.now()}`;
+
+    // Basic validation for file types
+    if (!contentType.startsWith("image/") && !contentType.startsWith("video/")) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ success: false, message: "Invalid file type" }),
+      };
+    }
 
     const buffer = event.isBase64Encoded
-      ? Buffer.from(event.body, 'base64')
+      ? Buffer.from(event.body, "base64")
       : Buffer.from(event.body);
 
-    console.log("✅ Buffer created, size:", buffer.length);
-
     const creds = JSON.parse(
-      Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_B64, 'base64').toString('utf8')
+      Buffer.from(process.env.GOOGLE_SERVICE_ACCOUNT_B64, "base64").toString("utf8")
     );
 
     const auth = new google.auth.GoogleAuth({
       credentials: creds,
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
+      scopes: ["https://www.googleapis.com/auth/drive.file"],
     });
 
-    const drive = google.drive({ version: 'v3', auth: await auth.getClient() });
+    const drive = google.drive({ version: "v3", auth: await auth.getClient() });
 
     const uploadRes = await drive.files.create({
       requestBody: {
@@ -59,20 +70,20 @@ exports.handler = async (event) => {
       },
     });
 
-    console.log("✅ Upload success! File ID:", uploadRes.data.id);
+    const fileId = uploadRes.data.id;
+    const fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
 
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify({ success: true, fileId: uploadRes.data.id }),
+      body: JSON.stringify({ success: true, fileId, fileUrl }),
     };
-
   } catch (err) {
-    console.error("❌ Upload error:", err);
+    console.error("Direct upload error:", err.message);
     return {
       statusCode: 500,
       headers: corsHeaders,
-      body: JSON.stringify({ success: false, error: err.message }),
+      body: JSON.stringify({ success: false, message: "Upload failed" }),
     };
   }
 };
