@@ -1,6 +1,10 @@
-// src/pages/ContactPage.jsx
-import React from 'react';
-import '../styles/contact/contact-page.css';
+/**
+ * Contact Page — ColumbiaPA300
+ * Provides ways for residents, students, and organizers to connect with the campaign team.
+ */
+
+import React from "react";
+import "../styles/contact/contact-page.css";
 
 const ContactPage = () => {
   return (
@@ -30,12 +34,16 @@ const ContactPage = () => {
 
           <div className="contact-card">
             <h2>🙋 Volunteer or Support</h2>
-            <p>Want to get involved? Reach out — we’ll match you with the right borough committee or event lead.</p>
+            <p>
+              Want to get involved? Reach out — we’ll match you with the right borough committee or event lead.
+            </p>
           </div>
 
           <div className="contact-card">
             <h2>📣 Submit an Event</h2>
-            <p>Hosting something for Columbia’s 300th? Share your event so we can include it in our celebration timeline!</p>
+            <p>
+              Hosting something for Columbia’s 300th? Share your event so we can include it in our celebration timeline!
+            </p>
             <p><em>Event form launching soon.</em></p>
           </div>
         </div>
