@@ -1,4 +1,4 @@
-# ColumbiaPA300 — Security Notes
+# ColumbiaPA300 - Security Notes
 
 ## 🎯 Purpose
 

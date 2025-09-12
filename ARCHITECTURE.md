@@ -1,4 +1,4 @@
-# ColumbiaPA300 — System Architecture
+# ColumbiaPA300 - System Architecture
 
 ## 🎯 Purpose
 

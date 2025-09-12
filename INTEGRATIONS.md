@@ -1,4 +1,4 @@
-# ColumbiaPA300 — Integrations Overview
+# ColumbiaPA300 - Integrations Overview
 
 ## 🎯 Purpose
 
@@ -65,7 +65,7 @@ These integrations powered **payments, submissions, storage, and real-time notif
   - New logo submission (with metadata)  
   - New media upload (file details)  
 - **Risks:**  
-  - Webhook URL is sensitive — must not be exposed in repo
+  - Webhook URL is sensitive - must not be exposed in repo
 
 ---
 
