@@ -1,7 +1,7 @@
-# ColumbiaPA300 — Civic Engagement Platform 🎉
+# ColumbiaPA300 - Civic Engagement Platform 🎉
 
 ColumbiaPA300 is a **public-facing civic platform** built for the **300-year anniversary celebration of Columbia, PA**.  
-It enabled **student logo submissions, community voting, donations, and civic media uploads** — serving 100+ residents, students, and civic organizers.
+It enabled **student logo submissions, community voting, donations, and civic media uploads** - serving 100+ residents, students, and civic organizers.
 
 ---
 
@@ -22,6 +22,18 @@ It enabled **student logo submissions, community voting, donations, and civic me
 - 📢 **Slack Notifications** → real-time alerts for submissions/uploads.  
 - 🏛️ **Civic Storytelling** → timeline + content pages celebrating Columbia’s history.
 
+---
+## 📊 Impact
+
+👥 100+ active users (residents, students, civic organizers)
+
+🖼️ 100+ logo submissions
+
+🗳️ 150+ votes cast in structured contest rounds
+
+💵 $1,500+ in donations collected
+
+📷 Dozens of civic media uploads archived
 ---
 
 ## 🛠 Tech Stack
@@ -51,26 +63,13 @@ It enabled **student logo submissions, community voting, donations, and civic me
 /public → Static assets (logos, screenshots)
 /docs → Documentation (architecture, security, integrations)
 
-
 ---
-
-## 📊 Impact
-
-👥 100+ active users (residents, students, civic organizers)
-
-🖼️ 100+ logo submissions
-
-🗳️ 150+ votes cast in structured contest rounds
-
-💵 $1,500+ in donations collected
-
-📷 Dozens of civic media uploads archived
 
 ## 📊 Context
 
 📜 Case Study
 ColumbiaPA300 was built as part of a civic engagement initiative for the Columbia Borough’s 300-year anniversary.
-It demonstrates the ability to deliver a production-ready platform with real users, payments, and community trust.
+It demonstrates the ability to deliver a production ready platform with real users, payments, and community trust.
 
 📌 Supporting System: SMMAA (prototype) → social media marketing automation for campaign traffic (not deployed, but tied to ColumbiaPA300).
 
