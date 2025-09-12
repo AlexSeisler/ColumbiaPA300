@@ -10,13 +10,14 @@ exports.handler = async function(event) {
     };
   }
 
+  // 🔒 Use backend-only env names (no VITE_ prefix)
   const {
-    AIRTABLE_TOKEN_VOTES,
+    AIRTABLE_VOTES_TOKEN,
     AIRTABLE_VOTES_BASE_ID,
     AIRTABLE_VOTES_TABLE
   } = process.env;
 
-  if (!AIRTABLE_TOKEN_VOTES || !AIRTABLE_VOTES_BASE_ID || !AIRTABLE_VOTES_TABLE) {
+  if (!AIRTABLE_VOTES_TOKEN || !AIRTABLE_VOTES_BASE_ID || !AIRTABLE_VOTES_TABLE) {
     console.error("❌ Missing Airtable credentials in environment variables");
     return {
       statusCode: 500,
@@ -43,16 +44,18 @@ exports.handler = async function(event) {
     }
   };
 
-
   try {
-    const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_VOTES_BASE_ID}/${AIRTABLE_VOTES_TABLE}`.trim(), {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_TOKEN_VOTES}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(airtablePayload)
-    });
+    const response = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_VOTES_BASE_ID}/${AIRTABLE_VOTES_TABLE}`.trim(),
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_VOTES_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(airtablePayload)
+      }
+    );
 
     const airtableData = await response.json();
 

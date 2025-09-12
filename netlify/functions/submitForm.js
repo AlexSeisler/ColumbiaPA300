@@ -8,9 +8,10 @@ exports.handler = async function(event) {
     };
   }
 
-  const { VITE_AIRTABLE_TOKEN, VITE_AIRTABLE_BASE_ID, VITE_AIRTABLE_TABLE_NAME } = process.env;
+  // 🔒 Use backend-only env names (no VITE_ prefix)
+  const { AIRTABLE_SUBMISSIONS_TOKEN, AIRTABLE_SUBMISSIONS_BASE_ID, AIRTABLE_SUBMISSIONS_TABLE } = process.env;
 
-  if (!VITE_AIRTABLE_TOKEN || !VITE_AIRTABLE_BASE_ID || !VITE_AIRTABLE_TABLE_NAME) {
+  if (!AIRTABLE_SUBMISSIONS_TOKEN || !AIRTABLE_SUBMISSIONS_BASE_ID || !AIRTABLE_SUBMISSIONS_TABLE) {
     console.error("❌ Missing Airtable credentials in environment variables");
     return {
       statusCode: 500,
@@ -43,14 +44,17 @@ exports.handler = async function(event) {
   console.log("📤 Sending Airtable payload:", airtablePayload);
 
   try {
-    const response = await fetch(`https://api.airtable.com/v0/${VITE_AIRTABLE_BASE_ID}/${VITE_AIRTABLE_TABLE_NAME}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${VITE_AIRTABLE_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(airtablePayload)
-    });
+    const response = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_SUBMISSIONS_BASE_ID}/${AIRTABLE_SUBMISSIONS_TABLE}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_SUBMISSIONS_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(airtablePayload)
+      }
+    );
 
     const airtableData = await response.json();
     console.log("✅ AIRTABLE RESPONSE:", airtableData);
@@ -65,15 +69,16 @@ exports.handler = async function(event) {
         })
       };
     }
-    const slackMessage = {
-  text: `🎨 *New Logo Submission*\n👤 ${body.name} (${body.email})\n🏫 ${body.school} – Grade ${body.grade}\n📎 <${fileUrl}|View Uploaded Logo>`
-};
 
-  await fetch(process.env.SLACK_WEBHOOK_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(slackMessage),
-  });
+    const slackMessage = {
+      text: `🎨 *New Logo Submission*\n👤 ${body.name} (${body.email})\n🏫 ${body.school} – Grade ${body.grade}\n📎 <${fileUrl}|View Uploaded Logo>`
+    };
+
+    await fetch(process.env.SLACK_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(slackMessage),
+    });
 
     return {
       statusCode: 200,
