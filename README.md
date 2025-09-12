@@ -83,14 +83,11 @@ ColumbiaPA300/
 
 ---
 
-## 📊 Context
-
 ## 📖 Additional Documentation
 
-- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) → System design and data flow  
-- [INTEGRATIONS.md](./docs/INTEGRATIONS.md) → Airtable, Stripe, Google Drive, Slack integrations  
-- [SECURITY.md](./docs/SECURITY.md) → Data handling, Stripe PII considerations, file upload risks  
-- [METRICS.md](./docs/METRICS.md) → Adoption stats, usage proof, and screenshots  
+- [ARCHITECTURE.md](./ARCHITECTURE.md) → System design and data flow  
+- [INTEGRATIONS.md](./INTEGRATIONS.md) → Airtable, Stripe, Google Drive, Slack integrations  
+- [SECURITY.md](./SECURITY.md) → Data handling, Stripe PII considerations, file upload risks  
 
 📌 Supporting System: SMMAA (prototype) → social media marketing automation for campaign traffic (not deployed, but tied to ColumbiaPA300).
 
