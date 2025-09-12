@@ -1,7 +1,8 @@
 {
-  "name": "columbiapa300.com",
+  "name": "columbiapa300",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
+  "description": "ColumbiaPA300 — Civic engagement platform for Columbia, PA's 300-year anniversary (logo contest, voting, donations, media uploads).",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -29,5 +30,17 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "vite": "^6.3.5"
-  }
+  },
+  "keywords": [
+    "civic",
+    "engagement",
+    "react",
+    "vite",
+    "netlify",
+    "stripe",
+    "airtable",
+    "google-drive"
+  ],
+  "license": "MIT",
+  "author": "ColumbiaPA300 Project Team"
 }

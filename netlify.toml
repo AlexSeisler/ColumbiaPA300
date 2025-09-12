@@ -1,18 +1,16 @@
+# Netlify configuration for ColumbiaPA300 civic platform
+
 [functions]
   directory = "netlify/functions"
   external_node_modules = ["node-fetch", "googleapis"]
-  included_files = [
-    "netlify/functions/keys/google-service-account.json",
-    "netlify/functions/**/*.cjs"
-  ]
   node_bundler = "esbuild"
 
 [build]
   publish = "dist"
   command = "npm run build"
 
+# Function-specific overrides
 [functions.uploadDirectToDrive]
-  included_files = ["*"]
   external_node_modules = ["googleapis"]
   node_bundler = "esbuild"
   format = "cjs"
@@ -21,6 +19,5 @@
   envFiles = [".env"]
 
 [build.environment]
+  # Ensure no secrets are exposed in builds
   SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLISHABLE_KEY"
-
-
