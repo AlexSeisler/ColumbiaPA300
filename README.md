@@ -34,6 +34,7 @@ It enabled **student logo submissions, community voting, donations, and civic me
 💵 $1,500+ in donations collected
 
 📷 Dozens of civic media uploads archived
+
 ---
 
 ## 🛠 Tech Stack
