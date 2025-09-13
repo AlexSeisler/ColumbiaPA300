@@ -27,13 +27,15 @@ It enabled **student logo submissions, community voting, donations, and civic me
 ---
 ## 📊 Impact
 
-👥 100+ active users (residents, students, civic organizers)
+👥 **100+** active users (residents, students, civic organizers)
 
-🖼️ 100+ logo submissions
+🖼️ **100+** logo submissions
 
-🗳️ 150+ votes cast in structured contest rounds
+🗳️ **150+** votes cast in structured contest rounds
 
-💵 $1,500+ in donations collected
+💵 **$1,500+** in donations collected
+
+🌐 **5.8K Views / 2.1K Reach** on campaign content (Meta metrics)
 
 📷 Dozens of civic media uploads archived
 
