@@ -46,8 +46,14 @@ test.describe('Voting Flow', () => {
     await page.click(selectors.votePage.submitButton);
 
     // Expect validation messages to appear (assuming standard HTML5 validation)
-    const nameValid = await page.locator(selectors.votePage.nameInput).evaluate((el) => el.validity.valid);
-    const emailValid = await page.locator(selectors.votePage.emailInput).evaluate((el) => el.validity.valid);
+    const nameValid = await page
+      .locator(selectors.votePage.nameInput)
+      .evaluate((el: HTMLInputElement) => el.validity.valid);
+
+    const emailValid = await page
+      .locator(selectors.votePage.emailInput)
+      .evaluate((el: HTMLInputElement) => el.validity.valid);
+
 
     expect(nameValid).toBeFalsy();
     expect(emailValid).toBeFalsy();

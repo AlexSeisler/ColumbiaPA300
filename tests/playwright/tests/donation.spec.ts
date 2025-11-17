@@ -46,8 +46,14 @@ test.describe('Donation Flow', () => {
   test('should handle missing input validation', async ({ page }) => {
     await page.click(selectors.donationPage.donateButton);
 
-    const amountValid = await page.locator(selectors.donationPage.amountInput).evaluate((el) => el.validity.valid);
-    const emailValid = await page.locator(selectors.donationPage.emailInput).evaluate((el) => el.validity.valid);
+    const amountValid = await page
+      .locator(selectors.donationPage.amountInput)
+      .evaluate((el: HTMLInputElement) => el.validity.valid);
+
+    const emailValid = await page
+      .locator(selectors.donationPage.emailInput)
+      .evaluate((el: HTMLInputElement) => el.validity.valid);
+
 
     expect(amountValid).toBeFalsy();
     expect(emailValid).toBeFalsy();

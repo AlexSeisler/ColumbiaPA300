@@ -6,9 +6,18 @@ export async function retry(action: () => Promise<void>, attempts = 3, delay = 1
     try {
       await action();
       return; // Success, exit retry loop
-    } catch (error) {
+    } catch (error: unknown) {
+      // Narrow error type safely
+      const message =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'string'
+          ? error
+          : 'Unknown error';
+
       if (i === attempts - 1) throw error;
-      console.warn(`Retrying (${i + 1}/${attempts}) due to error:`, error.message);
+
+      console.warn(`Retrying (${i + 1}/${attempts}) due to error: ${message}`);
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
