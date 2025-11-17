@@ -1,0 +1,46 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        framework: [playwright, cypress]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Playwright Tests
+        if: matrix.framework == 'playwright'
+        run: |
+          npx playwright install --with-deps
+          npm run test:pw
+
+      - name: Run Cypress Tests
+        if: matrix.framework == 'cypress'
+        run: |
+          npx cypress install
+          npm run test:cypress
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.framework }}-reports
+          path: |
+            tests/playwright/reports
+            cypress/screenshots
