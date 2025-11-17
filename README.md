@@ -31,7 +31,7 @@ It enabled **student logo submissions, community voting, donations, and civic me
 
 🖼️ **100+** logo submissions
 
-🗳️ **150+** votes cast in structured contest rounds
+🔳 **150+** votes cast in structured contest rounds
 
 💵 **$1,500+** in donations collected
 
@@ -41,7 +41,7 @@ It enabled **student logo submissions, community voting, donations, and civic me
 
 ---
 
-## 🛠 Tech Stack
+## 🔧 Tech Stack
 
 **Frontend**
 - React 19 + Vite 6.3  
@@ -61,7 +61,7 @@ It enabled **student logo submissions, community voting, donations, and civic me
 
 ---
 
-## 📂 Repository Structure
+## 🗂️ Repository Structure
 
 ```text
 ColumbiaPA300/
@@ -77,6 +77,23 @@ ColumbiaPA300/
 │   ├── submitForm.js                # Logo submissions
 │   └── mediaUpload.js               # File uploads (Drive + Slack)
 │
+├── tests/                  # Automated QA layer (Priority 1 Integration)
+│   ├── playwright/         # Primary E2E test suite (multi-browser)
+│   │   ├── tests/
+│   │   │   ├── donation.spec.ts
+│   │   │   ├── navigation.spec.ts
+│   │   │   ├── submission.spec.ts
+│   │   │   └── vote.spec.ts
+│   │   ├── helpers/
+│   │   │   ├── selectors.ts
+│   │   │   └── retry.ts
+│   │   └── playwright.config.ts
+│   └── selenium/           # WebDriver-based legacy validation
+│       └── test_vote_flow.ts
+│
+├── .github/workflows/      # CI/CD pipeline stubs
+│   └── e2e-tests.yml
+│
 ├── docs/                   # Documentation (architecture, security, metrics)
 ├── package.json
 ├── vite.config.js
@@ -85,13 +102,58 @@ ColumbiaPA300/
 
 ---
 
-## 📖 Additional Documentation
+## 🔍 QA Automation Layer (Priority 1)
+
+This repository includes a **multi-framework UI automation system** implemented for demonstration and CI/CD simulation purposes.
+
+### 🔧 Frameworks
+- **Playwright**: End-to-end browser automation with trace + video reporting
+- **Selenium**: WebDriver-based test showcase
+- **Cypress (Deferred)**: Optional component-level UX testing
+
+### 🔄 Commands
+```bash
+npx playwright test                # Run all E2E tests
+npx playwright test --headed       # Run in visible browser mode
+npx playwright show-report         # View last Playwright report
+npx ts-node tests/selenium/test_vote_flow.ts  # Selenium demo test
+```
+
+### 🛠️ CI/CD Integration
+- Workflow: `.github/workflows/e2e-tests.yml` (matrix-ready pipeline)
+- Output: HTML reports, screenshots, and trace logs
+- Status: **Demo-ready, offline-safe, CI-configurable**
+
+### 📊 Coverage
+| Flow | Framework | Purpose |
+|------|------------|----------|
+| **Voting** | Playwright / Selenium | Validates Airtable submission + UI updates |
+| **Donation** | Playwright | Validates Stripe redirect + form logic |
+| **Submission** | Playwright | Validates logo submission form + Thank You page |
+| **Navigation** | Playwright | Validates page routing and consistency |
+
+### 🔗 Reports & Artifacts
+- `/tests/playwright/reports/` → HTML + trace + screenshots
+- `/tests/selenium/` → Console output for WebDriver runs
+
+---
+
+## 📄 Documentation
 
 - [ARCHITECTURE.md](./ARCHITECTURE.md) → System design and data flow  
 - [INTEGRATIONS.md](./INTEGRATIONS.md) → Airtable, Stripe, Google Drive, Slack integrations  
 - [SECURITY.md](./SECURITY.md) → Data handling, Stripe PII considerations, file upload risks  
+- [AAO_HANDOFF_OVERVIEW.md](./docs/AAO_HANDOFF_OVERVIEW.md) → Professional positioning context for QA automation  
+- [SYSTEM_ARCHITECT_CONTEXT_OVERVIEW.md](./docs/SYSTEM_ARCHITECT_CONTEXT_OVERVIEW.md) → Architectural rationale + validation notes  
 
-📌 Supporting System: SMMAA (prototype) → social media marketing automation for campaign traffic (not deployed, but tied to ColumbiaPA300).
+---
 
-📄 License
-MIT — Open for educational and referenced use.
+## 💡 Author & Ownership
+- **Architect:** System Architect A  
+- **Executor:** DevBot  
+- **Owner:** [Alex Seisler](https://github.com/AlexSeisler)  
+
+---
+
+## 🔒 License
+MIT — Open for educational and reference use.

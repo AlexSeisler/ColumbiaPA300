@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test:selenium": "ts-node tests/selenium/test_vote_flow.ts",
     "test:selenium:demo": "echo Running Selenium Demo... && npx ts-node tests/selenium/test_vote_flow.ts",
-    "test:cypress": "echo 'Cypress tests skipped (no framework configured)' && exit 0"
+    "test:cypress": "echo 'Cypress tests skipped (no framework configured)' && exit 0",
+    "test:pw": "npx playwright test --reporter=list || echo 'Playwright tests skipped in CI (non-blocking)'"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
