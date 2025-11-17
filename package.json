@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:selenium": "ts-node tests/selenium/test_vote_flow.ts",
+    "test:selenium:demo": "echo Running Selenium Demo... && npx ts-node tests/selenium/test_vote_flow.ts"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
@@ -26,11 +28,14 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "@types/selenium-webdriver": "^4.35.4",
     "@vitejs/plugin-react": "^4.4.1",
+    "chromedriver": "^142.0.2",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "selenium-webdriver": "^4.38.0",
     "typescript": "^5.9.3",
     "vite": "^6.3.5"
   },
