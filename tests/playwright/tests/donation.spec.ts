@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { selectors } from '../helpers/selectors';
 import { retry } from '../helpers/retry';
+import { navigate } from '../helpers/utils';
 
 // ColumbiaPA300 - Donation Flow Automation Test
 // Purpose: Validate donation form submission, mock Stripe redirect, and success message
@@ -12,7 +13,7 @@ const mockDonation = {
 
 test.describe('Donation Flow', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/donate');
+    await navigate(page, '/donate');
   });
 
   test('should display the donation form', async ({ page }) => {
@@ -21,8 +22,7 @@ test.describe('Donation Flow', () => {
   });
 
   test('should submit donation form and show success message', async ({ page }) => {
-    // Mock Stripe checkout API route
-    await page.route('**/\.netlify/functions/create-checkout-session', async (route) => {
+    await page.route('**/\\.netlify/functions/create-checkout-session', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -37,7 +37,6 @@ test.describe('Donation Flow', () => {
       await page.click(selectors.donationPage.donateButton);
     });
 
-    // Expect redirect or success message
     await page.waitForTimeout(1500);
     const thankYouVisible = await page.locator(selectors.donationPage.successMessage).isVisible();
     expect(thankYouVisible).toBeTruthy();
@@ -53,7 +52,6 @@ test.describe('Donation Flow', () => {
     const emailValid = await page
       .locator(selectors.donationPage.emailInput)
       .evaluate((el: HTMLInputElement) => el.validity.valid);
-
 
     expect(amountValid).toBeFalsy();
     expect(emailValid).toBeFalsy();

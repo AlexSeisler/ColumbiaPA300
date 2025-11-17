@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { selectors } from '../helpers/selectors';
 import { retry } from '../helpers/retry';
+import { navigate } from '../helpers/utils';
 
 // ColumbiaPA300 - Voting Flow Automation Test
 // Purpose: Validate form submission, Airtable integration (mocked), and UI success state
@@ -13,7 +14,7 @@ const mockVote = {
 
 test.describe('Voting Flow', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/vote');
+    await navigate(page, '/vote');
   });
 
   test('should display the voting form', async ({ page }) => {
@@ -26,7 +27,7 @@ test.describe('Voting Flow', () => {
     await page.fill(selectors.votePage.emailInput, mockVote.email);
 
     // Intercept network request to mock Netlify function
-    await page.route('**/\.netlify/functions/submit-vote', async (route) => {
+    await page.route('**/\\.netlify/functions/submit-vote', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -45,7 +46,6 @@ test.describe('Voting Flow', () => {
   test('should handle form validation errors gracefully', async ({ page }) => {
     await page.click(selectors.votePage.submitButton);
 
-    // Expect validation messages to appear (assuming standard HTML5 validation)
     const nameValid = await page
       .locator(selectors.votePage.nameInput)
       .evaluate((el: HTMLInputElement) => el.validity.valid);
@@ -53,7 +53,6 @@ test.describe('Voting Flow', () => {
     const emailValid = await page
       .locator(selectors.votePage.emailInput)
       .evaluate((el: HTMLInputElement) => el.validity.valid);
-
 
     expect(nameValid).toBeFalsy();
     expect(emailValid).toBeFalsy();
